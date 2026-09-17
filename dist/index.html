@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AIPO-GPT turns a PC goal and budget into an explainable, compatibility-checked component plan."
+    />
+    <meta name="theme-color" content="#071019" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23071019'/%3E%3Cpath d='M17 44 28 17h8l11 27h-8l-2-6H27l-2 6Zm12-12h6l-3-9Z' fill='%23b8ff62'/%3E%3C/svg%3E"
+    />
+    <title>AIPO-GPT — PC Build Optimizer</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="AIPO-GPT home">
+        <span class="brand-mark">A</span>
+        <span>AIPO-GPT</span>
+      </a>
+      <div class="engine-status" aria-label="Engine status">
+        <span class="status-dot"></span>
+        Compatibility engine online
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">PC BUILD OPTIMIZER / v0.1</p>
+          <h1 id="page-title">A balanced build,<br /><span>with every tradeoff visible.</span></h1>
+        </div>
+        <p class="intro-copy">
+          Describe what the machine needs to do. AIPO-GPT converts your goal into constraints,
+          chooses compatible parts, and shows why each component earned its place.
+        </p>
+      </section>
+
+      <section class="workspace" aria-label="PC build optimizer">
+        <form class="control-panel" id="optimizer-form">
+          <div class="panel-heading">
+            <span class="step-number">01</span>
+            <div>
+              <h2>Define the mission</h2>
+              <p>Start in plain language, then fine-tune the hard limits.</p>
+            </div>
+          </div>
+
+          <label class="field field-wide" for="goal">
+            <span>Your goal</span>
+            <textarea id="goal" name="goal" rows="4">A quiet 1440p gaming PC around $1,800 with room for streaming.</textarea>
+          </label>
+
+          <div class="field-grid">
+            <label class="field" for="budget">
+              <span>Budget</span>
+              <div class="input-prefix">
+                <span>$</span>
+                <input id="budget" name="budget" type="number" min="800" max="5000" step="50" value="1800" />
+              </div>
+            </label>
+
+            <label class="field" for="use-case">
+              <span>Primary workload</span>
+              <select id="use-case" name="useCase">
+                <option value="gaming" selected>Gaming</option>
+                <option value="streaming">Gaming + streaming</option>
+                <option value="workstation">Creative workstation</option>
+                <option value="efficiency">Efficient everyday</option>
+              </select>
+            </label>
+
+            <label class="field" for="resolution">
+              <span>Target</span>
+              <select id="resolution" name="resolution">
+                <option value="1080p">1080p</option>
+                <option value="1440p" selected>1440p</option>
+                <option value="4k">4K</option>
+                <option value="productivity">Productivity</option>
+              </select>
+            </label>
+
+            <label class="field" for="priority">
+              <span>Priority</span>
+              <select id="priority" name="priority">
+                <option value="balanced" selected>Balanced</option>
+                <option value="performance">Peak performance</option>
+                <option value="quiet">Low noise</option>
+                <option value="efficiency">Power efficiency</option>
+              </select>
+            </label>
+          </div>
+
+          <button class="optimize-button" type="submit">
+            <span>Generate build</span>
+            <span aria-hidden="true">↗</span>
+          </button>
+
+          <div class="parsed-goal" id="parsed-goal" aria-live="polite"></div>
+        </form>
+
+        <section class="results-panel" aria-labelledby="results-heading">
+          <div class="panel-heading results-heading-row">
+            <span class="step-number">02</span>
+            <div>
+              <h2 id="results-heading">Recommended system</h2>
+              <p id="recommendation-summary">Balanced for smooth 1440p gaming and occasional streaming.</p>
+            </div>
+            <span class="compatibility-score" id="compatibility-score">8/8 compatible</span>
+          </div>
+
+          <div class="metrics" aria-label="Build totals">
+            <div class="metric">
+              <span>Estimated total</span>
+              <strong id="total-price">$0</strong>
+            </div>
+            <div class="metric">
+              <span>Headroom</span>
+              <strong id="budget-headroom">$0</strong>
+            </div>
+            <div class="metric">
+              <span>Peak draw</span>
+              <strong id="peak-power">0W</strong>
+            </div>
+          </div>
+
+          <div class="parts-list" id="parts-list" aria-live="polite"></div>
+
+          <details class="explanation" open>
+            <summary>Why this build works</summary>
+            <ul id="explanation-list"></ul>
+          </details>
+        </section>
+      </section>
+
+      <section class="method" aria-labelledby="method-heading">
+        <div>
+          <p class="eyebrow">DECISION PIPELINE</p>
+          <h2 id="method-heading">Natural language in.<br />Auditable constraints out.</h2>
+        </div>
+        <ol>
+          <li><span>01</span>Parse workload, resolution, budget, and priorities.</li>
+          <li><span>02</span>Score candidate parts for fit and value.</li>
+          <li><span>03</span>Reject socket, memory, power, thermal, and clearance conflicts.</li>
+        </ol>
+      </section>
+    </main>
+
+    <footer>
+      <span>AIPO-GPT · Built by Dev Patel</span>
+      <span>Recommendations are estimates; verify retailer specs before purchase.</span>
+    </footer>
+  </body>
+</html>

@@ -8,6 +8,8 @@ const fields = {
   resolution: document.querySelector("#resolution"),
   priority: document.querySelector("#priority"),
 };
+const profileButtons = [...document.querySelectorAll("[data-profile]")];
+let activeProfile = "balanced";
 
 const formatMoney = (value) => new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -34,9 +36,15 @@ function syncGoalToFields() {
 }
 
 function render(constraints) {
-  const recommendation = recommendBuild(constraints);
+  const recommendation = recommendBuild(constraints, activeProfile);
   const parts = Object.entries(recommendation.parts);
   const passed = recommendation.checks.filter((check) => check.pass).length;
+
+  for (const button of profileButtons) {
+    const isActive = button.dataset.profile === activeProfile;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  }
 
   document.querySelector("#recommendation-summary").textContent = recommendation.summary;
   document.querySelector("#total-price").textContent = formatMoney(recommendation.total);
@@ -68,5 +76,12 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   render(syncGoalToFields());
 });
+
+for (const button of profileButtons) {
+  button.addEventListener("click", () => {
+    activeProfile = button.dataset.profile;
+    render(currentConstraints());
+  });
+}
 
 render(syncGoalToFields());

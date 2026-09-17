@@ -281,6 +281,46 @@ textarea:focus {
   font: 700 .68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
+.profile-switcher {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 18px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: rgba(4, 12, 19, .58);
+}
+
+.profile-button {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  font-size: .76rem;
+  font-weight: 760;
+  cursor: pointer;
+  transition: color .18s, background .18s, border-color .18s;
+}
+
+.profile-button:hover {
+  color: var(--ink);
+  background: rgba(255,255,255,.035);
+}
+
+.profile-button:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.profile-button.is-active {
+  border-color: rgba(184,255,98,.28);
+  background: rgba(184,255,98,.09);
+  color: var(--acid);
+}
+
 .metrics {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -363,6 +403,7 @@ footer {
   .metric + .metric { border-left: 0; border-top: 1px solid var(--line); }
   .results-heading-row { padding-right: 0; padding-top: 34px; }
   .compatibility-score { left: 0; right: auto; }
+  .profile-switcher { grid-template-columns: 1fr; }
   .part-row { grid-template-columns: 78px 1fr; }
   .part-price { grid-column: 2; }
   footer { flex-direction: column; }

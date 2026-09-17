@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+
+const html = await readFile(new URL("../dist/index.html", import.meta.url), "utf8");
+const app = await readFile(new URL("../dist/app.js", import.meta.url), "utf8");
+
+for (const profile of ["balanced", "performance", "value"]) {
+  assert.match(html, new RegExp(`data-profile="${profile}"`));
+}
+
+assert.equal((html.match(/class="profile-button/g) ?? []).length, 3);
+assert.match(html, /role="group" aria-label="Recommendation profile"/);
+assert.match(app, /recommendBuild\(constraints, activeProfile\)/);
+assert.match(app, /setAttribute\("aria-pressed"/);
+
+console.log("UI contract tests passed");

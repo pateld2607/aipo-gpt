@@ -340,7 +340,7 @@ textarea:focus {
 .part-row {
   display: grid;
   grid-template-columns: 96px 1fr auto;
-  align-items: center;
+  align-items: start;
   gap: 12px;
   padding: 12px 14px;
   border: 1px solid transparent;
@@ -349,7 +349,9 @@ textarea:focus {
 
 .part-row:hover { border-color: rgba(94,231,238,.2); border-radius: 10px; background: rgba(94,231,238,.025); }
 .part-type { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+.part-detail { display: grid; gap: 5px; }
 .part-name { font-size: .88rem; font-weight: 670; }
+.part-reason { color: var(--muted); font-size: .72rem; line-height: 1.45; }
 .part-price { color: #d5dfe3; font: 700 .78rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
 
 .explanation {

@@ -27,6 +27,8 @@ for (const budget of [1200, 1800, 3000]) {
         for (const profile of ["balanced", "performance", "value"]) {
           const result = recommendBuild(constraints, profile);
           assert.equal(Object.keys(result.parts).length, 8);
+          assert.equal(Object.keys(result.rationales).length, 8);
+          assert.ok(Object.values(result.rationales).every((reason) => reason.length > 25));
           assert.equal(result.compatibilityChecks.length, 7);
           assert.equal(result.requirementChecks.length, 5);
           assert.ok(result.compatibilityChecks.every((check) => check.pass));

@@ -12,5 +12,7 @@ assert.equal((html.match(/class="profile-button/g) ?? []).length, 3);
 assert.match(html, /role="group" aria-label="Recommendation profile"/);
 assert.match(app, /recommendBuild\(constraints, activeProfile\)/);
 assert.match(app, /setAttribute\("aria-pressed"/);
+assert.match(app, /recommendation\.rationales\[type\]/);
+assert.match(html, /shows why each component earned its place/);
 
 console.log("UI contract tests passed");

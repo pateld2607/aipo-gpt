@@ -61,7 +61,10 @@ function render(constraints) {
   document.querySelector("#parts-list").innerHTML = parts.map(([type, part]) => `
     <div class="part-row">
       <span class="part-type">${type === "motherboard" ? "board" : type}</span>
-      <span class="part-name">${part.name}</span>
+      <span class="part-detail">
+        <span class="part-name">${part.name}</span>
+        <span class="part-reason">${recommendation.rationales[type]}</span>
+      </span>
       <span class="part-price">${formatMoney(part.price)}</span>
     </div>
   `).join("");

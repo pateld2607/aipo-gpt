@@ -97,6 +97,23 @@ function goalChecks(parts, constraints, total) {
   ];
 }
 
+function buildRationales(parts, constraints, platformWatts) {
+  const coolerMargin = Math.round(parts.cooler.capacity - parts.cpu.watts * 1.25);
+  const gpuClearance = parts.case.gpuClearance - parts.gpu.length;
+  const powerHeadroom = parts.psu.capacity - platformWatts;
+
+  return {
+    cpu: `Tier ${parts.cpu.tier} compute is matched to ${constraints.useCase} work at ${parts.cpu.watts}W package power.`,
+    gpu: `Tier ${parts.gpu.tier} graphics is prioritized for the ${constraints.resolution} target.`,
+    motherboard: `${parts.motherboard.socket} and ${parts.motherboard.memory} support match the selected processor and memory.`,
+    memory: `${parts.memory.capacity}GB of ${parts.memory.memory} is allocated for the selected workload.`,
+    storage: `${parts.storage.capacity}TB of NVMe storage balances working space with the total budget.`,
+    cooler: `${coolerMargin}W of thermal margin remains above the CPU safety target.`,
+    case: `${gpuClearance}mm of graphics-card clearance remains after installation.`,
+    psu: `${powerHeadroom}W of power capacity remains above estimated peak draw.`,
+  };
+}
+
 function candidateScore(candidate, constraints, profile, targets) {
   const { parts, total, platformWatts } = candidate;
   const cpuWeight = constraints.useCase === "workstation" ? 1.8 : constraints.useCase === "streaming" ? 1.35 : 1;
@@ -179,6 +196,7 @@ export function recommendBuild(constraints, profile = "balanced") {
 
   return {
     parts: selected.parts,
+    rationales: buildRationales(selected.parts, constraints, selected.platformWatts),
     total: selected.total,
     platformWatts: selected.platformWatts,
     budgetHeadroom: constraints.budget - selected.total,

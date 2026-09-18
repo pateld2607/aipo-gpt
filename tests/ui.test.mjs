@@ -14,5 +14,10 @@ assert.match(app, /recommendBuild\(constraints, activeProfile\)/);
 assert.match(app, /setAttribute\("aria-pressed"/);
 assert.match(app, /recommendation\.rationales\[type\]/);
 assert.match(html, /shows why each component earned its place/);
+assert.match(html, /id="copy-build"/);
+assert.match(html, /id="download-build"/);
+assert.match(html, /id="export-status" role="status" aria-live="polite"/);
+assert.match(app, /navigator\.clipboard\.writeText/);
+assert.match(app, /new Blob/);
 
 console.log("UI contract tests passed");

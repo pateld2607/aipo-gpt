@@ -335,6 +335,33 @@ textarea:focus {
 .metric span { display: block; margin-bottom: 7px; color: var(--muted); font-size: .68rem; }
 .metric strong { font-size: 1.05rem; }
 
+.export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: -10px 0 18px;
+}
+
+.export-actions button {
+  padding: 8px 11px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: rgba(255,255,255,.025);
+  color: #cbd7dd;
+  font-size: .72rem;
+  font-weight: 740;
+  cursor: pointer;
+}
+
+.export-actions button:hover,
+.export-actions button:focus-visible {
+  border-color: rgba(94,231,238,.45);
+  color: var(--cyan);
+}
+
+#export-status { min-height: 1em; color: var(--muted); font-size: .7rem; }
+
 .parts-list { display: grid; gap: 8px; }
 
 .part-row {

@@ -9,7 +9,12 @@ const fields = {
   priority: document.querySelector("#priority"),
 };
 const profileButtons = [...document.querySelectorAll("[data-profile]")];
+const copyButton = document.querySelector("#copy-build");
+const downloadButton = document.querySelector("#download-build");
+const exportStatus = document.querySelector("#export-status");
 let activeProfile = "balanced";
+let latestRecommendation;
+let latestConstraints;
 
 const formatMoney = (value) => new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -37,6 +42,8 @@ function syncGoalToFields() {
 
 function render(constraints) {
   const recommendation = recommendBuild(constraints, activeProfile);
+  latestRecommendation = recommendation;
+  latestConstraints = constraints;
   const parts = Object.entries(recommendation.parts);
   const compatible = recommendation.compatibilityChecks.filter((check) => check.pass).length;
   const goalsMet = recommendation.requirementChecks.filter((check) => check.pass).length;
@@ -75,6 +82,47 @@ function render(constraints) {
 
   document.querySelector("#parsed-goal").textContent = `constraints = ${JSON.stringify(constraints)}`;
 }
+
+function buildShareText() {
+  const partLines = Object.entries(latestRecommendation.parts).map(([type, part]) =>
+    `${type === "motherboard" ? "Motherboard" : `${type[0].toUpperCase()}${type.slice(1)}`}: ${part.name} (${formatMoney(part.price)})`,
+  );
+
+  return [
+    `AIPO-GPT ${activeProfile} build`,
+    latestRecommendation.summary,
+    `Estimated total: ${formatMoney(latestRecommendation.total)}`,
+    `Estimated peak draw: ${latestRecommendation.platformWatts}W`,
+    "",
+    ...partLines,
+  ].join("\n");
+}
+
+copyButton.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(buildShareText());
+    exportStatus.textContent = "Build summary copied.";
+  } catch {
+    exportStatus.textContent = "Copy was blocked by the browser. Download the JSON plan instead.";
+  }
+});
+
+downloadButton.addEventListener("click", () => {
+  const payload = {
+    generatedAt: new Date().toISOString(),
+    constraints: latestConstraints,
+    profile: activeProfile,
+    recommendation: latestRecommendation,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `aipo-gpt-${activeProfile}-build.json`;
+  link.click();
+  URL.revokeObjectURL(url);
+  exportStatus.textContent = "JSON build plan downloaded.";
+});
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();

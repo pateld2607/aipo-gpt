@@ -27,8 +27,9 @@ for (const budget of [1200, 1800, 3000]) {
         for (const profile of ["balanced", "performance", "value"]) {
           const result = recommendBuild(constraints, profile);
           assert.equal(Object.keys(result.parts).length, 8);
-          assert.equal(result.checks.length, 8);
-          assert.ok(result.checks.every((check) => check.pass));
+          assert.equal(result.compatibilityChecks.length, 7);
+          assert.equal(result.requirementChecks.length, 5);
+          assert.ok(result.compatibilityChecks.every((check) => check.pass));
           assert.ok(result.parts.psu.capacity >= result.platformWatts * 1.35);
           assert.ok(result.total <= constraints.budget);
         }
@@ -47,5 +48,22 @@ const performanceBuild = recommendBuild(comparisonConstraints, "performance");
 const valueBuild = recommendBuild(comparisonConstraints, "value");
 assert.ok(performanceBuild.parts.gpu.tier >= valueBuild.parts.gpu.tier);
 assert.throws(() => recommendBuild(comparisonConstraints, "unknown"), RangeError);
+
+const unconstrainedWorkstation = recommendBuild({
+  budget: 3000,
+  useCase: "workstation",
+  resolution: "4k",
+  priority: "performance",
+});
+assert.ok(unconstrainedWorkstation.requirementChecks.every((check) => check.pass));
+
+const constrainedWorkstation = recommendBuild({
+  budget: 1200,
+  useCase: "workstation",
+  resolution: "4k",
+  priority: "performance",
+});
+assert.ok(constrainedWorkstation.requirementChecks.some((check) => !check.pass));
+assert.equal(constrainedWorkstation.goalFit < 1, true);
 
 console.log("engine tests passed");

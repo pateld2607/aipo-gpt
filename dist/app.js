@@ -38,7 +38,8 @@ function syncGoalToFields() {
 function render(constraints) {
   const recommendation = recommendBuild(constraints, activeProfile);
   const parts = Object.entries(recommendation.parts);
-  const passed = recommendation.checks.filter((check) => check.pass).length;
+  const compatible = recommendation.compatibilityChecks.filter((check) => check.pass).length;
+  const goalsMet = recommendation.requirementChecks.filter((check) => check.pass).length;
 
   for (const button of profileButtons) {
     const isActive = button.dataset.profile === activeProfile;
@@ -54,8 +55,8 @@ function render(constraints) {
   document.querySelector("#peak-power").textContent = `${recommendation.platformWatts}W`;
 
   const score = document.querySelector("#compatibility-score");
-  score.textContent = `${passed}/${recommendation.checks.length} compatible`;
-  score.style.color = passed === recommendation.checks.length ? "var(--acid)" : "var(--danger)";
+  score.textContent = `${compatible}/${recommendation.compatibilityChecks.length} safe · ${goalsMet}/${recommendation.requirementChecks.length} goals`;
+  score.style.color = compatible === recommendation.compatibilityChecks.length ? "var(--acid)" : "var(--danger)";
 
   document.querySelector("#parts-list").innerHTML = parts.map(([type, part]) => `
     <div class="part-row">
@@ -66,7 +67,7 @@ function render(constraints) {
   `).join("");
 
   document.querySelector("#explanation-list").innerHTML = recommendation.checks.map((check) => `
-    <li>${check.pass ? "✓" : "!"} ${check.label}</li>
+    <li class="${check.pass ? "is-pass" : "is-warning"}">${check.pass ? "✓" : "!"} ${check.label}</li>
   `).join("");
 
   document.querySelector("#parsed-goal").textContent = `constraints = ${JSON.stringify(constraints)}`;

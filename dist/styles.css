@@ -267,7 +267,7 @@ textarea:focus {
   font: .73rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-.results-heading-row { position: relative; padding-right: 120px; }
+.results-heading-row { position: relative; padding-right: 185px; }
 
 .compatibility-score {
   position: absolute;
@@ -363,6 +363,7 @@ textarea:focus {
 .explanation summary { cursor: pointer; font-size: .82rem; font-weight: 750; }
 .explanation ul { margin: 15px 0 0; padding-left: 18px; color: var(--muted); font-size: .82rem; line-height: 1.6; }
 .explanation li + li { margin-top: 7px; }
+.explanation .is-warning { color: var(--danger); }
 
 .method {
   display: grid;

@@ -42,6 +42,23 @@ function chooseTier(constraints) {
 
 const PROFILES = new Set(["balanced", "performance", "value"]);
 
+function requirementsFor(constraints) {
+  const resolutionGpuTier = {
+    "1080p": 2,
+    "1440p": 4,
+    "4k": 5,
+    productivity: 2,
+  }[constraints.resolution];
+  const workload = {
+    gaming: { cpuTier: 2, gpuTier: resolutionGpuTier, memory: 32, storage: 1 },
+    streaming: { cpuTier: 4, gpuTier: Math.max(4, resolutionGpuTier), memory: 32, storage: 2 },
+    workstation: { cpuTier: 5, gpuTier: Math.max(4, resolutionGpuTier), memory: 64, storage: 2 },
+    efficiency: { cpuTier: 2, gpuTier: 2, memory: 32, storage: 1 },
+  }[constraints.useCase];
+
+  return workload;
+}
+
 function targetsFor(constraints, profile) {
   const tier = chooseTier(constraints);
   const performance = constraints.priority === "performance";
@@ -59,13 +76,24 @@ function targetsFor(constraints, profile) {
 
 function technicalChecks(parts, platformWatts) {
   return [
-    { label: "CPU socket matches the motherboard", pass: parts.cpu.socket === parts.motherboard.socket },
-    { label: "CPU and motherboard share a memory standard", pass: parts.cpu.memory === parts.motherboard.memory },
-    { label: "RAM matches the motherboard", pass: parts.memory.memory === parts.motherboard.memory },
-    { label: "Cooler capacity covers CPU package power", pass: parts.cooler.capacity >= parts.cpu.watts * 1.25 },
-    { label: "Motherboard form factor fits the case", pass: parts.case.forms.includes(parts.motherboard.form) },
-    { label: "GPU length fits with safety clearance", pass: parts.case.gpuClearance >= parts.gpu.length + 15 },
-    { label: "PSU provides at least 35% power headroom", pass: parts.psu.capacity >= platformWatts * 1.35 },
+    { category: "compatibility", label: "CPU socket matches the motherboard", pass: parts.cpu.socket === parts.motherboard.socket },
+    { category: "compatibility", label: "CPU and motherboard share a memory standard", pass: parts.cpu.memory === parts.motherboard.memory },
+    { category: "compatibility", label: "RAM matches the motherboard", pass: parts.memory.memory === parts.motherboard.memory },
+    { category: "compatibility", label: "Cooler capacity covers CPU package power", pass: parts.cooler.capacity >= parts.cpu.watts * 1.25 },
+    { category: "compatibility", label: "Motherboard form factor fits the case", pass: parts.case.forms.includes(parts.motherboard.form) },
+    { category: "compatibility", label: "GPU length fits with safety clearance", pass: parts.case.gpuClearance >= parts.gpu.length + 15 },
+    { category: "compatibility", label: "PSU provides at least 35% power headroom", pass: parts.psu.capacity >= platformWatts * 1.35 },
+  ];
+}
+
+function goalChecks(parts, constraints, total) {
+  const requirements = requirementsFor(constraints);
+  return [
+    { category: "goal", label: `CPU tier supports ${constraints.useCase} workloads`, pass: parts.cpu.tier >= requirements.cpuTier },
+    { category: "goal", label: `GPU tier supports the ${constraints.resolution} target`, pass: parts.gpu.tier >= requirements.gpuTier },
+    { category: "goal", label: `${requirements.memory}GB memory target is met`, pass: parts.memory.capacity >= requirements.memory },
+    { category: "goal", label: `${requirements.storage}TB storage target is met`, pass: parts.storage.capacity >= requirements.storage },
+    { category: "goal", label: "Estimated price stays within the stated budget", pass: total <= constraints.budget },
   ];
 }
 
@@ -85,16 +113,17 @@ function candidateScore(candidate, constraints, profile, targets) {
   const budgetUse = total / constraints.budget;
   const quietBonus = constraints.priority === "quiet" ? (35 - parts.cooler.noise) * .28 : 0;
   const efficiencyBonus = constraints.priority === "efficiency" ? (750 - platformWatts) / 80 : 0;
+  const goalFit = goalChecks(parts, constraints, total).filter((check) => check.pass).length;
 
   if (profile === "performance") {
-    return performance * 4.2 + workloadFit * 1.5 + targetFit - Math.abs(1 - budgetUse) * 2 + quietBonus + efficiencyBonus;
+    return performance * 4.2 + workloadFit * 1.5 + targetFit + goalFit * 3 - Math.abs(1 - budgetUse) * 2 + quietBonus + efficiencyBonus;
   }
 
   if (profile === "value") {
-    return performance * 6 / (total / 1000) + workloadFit + targetFit * .45 + Math.max(0, 1 - budgetUse) * 2 + quietBonus + efficiencyBonus;
+    return performance * 6 / (total / 1000) + workloadFit + targetFit * .45 + goalFit * 2 + Math.max(0, 1 - budgetUse) * 2 + quietBonus + efficiencyBonus;
   }
 
-  return performance * 2.1 + workloadFit * 1.7 + targetFit - Math.abs(.9 - budgetUse) * 3 + quietBonus + efficiencyBonus;
+  return performance * 2.1 + workloadFit * 1.7 + targetFit + goalFit * 3.5 - Math.abs(.9 - budgetUse) * 3 + quietBonus + efficiencyBonus;
 }
 
 function enumerateCandidates(constraints, profile) {
@@ -142,8 +171,11 @@ export function recommendBuild(constraints, profile = "balanced") {
 
   const checks = [
     ...selected.checks,
-    { label: "Estimated price stays within the stated budget", pass: selected.total <= constraints.budget },
+    ...goalChecks(selected.parts, constraints, selected.total),
   ];
+
+  const compatibilityChecks = checks.filter((check) => check.category === "compatibility");
+  const requirementChecks = checks.filter((check) => check.category === "goal");
 
   return {
     parts: selected.parts,
@@ -151,6 +183,9 @@ export function recommendBuild(constraints, profile = "balanced") {
     platformWatts: selected.platformWatts,
     budgetHeadroom: constraints.budget - selected.total,
     checks,
+    compatibilityChecks,
+    requirementChecks,
+    goalFit: requirementChecks.filter((check) => check.pass).length / requirementChecks.length,
     profile,
     summary: buildSummary(constraints, profile),
   };

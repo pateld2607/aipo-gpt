@@ -4,7 +4,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 
 ## Current slice
 
-- Goal parsing for gaming, streaming, workstation, efficiency, budget, and resolution
+- Goal parsing for gaming, streaming, workstation, efficiency, resolution, and budgets including `1.8k` or `2 grand` shorthand
 - Deterministic recommendations across CPU, GPU, motherboard, RAM, storage, PSU, cooler, and case
 - Socket, memory, cooling, form-factor, clearance, and PSU headroom checks
 - Transparent cost and power estimates

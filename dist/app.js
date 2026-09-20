@@ -11,6 +11,7 @@ const fields = {
 const profileButtons = [...document.querySelectorAll("[data-profile]")];
 const presetButtons = [...document.querySelectorAll("[data-preset]")];
 const copyButton = document.querySelector("#copy-build");
+const copyLinkButton = document.querySelector("#copy-link");
 const downloadButton = document.querySelector("#download-build");
 const exportStatus = document.querySelector("#export-status");
 const comparisonBody = document.querySelector("#profile-comparison-body");
@@ -43,10 +44,47 @@ function syncGoalToFields() {
   return parsed;
 }
 
+function updateShareUrl(constraints) {
+  const params = new URLSearchParams({
+    budget: String(constraints.budget),
+    useCase: constraints.useCase,
+    resolution: constraints.resolution,
+    priority: constraints.priority,
+    profile: activeProfile,
+    goal: fields.goal.value.trim(),
+  });
+  history.replaceState(null, "", `${location.pathname}?${params}`);
+}
+
+function restoreFromUrl(fallback) {
+  const params = new URLSearchParams(location.search);
+  const allowed = {
+    useCase: new Set(["gaming", "streaming", "workstation", "efficiency"]),
+    resolution: new Set(["1080p", "1440p", "4k", "productivity"]),
+    priority: new Set(["balanced", "performance", "quiet", "efficiency"]),
+    profile: new Set(["balanced", "performance", "value"]),
+  };
+  const budget = Number(params.get("budget"));
+  const restored = {
+    budget: Number.isFinite(budget) && budget >= 800 && budget <= 5000 ? budget : fallback.budget,
+    useCase: allowed.useCase.has(params.get("useCase")) ? params.get("useCase") : fallback.useCase,
+    resolution: allowed.resolution.has(params.get("resolution")) ? params.get("resolution") : fallback.resolution,
+    priority: allowed.priority.has(params.get("priority")) ? params.get("priority") : fallback.priority,
+  };
+  if (allowed.profile.has(params.get("profile"))) activeProfile = params.get("profile");
+  if (params.get("goal")) fields.goal.value = params.get("goal");
+  fields.budget.value = restored.budget;
+  fields.useCase.value = restored.useCase;
+  fields.resolution.value = restored.resolution;
+  fields.priority.value = restored.priority;
+  return restored;
+}
+
 function render(constraints) {
   const recommendation = recommendBuild(constraints, activeProfile);
   latestRecommendation = recommendation;
   latestConstraints = constraints;
+  updateShareUrl(constraints);
   const parts = Object.entries(recommendation.parts);
   const compatible = recommendation.compatibilityChecks.filter((check) => check.pass).length;
   const goalsMet = recommendation.requirementChecks.filter((check) => check.pass).length;
@@ -131,6 +169,15 @@ copyButton.addEventListener("click", async () => {
   }
 });
 
+copyLinkButton.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href);
+    exportStatus.textContent = "Shareable build link copied.";
+  } catch {
+    exportStatus.textContent = "Copy was blocked by the browser.";
+  }
+});
+
 downloadButton.addEventListener("click", () => {
   const payload = {
     generatedAt: new Date().toISOString(),
@@ -187,4 +234,4 @@ comparisonBody.addEventListener("click", (event) => {
   render(currentConstraints());
 });
 
-render(syncGoalToFields());
+render(restoreFromUrl(syncGoalToFields()));

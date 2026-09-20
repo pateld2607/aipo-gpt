@@ -15,6 +15,7 @@ assert.match(app, /setAttribute\("aria-pressed"/);
 assert.match(app, /recommendation\.rationales\[type\]/);
 assert.match(html, /shows why each component earned its place/);
 assert.match(html, /id="copy-build"/);
+assert.match(html, /id="copy-link"/);
 assert.match(html, /id="download-build"/);
 assert.match(html, /id="export-status" role="status" aria-live="polite"/);
 assert.match(app, /navigator\.clipboard\.writeText/);
@@ -33,5 +34,8 @@ assert.match(html, /id="form-error" role="alert"/);
 assert.match(app, /form\.addEventListener\("invalid"/);
 assert.equal((html.match(/data-preset=/g) ?? []).length, 3);
 assert.match(app, /fields\.goal\.value = button\.dataset\.preset/);
+assert.match(app, /history\.replaceState/);
+assert.match(app, /restoreFromUrl\(syncGoalToFields\(\)\)/);
+assert.match(app, /window\.location\.href/);
 
 console.log("UI contract tests passed");

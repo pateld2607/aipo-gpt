@@ -50,11 +50,17 @@ function requirementsFor(constraints) {
     "4k": 5,
     productivity: 2,
   }[constraints.resolution];
+  const resolutionVram = {
+    "1080p": 8,
+    "1440p": 12,
+    "4k": 16,
+    productivity: 8,
+  }[constraints.resolution];
   const workload = {
-    gaming: { cpuTier: 2, gpuTier: resolutionGpuTier, memory: 32, storage: 1 },
-    streaming: { cpuTier: 4, gpuTier: Math.max(4, resolutionGpuTier), memory: 32, storage: 2 },
-    workstation: { cpuTier: 5, gpuTier: Math.max(4, resolutionGpuTier), memory: 64, storage: 2 },
-    efficiency: { cpuTier: 2, gpuTier: 2, memory: 32, storage: 1 },
+    gaming: { cpuTier: 2, gpuTier: resolutionGpuTier, vram: resolutionVram, memory: 32, storage: 1 },
+    streaming: { cpuTier: 4, gpuTier: Math.max(4, resolutionGpuTier), vram: Math.max(12, resolutionVram), memory: 32, storage: 2 },
+    workstation: { cpuTier: 5, gpuTier: Math.max(4, resolutionGpuTier), vram: Math.max(16, resolutionVram), memory: 64, storage: 2 },
+    efficiency: { cpuTier: 2, gpuTier: 2, vram: 8, memory: 32, storage: 1 },
   }[constraints.useCase];
 
   return workload;
@@ -92,6 +98,7 @@ function goalChecks(parts, constraints, total) {
   return [
     { category: "goal", label: `CPU tier supports ${constraints.useCase} workloads`, pass: parts.cpu.tier >= requirements.cpuTier },
     { category: "goal", label: `GPU tier supports the ${constraints.resolution} target`, pass: parts.gpu.tier >= requirements.gpuTier },
+    { category: "goal", label: `${requirements.vram}GB graphics memory target is met`, pass: parts.gpu.vram >= requirements.vram },
     { category: "goal", label: `${requirements.memory}GB memory target is met`, pass: parts.memory.capacity >= requirements.memory },
     { category: "goal", label: `${requirements.storage}TB storage target is met`, pass: parts.storage.capacity >= requirements.storage },
     { category: "goal", label: "Estimated price stays within the stated budget", pass: total <= constraints.budget },
@@ -105,7 +112,7 @@ function buildRationales(parts, constraints, platformWatts) {
 
   return {
     cpu: `Tier ${parts.cpu.tier} compute is matched to ${constraints.useCase} work at ${parts.cpu.watts}W package power.`,
-    gpu: `Tier ${parts.gpu.tier} graphics is prioritized for the ${constraints.resolution} target.`,
+    gpu: `Tier ${parts.gpu.tier} graphics with ${parts.gpu.vram}GB VRAM is prioritized for the ${constraints.resolution} target.`,
     motherboard: `${parts.motherboard.socket} and ${parts.motherboard.memory} support match the selected processor and memory.`,
     memory: `${parts.memory.capacity}GB of ${parts.memory.memory} is allocated for the selected workload.`,
     storage: `${parts.storage.capacity}TB of NVMe storage balances working space with the total budget.`,

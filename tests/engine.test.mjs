@@ -34,8 +34,9 @@ for (const budget of [1200, 1800, 3000]) {
           assert.equal(Object.keys(result.rationales).length, 8);
           assert.ok(Object.values(result.rationales).every((reason) => reason.length > 25));
           assert.equal(result.compatibilityChecks.length, 7);
-          assert.equal(result.requirementChecks.length, 5);
+          assert.equal(result.requirementChecks.length, 6);
           assert.ok(result.compatibilityChecks.every((check) => check.pass));
+          assert.ok(result.parts.gpu.vram >= 12);
           assert.ok(result.parts.psu.capacity >= result.platformWatts * 1.35);
           assert.ok(result.total <= constraints.budget);
         }
@@ -62,6 +63,7 @@ const unconstrainedWorkstation = recommendBuild({
   priority: "performance",
 });
 assert.ok(unconstrainedWorkstation.requirementChecks.every((check) => check.pass));
+assert.equal(unconstrainedWorkstation.parts.gpu.vram, 16);
 
 const constrainedWorkstation = recommendBuild({
   budget: 1200,

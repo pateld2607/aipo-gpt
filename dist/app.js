@@ -81,6 +81,7 @@ function render(constraints) {
     : `${formatMoney(Math.abs(recommendation.budgetHeadroom))} over`;
   document.querySelector("#peak-power").textContent = `${recommendation.platformWatts}W`;
   document.querySelector("#upgrade-readiness").textContent = `${recommendation.upgradeReadiness.label} · ${recommendation.upgradeReadiness.score}%`;
+  document.querySelector("#cooler-noise").textContent = `${recommendation.acoustics.label} · ${recommendation.acoustics.decibels}dBA`;
 
   const score = document.querySelector("#compatibility-score");
   score.textContent = `${compatible}/${recommendation.compatibilityChecks.length} safe · ${goalsMet}/${recommendation.requirementChecks.length} goals`;

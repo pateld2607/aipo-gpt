@@ -357,7 +357,7 @@ textarea:focus {
 
 .metrics {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   margin-bottom: 26px;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -368,6 +368,11 @@ textarea:focus {
 .metric + .metric { border-left: 1px solid var(--line); }
 .metric span { display: block; margin-bottom: 7px; color: var(--muted); font-size: .68rem; }
 .metric strong { font-size: 1.05rem; }
+
+@media (min-width: 901px) {
+  .metric { padding-inline: 12px; }
+  .metric strong { font-size: .92rem; }
+}
 
 .export-actions {
   display: flex;

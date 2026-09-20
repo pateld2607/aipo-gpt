@@ -135,6 +135,12 @@ function assessUpgradeReadiness(parts, platformWatts) {
   return { score, label, signals };
 }
 
+function describeAcoustics(parts) {
+  const decibels = parts.cooler.noise;
+  const label = decibels <= 24 ? "Quiet" : decibels <= 28 ? "Balanced" : "Performance";
+  return { decibels, label };
+}
+
 function candidateScore(candidate, constraints, profile, targets) {
   const { parts, total, platformWatts } = candidate;
   const cpuWeight = constraints.useCase === "workstation" ? 1.8 : constraints.useCase === "streaming" ? 1.35 : 1;
@@ -219,6 +225,7 @@ export function recommendBuild(constraints, profile = "balanced") {
     parts: selected.parts,
     rationales: buildRationales(selected.parts, constraints, selected.platformWatts),
     upgradeReadiness: assessUpgradeReadiness(selected.parts, selected.platformWatts),
+    acoustics: describeAcoustics(selected.parts),
     total: selected.total,
     platformWatts: selected.platformWatts,
     budgetHeadroom: constraints.budget - selected.total,

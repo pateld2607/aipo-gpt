@@ -25,5 +25,7 @@ assert.match(app, /data-compare-profile/);
 assert.match(app, /button\.dataset\.compareProfile/);
 assert.match(html, /id="upgrade-readiness"/);
 assert.match(app, /recommendation\.upgradeReadiness\.label/);
+assert.match(html, /id="cooler-noise"/);
+assert.match(app, /recommendation\.acoustics\.decibels/);
 
 console.log("UI contract tests passed");

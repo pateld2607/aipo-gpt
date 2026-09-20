@@ -122,6 +122,19 @@ function buildRationales(parts, constraints, platformWatts) {
   };
 }
 
+function assessUpgradeReadiness(parts, platformWatts) {
+  const signals = {
+    power: parts.psu.capacity - platformWatts >= 250,
+    memory: parts.memory.capacity >= 64,
+    motherboard: parts.motherboard.tier >= 4,
+    clearance: parts.case.gpuClearance - parts.gpu.length >= 70,
+  };
+  const score = Object.values(signals).filter(Boolean).length * 25;
+  const label = score >= 75 ? "Strong" : score >= 50 ? "Moderate" : "Limited";
+
+  return { score, label, signals };
+}
+
 function candidateScore(candidate, constraints, profile, targets) {
   const { parts, total, platformWatts } = candidate;
   const cpuWeight = constraints.useCase === "workstation" ? 1.8 : constraints.useCase === "streaming" ? 1.35 : 1;
@@ -205,6 +218,7 @@ export function recommendBuild(constraints, profile = "balanced") {
   return {
     parts: selected.parts,
     rationales: buildRationales(selected.parts, constraints, selected.platformWatts),
+    upgradeReadiness: assessUpgradeReadiness(selected.parts, selected.platformWatts),
     total: selected.total,
     platformWatts: selected.platformWatts,
     budgetHeadroom: constraints.budget - selected.total,

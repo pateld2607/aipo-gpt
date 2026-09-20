@@ -23,5 +23,7 @@ assert.match(html, /<summary>Compare all profiles<\/summary>/);
 assert.match(html, /id="profile-comparison-body"/);
 assert.match(app, /data-compare-profile/);
 assert.match(app, /button\.dataset\.compareProfile/);
+assert.match(html, /id="upgrade-readiness"/);
+assert.match(app, /recommendation\.upgradeReadiness\.label/);
 
 console.log("UI contract tests passed");

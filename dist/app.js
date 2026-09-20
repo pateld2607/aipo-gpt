@@ -80,6 +80,7 @@ function render(constraints) {
     ? formatMoney(recommendation.budgetHeadroom)
     : `${formatMoney(Math.abs(recommendation.budgetHeadroom))} over`;
   document.querySelector("#peak-power").textContent = `${recommendation.platformWatts}W`;
+  document.querySelector("#upgrade-readiness").textContent = `${recommendation.upgradeReadiness.label} · ${recommendation.upgradeReadiness.score}%`;
 
   const score = document.querySelector("#compatibility-score");
   score.textContent = `${compatible}/${recommendation.compatibilityChecks.length} safe · ${goalsMet}/${recommendation.requirementChecks.length} goals`;

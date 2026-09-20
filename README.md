@@ -9,6 +9,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Side-by-side balanced, maximum-performance, and best-value profile comparison
 - Socket, memory, cooling, form-factor, clearance, PSU headroom, and workload-specific VRAM checks
 - Transparent cost and power estimates
+- Upgrade-readiness scoring for power, memory, motherboard, and case headroom
 
 This first release intentionally keeps the recommendation engine local and inspectable. OpenAI-assisted reasoning and a larger data pipeline are planned as later milestones.
 

@@ -357,7 +357,7 @@ textarea:focus {
 
 .metrics {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   margin-bottom: 26px;
   border: 1px solid var(--line);
   border-radius: 14px;

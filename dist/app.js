@@ -9,6 +9,7 @@ const fields = {
   priority: document.querySelector("#priority"),
 };
 const profileButtons = [...document.querySelectorAll("[data-profile]")];
+const presetButtons = [...document.querySelectorAll("[data-preset]")];
 const copyButton = document.querySelector("#copy-build");
 const downloadButton = document.querySelector("#download-build");
 const exportStatus = document.querySelector("#export-status");
@@ -169,6 +170,13 @@ for (const button of profileButtons) {
   button.addEventListener("click", () => {
     activeProfile = button.dataset.profile;
     render(currentConstraints());
+  });
+}
+
+for (const button of presetButtons) {
+  button.addEventListener("click", () => {
+    fields.goal.value = button.dataset.preset;
+    render(syncGoalToFields());
   });
 }
 

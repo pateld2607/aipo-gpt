@@ -31,5 +31,7 @@ assert.match(html, /id="goal"[^>]+required minlength="12"/);
 assert.match(html, /id="budget"[^>]+required/);
 assert.match(html, /id="form-error" role="alert"/);
 assert.match(app, /form\.addEventListener\("invalid"/);
+assert.equal((html.match(/data-preset=/g) ?? []).length, 3);
+assert.match(app, /fields\.goal\.value = button\.dataset\.preset/);
 
 console.log("UI contract tests passed");

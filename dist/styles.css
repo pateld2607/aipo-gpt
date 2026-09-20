@@ -196,6 +196,29 @@ h1 span { color: #8293a0; }
 
 .field-wide { margin-bottom: 18px; }
 
+.preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin: -6px 0 18px;
+  color: var(--muted);
+  font-size: .72rem;
+}
+
+.preset-row button {
+  padding: 6px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255,255,255,.025);
+  color: #cbd7dd;
+  font-size: .7rem;
+  cursor: pointer;
+}
+
+.preset-row button:hover,
+.preset-row button:focus-visible { border-color: rgba(94,231,238,.45); color: var(--cyan); }
+
 input,
 select,
 textarea {

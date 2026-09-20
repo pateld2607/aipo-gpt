@@ -12,6 +12,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Upgrade-readiness scoring for power, memory, motherboard, and case headroom
 - Visible cooler-noise classification for quiet-build decisions
 - Accessible validation for missing goals and out-of-range budgets
+- One-click gaming, streaming, and workstation goal presets
 
 This first release intentionally keeps the recommendation engine local and inspectable. OpenAI-assisted reasoning and a larger data pipeline are planned as later milestones.
 

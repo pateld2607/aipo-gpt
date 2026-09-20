@@ -19,5 +19,9 @@ assert.match(html, /id="download-build"/);
 assert.match(html, /id="export-status" role="status" aria-live="polite"/);
 assert.match(app, /navigator\.clipboard\.writeText/);
 assert.match(app, /new Blob/);
+assert.match(html, /<summary>Compare all profiles<\/summary>/);
+assert.match(html, /id="profile-comparison-body"/);
+assert.match(app, /data-compare-profile/);
+assert.match(app, /button\.dataset\.compareProfile/);
 
 console.log("UI contract tests passed");

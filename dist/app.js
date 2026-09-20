@@ -12,6 +12,7 @@ const profileButtons = [...document.querySelectorAll("[data-profile]")];
 const copyButton = document.querySelector("#copy-build");
 const downloadButton = document.querySelector("#download-build");
 const exportStatus = document.querySelector("#export-status");
+const comparisonBody = document.querySelector("#profile-comparison-body");
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
@@ -53,6 +54,25 @@ function render(constraints) {
     button.classList.toggle("is-active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
   }
+
+  const profileLabels = {
+    balanced: "Balanced",
+    performance: "Max performance",
+    value: "Best value",
+  };
+  comparisonBody.innerHTML = Object.entries(profileLabels).map(([profile, label]) => {
+    const option = profile === activeProfile ? recommendation : recommendBuild(constraints, profile);
+    const goalsMet = option.requirementChecks.filter((check) => check.pass).length;
+    return `
+      <tr class="${profile === activeProfile ? "is-active" : ""}">
+        <th scope="row"><button type="button" data-compare-profile="${profile}">${label}</button></th>
+        <td>${formatMoney(option.total)}</td>
+        <td>${option.parts.cpu.name}</td>
+        <td>${option.parts.gpu.name}</td>
+        <td>${goalsMet}/${option.requirementChecks.length}</td>
+      </tr>
+    `;
+  }).join("");
 
   document.querySelector("#recommendation-summary").textContent = recommendation.summary;
   document.querySelector("#total-price").textContent = formatMoney(recommendation.total);
@@ -135,5 +155,12 @@ for (const button of profileButtons) {
     render(currentConstraints());
   });
 }
+
+comparisonBody.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-compare-profile]");
+  if (!button) return;
+  activeProfile = button.dataset.compareProfile;
+  render(currentConstraints());
+});
 
 render(syncGoalToFields());

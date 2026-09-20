@@ -6,6 +6,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 
 - Goal parsing for gaming, streaming, workstation, efficiency, resolution, and budgets including `1.8k` or `2 grand` shorthand
 - Deterministic recommendations across CPU, GPU, motherboard, RAM, storage, PSU, cooler, and case
+- Side-by-side balanced, maximum-performance, and best-value profile comparison
 - Socket, memory, cooling, form-factor, clearance, PSU headroom, and workload-specific VRAM checks
 - Transparent cost and power estimates
 

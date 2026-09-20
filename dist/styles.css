@@ -321,6 +321,40 @@ textarea:focus {
   color: var(--acid);
 }
 
+.profile-comparison {
+  margin: -4px 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(4, 12, 19, .42);
+}
+
+.profile-comparison summary {
+  padding: 11px 13px;
+  color: #cbd7dd;
+  font-size: .76rem;
+  font-weight: 740;
+  cursor: pointer;
+}
+
+.comparison-scroll { overflow-x: auto; border-top: 1px solid var(--line); }
+.profile-comparison table { width: 100%; min-width: 660px; border-collapse: collapse; }
+.profile-comparison th,
+.profile-comparison td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; font-size: .7rem; }
+.profile-comparison thead th { color: var(--muted); font-weight: 680; }
+.profile-comparison tbody tr:last-child > * { border-bottom: 0; }
+.profile-comparison tbody tr.is-active { background: rgba(184,255,98,.06); }
+.profile-comparison tbody td { color: #cbd7dd; }
+.profile-comparison tbody button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--cyan);
+  font-weight: 760;
+  cursor: pointer;
+}
+.profile-comparison tbody button:hover,
+.profile-comparison tbody button:focus-visible { color: var(--acid); }
+
 .metrics {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -33,6 +33,35 @@ body {
 
 button, input, select, textarea { font: inherit; }
 
+.skip-link {
+  position: fixed;
+  z-index: 20;
+  top: 10px;
+  left: 10px;
+  transform: translateY(-180%);
+  padding: 10px 14px;
+  border-radius: 9px;
+  background: var(--acid);
+  color: #0b1608;
+  font-weight: 800;
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+#results-heading:focus { outline: 2px solid var(--cyan); outline-offset: 5px; }
+
 .ambient {
   position: fixed;
   z-index: -1;

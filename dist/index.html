@@ -18,6 +18,7 @@
     <script type="module" src="./app.js"></script>
   </head>
   <body>
+    <a class="skip-link" href="#optimizer-form">Skip to optimizer</a>
     <div class="ambient ambient-one"></div>
     <div class="ambient ambient-two"></div>
 
@@ -120,7 +121,7 @@
           <div class="panel-heading results-heading-row">
             <span class="step-number">02</span>
             <div>
-              <h2 id="results-heading">Recommended system</h2>
+              <h2 id="results-heading" tabindex="-1">Recommended system</h2>
               <p id="recommendation-summary">Balanced for smooth 1440p gaming and occasional streaming.</p>
             </div>
             <span class="compatibility-score" id="compatibility-score">7/7 safe · 6/6 goals</span>
@@ -192,6 +193,7 @@
             <summary>Why this build works</summary>
             <ul id="explanation-list"></ul>
           </details>
+          <p class="visually-hidden" id="result-status" role="status" aria-live="polite"></p>
         </section>
       </section>
 

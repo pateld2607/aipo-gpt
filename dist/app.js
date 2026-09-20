@@ -16,6 +16,7 @@ const downloadButton = document.querySelector("#download-build");
 const exportStatus = document.querySelector("#export-status");
 const comparisonBody = document.querySelector("#profile-comparison-body");
 const formError = document.querySelector("#form-error");
+const resultStatus = document.querySelector("#result-status");
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
@@ -80,7 +81,7 @@ function restoreFromUrl(fallback) {
   return restored;
 }
 
-function render(constraints) {
+function render(constraints, { announce = false } = {}) {
   const recommendation = recommendBuild(constraints, activeProfile);
   latestRecommendation = recommendation;
   latestConstraints = constraints;
@@ -126,6 +127,10 @@ function render(constraints) {
   const score = document.querySelector("#compatibility-score");
   score.textContent = `${compatible}/${recommendation.compatibilityChecks.length} safe · ${goalsMet}/${recommendation.requirementChecks.length} goals`;
   score.style.color = compatible === recommendation.compatibilityChecks.length ? "var(--acid)" : "var(--danger)";
+  if (announce) {
+    resultStatus.textContent = `Build ready. ${compatible} compatibility checks passed, ${goalsMet} goals met, estimated total ${formatMoney(recommendation.total)}.`;
+    document.querySelector("#results-heading").focus();
+  }
 
   document.querySelector("#parts-list").innerHTML = parts.map(([type, part]) => `
     <div class="part-row">
@@ -198,7 +203,7 @@ downloadButton.addEventListener("click", () => {
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   formError.textContent = "";
-  render(syncGoalToFields());
+  render(syncGoalToFields(), { announce: true });
 });
 
 form.addEventListener("invalid", (event) => {

@@ -37,5 +37,10 @@ assert.match(app, /fields\.goal\.value = button\.dataset\.preset/);
 assert.match(app, /history\.replaceState/);
 assert.match(app, /restoreFromUrl\(syncGoalToFields\(\)\)/);
 assert.match(app, /window\.location\.href/);
+assert.match(html, /class="skip-link" href="#optimizer-form"/);
+assert.match(html, /id="results-heading" tabindex="-1"/);
+assert.match(html, /id="result-status" role="status" aria-live="polite"/);
+assert.match(app, /render\(syncGoalToFields\(\), \{ announce: true \}\)/);
+assert.match(app, /querySelector\("#results-heading"\)\.focus\(\)/);
 
 console.log("UI contract tests passed");

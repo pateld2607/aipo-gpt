@@ -15,6 +15,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile
 - Keyboard skip navigation, result focus management, and screen-reader build summaries
+- Runtime catalog validation for duplicate IDs, missing specifications, and invalid prices
 
 This first release intentionally keeps the recommendation engine local and inspectable. OpenAI-assisted reasoning and a larger data pipeline are planned as later milestones.
 

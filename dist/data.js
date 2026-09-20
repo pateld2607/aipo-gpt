@@ -1,3 +1,5 @@
+import { validateCatalog } from "./catalog-validator.js";
+
 export const catalog = {
   cpu: [
     { id: "r5-7600", name: "AMD Ryzen 5 7600", price: 189, socket: "AM5", memory: "DDR5", watts: 88, tier: 2, strengths: ["gaming", "efficiency"] },
@@ -37,3 +39,5 @@ export const catalog = {
     { id: "1000-gold", name: "1000W ATX 3.1 Gold Modular PSU", price: 189, capacity: 1000, tier: 5 },
   ],
 };
+
+validateCatalog(catalog);

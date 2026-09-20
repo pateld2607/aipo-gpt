@@ -13,6 +13,7 @@ const copyButton = document.querySelector("#copy-build");
 const downloadButton = document.querySelector("#download-build");
 const exportStatus = document.querySelector("#export-status");
 const comparisonBody = document.querySelector("#profile-comparison-body");
+const formError = document.querySelector("#form-error");
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
@@ -148,7 +149,20 @@ downloadButton.addEventListener("click", () => {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
+  formError.textContent = "";
   render(syncGoalToFields());
+});
+
+form.addEventListener("invalid", (event) => {
+  const messages = {
+    goal: "Describe the PC you want in at least 12 characters.",
+    budget: "Enter a budget from $800 to $5,000.",
+  };
+  formError.textContent = messages[event.target.id] ?? "Check the highlighted field and try again.";
+}, true);
+
+form.addEventListener("input", () => {
+  formError.textContent = "";
 });
 
 for (const button of profileButtons) {

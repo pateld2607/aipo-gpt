@@ -27,5 +27,9 @@ assert.match(html, /id="upgrade-readiness"/);
 assert.match(app, /recommendation\.upgradeReadiness\.label/);
 assert.match(html, /id="cooler-noise"/);
 assert.match(app, /recommendation\.acoustics\.decibels/);
+assert.match(html, /id="goal"[^>]+required minlength="12"/);
+assert.match(html, /id="budget"[^>]+required/);
+assert.match(html, /id="form-error" role="alert"/);
+assert.match(app, /form\.addEventListener\("invalid"/);
 
 console.log("UI contract tests passed");

@@ -1,11 +1,11 @@
 const CATEGORY_RULES = {
   cpu: ["socket", "memory", "watts"],
-  gpu: ["watts", "length", "vram"],
+  gpu: ["watts", "length", "slots", "vram"],
   motherboard: ["socket", "memory", "form"],
   memory: ["memory", "capacity"],
   storage: ["capacity"],
   cooler: ["capacity", "noise"],
-  case: ["forms", "gpuClearance"],
+  case: ["forms", "gpuClearance", "gpuSlots"],
   psu: ["capacity"],
 };
 

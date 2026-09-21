@@ -509,6 +509,19 @@ textarea:focus {
 .explanation li + li { margin-top: 7px; }
 .explanation .is-warning { color: var(--danger); }
 
+.shortfall-panel {
+  margin-top: 14px;
+  padding: 16px 18px;
+  border: 1px solid rgba(255,132,111,.28);
+  border-radius: 14px;
+  background: rgba(255,132,111,.055);
+}
+
+.shortfall-panel[hidden] { display: none; }
+.shortfall-panel h3 { margin: 0 0 9px; color: var(--danger); font-size: .82rem; }
+.shortfall-panel ul { margin: 0; padding-left: 18px; color: #d8b1aa; font-size: .78rem; line-height: 1.55; }
+.shortfall-panel li + li { margin-top: 6px; }
+
 .method {
   display: grid;
   grid-template-columns: .8fr 1.2fr;

@@ -45,5 +45,8 @@ assert.match(app, /querySelector\("#results-heading"\)\.focus\(\)/);
 assert.match(html, /<summary>Where the budget goes<\/summary>/);
 assert.match(html, /id="allocation-list"/);
 assert.match(app, /recommendation\.budgetAllocation/);
+assert.match(html, /id="shortfall-panel" hidden/);
+assert.match(html, /id="shortfall-list"/);
+assert.match(app, /recommendation\.shortfalls/);
 
 console.log("UI contract tests passed");

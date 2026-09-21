@@ -71,6 +71,7 @@ const unconstrainedWorkstation = recommendBuild({
 });
 assert.ok(unconstrainedWorkstation.requirementChecks.every((check) => check.pass));
 assert.equal(unconstrainedWorkstation.parts.gpu.vram, 16);
+assert.deepEqual(unconstrainedWorkstation.shortfalls, []);
 
 const constrainedWorkstation = recommendBuild({
   budget: 1200,
@@ -80,5 +81,7 @@ const constrainedWorkstation = recommendBuild({
 });
 assert.ok(constrainedWorkstation.requirementChecks.some((check) => !check.pass));
 assert.equal(constrainedWorkstation.goalFit < 1, true);
+assert.ok(constrainedWorkstation.shortfalls.length > 0);
+assert.ok(constrainedWorkstation.shortfalls.every((advice) => advice.includes(":")));
 
 console.log("engine tests passed");

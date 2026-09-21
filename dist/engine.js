@@ -97,13 +97,26 @@ function technicalChecks(parts, platformWatts) {
 function goalChecks(parts, constraints, total) {
   const requirements = requirementsFor(constraints);
   return [
-    { category: "goal", label: `CPU tier supports ${constraints.useCase} workloads`, pass: parts.cpu.tier >= requirements.cpuTier },
-    { category: "goal", label: `GPU tier supports the ${constraints.resolution} target`, pass: parts.gpu.tier >= requirements.gpuTier },
-    { category: "goal", label: `${requirements.vram}GB graphics memory target is met`, pass: parts.gpu.vram >= requirements.vram },
-    { category: "goal", label: `${requirements.memory}GB memory target is met`, pass: parts.memory.capacity >= requirements.memory },
-    { category: "goal", label: `${requirements.storage}TB storage target is met`, pass: parts.storage.capacity >= requirements.storage },
-    { category: "goal", label: "Estimated price stays within the stated budget", pass: total <= constraints.budget },
+    { key: "cpu", category: "goal", label: `CPU tier supports ${constraints.useCase} workloads`, pass: parts.cpu.tier >= requirements.cpuTier },
+    { key: "gpu", category: "goal", label: `GPU tier supports the ${constraints.resolution} target`, pass: parts.gpu.tier >= requirements.gpuTier },
+    { key: "vram", category: "goal", label: `${requirements.vram}GB graphics memory target is met`, pass: parts.gpu.vram >= requirements.vram },
+    { key: "memory", category: "goal", label: `${requirements.memory}GB memory target is met`, pass: parts.memory.capacity >= requirements.memory },
+    { key: "storage", category: "goal", label: `${requirements.storage}TB storage target is met`, pass: parts.storage.capacity >= requirements.storage },
+    { key: "budget", category: "goal", label: "Estimated price stays within the stated budget", pass: total <= constraints.budget },
   ];
+}
+
+function shortfallAdvice(requirementChecks) {
+  const advice = {
+    cpu: "CPU target missed: raise the budget or choose a lighter primary workload.",
+    gpu: "GPU target missed: raise the budget or lower the target resolution.",
+    vram: "Graphics-memory target missed: select a GPU with more VRAM for this workload.",
+    memory: "System-memory target missed: increase RAM capacity for larger projects and multitasking.",
+    storage: "Storage target missed: add capacity for applications, recordings, or project files.",
+    budget: "Budget target missed: use the best-value profile or increase the spending limit.",
+  };
+
+  return requirementChecks.filter((check) => !check.pass).map((check) => advice[check.key]);
 }
 
 function buildRationales(parts, constraints, platformWatts) {
@@ -240,6 +253,7 @@ export function recommendBuild(constraints, profile = "balanced") {
     checks,
     compatibilityChecks,
     requirementChecks,
+    shortfalls: shortfallAdvice(requirementChecks),
     goalFit: requirementChecks.filter((check) => check.pass).length / requirementChecks.length,
     profile,
     summary: buildSummary(constraints, profile),

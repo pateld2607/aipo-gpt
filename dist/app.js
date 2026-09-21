@@ -155,6 +155,10 @@ function render(constraints, { announce = false } = {}) {
     <li class="${check.pass ? "is-pass" : "is-warning"}">${check.pass ? "✓" : "!"} ${check.label}</li>
   `).join("");
 
+  const warningPanel = document.querySelector("#shortfall-panel");
+  warningPanel.hidden = recommendation.shortfalls.length === 0;
+  document.querySelector("#shortfall-list").innerHTML = recommendation.shortfalls.map((advice) => `<li>${advice}</li>`).join("");
+
   document.querySelector("#parsed-goal").textContent = `constraints = ${JSON.stringify(constraints)}`;
 }
 

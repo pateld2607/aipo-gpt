@@ -60,7 +60,7 @@ function updateShareUrl(constraints) {
 function restoreFromUrl(fallback) {
   const params = new URLSearchParams(location.search);
   const allowed = {
-    useCase: new Set(["gaming", "streaming", "workstation", "efficiency"]),
+    useCase: new Set(["gaming", "streaming", "workstation", "development", "efficiency"]),
     resolution: new Set(["1080p", "1440p", "4k", "productivity"]),
     priority: new Set(["balanced", "performance", "quiet", "efficiency"]),
     profile: new Set(["balanced", "performance", "value"]),

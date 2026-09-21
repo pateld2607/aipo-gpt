@@ -21,9 +21,10 @@ assert.equal(resolutionNotBudget.resolution, "1440p");
 assert.equal(parseGoal("A 1440p gaming PC around $1.8k", fallback).budget, 1800);
 assert.equal(parseGoal("Workstation budget is 2.6 grand", fallback).budget, 2600);
 assert.equal(parseGoal("Maximum performance under $7k", fallback).budget, 5000);
+assert.equal(parseGoal("Coding and virtual machines around $1.6k", fallback).useCase, "development");
 
 for (const budget of [1200, 1800, 3000]) {
-  for (const useCase of ["gaming", "streaming", "workstation", "efficiency"]) {
+  for (const useCase of ["gaming", "streaming", "workstation", "development", "efficiency"]) {
     for (const resolution of ["1080p", "1440p", "4k", "productivity"]) {
       for (const priority of ["balanced", "performance", "quiet", "efficiency"]) {
         const constraints = { budget, useCase, resolution, priority };

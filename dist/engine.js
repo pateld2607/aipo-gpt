@@ -12,6 +12,7 @@ export function parseGoal(goal, fallback) {
   let useCase = fallback.useCase;
   if (/render|editing|creative|workstation|cad|modeling/.test(text)) useCase = "workstation";
   else if (/stream/.test(text)) useCase = "streaming";
+  else if (/\bcode|coding|developer|development|programming|virtual machine|\bvm\b/.test(text)) useCase = "development";
   else if (/efficient|everyday|office|school/.test(text)) useCase = "efficiency";
   else if (/game|gaming|fps/.test(text)) useCase = "gaming";
 
@@ -60,6 +61,7 @@ function requirementsFor(constraints) {
     gaming: { cpuTier: 2, gpuTier: resolutionGpuTier, vram: resolutionVram, memory: 32, storage: 1 },
     streaming: { cpuTier: 4, gpuTier: Math.max(4, resolutionGpuTier), vram: Math.max(12, resolutionVram), memory: 32, storage: 2 },
     workstation: { cpuTier: 5, gpuTier: Math.max(4, resolutionGpuTier), vram: Math.max(16, resolutionVram), memory: 64, storage: 2 },
+    development: { cpuTier: 4, gpuTier: 2, vram: 8, memory: 32, storage: 2 },
     efficiency: { cpuTier: 2, gpuTier: 2, vram: 8, memory: 32, storage: 1 },
   }[constraints.useCase];
 
@@ -70,10 +72,11 @@ function targetsFor(constraints, profile) {
   const tier = chooseTier(constraints);
   const performance = constraints.priority === "performance";
   const workstation = constraints.useCase === "workstation";
+  const development = constraints.useCase === "development";
   const profileLift = profile === "performance" ? 1 : profile === "value" ? -1 : 0;
 
   return {
-    cpu: clamp(tier + (workstation ? 1 : 0) - (constraints.useCase === "gaming" ? 1 : 0) + profileLift, 2, 5),
+    cpu: clamp(tier + (workstation || development ? 1 : 0) - (constraints.useCase === "gaming" ? 1 : 0) + profileLift, 2, 5),
     gpu: clamp(tier + (performance ? 1 : 0) + profileLift, 2, 6),
     motherboard: clamp(tier + profileLift, 2, 4),
     memory: workstation || constraints.budget >= 2300 ? 4 : 2,
@@ -171,7 +174,7 @@ function buildFingerprint(parts, constraints, profile) {
 
 function candidateScore(candidate, constraints, profile, targets) {
   const { parts, total, platformWatts } = candidate;
-  const cpuWeight = constraints.useCase === "workstation" ? 1.8 : constraints.useCase === "streaming" ? 1.35 : 1;
+  const cpuWeight = constraints.useCase === "workstation" ? 1.8 : constraints.useCase === "development" ? 1.55 : constraints.useCase === "streaming" ? 1.35 : 1;
   const gpuWeight = constraints.resolution === "4k" ? 2 : constraints.resolution === "1440p" ? 1.65 : 1.25;
   const performance = parts.cpu.tier * cpuWeight + parts.gpu.tier * gpuWeight + parts.memory.tier * .28 + parts.storage.tier * .18;
   const workloadFit = (parts.cpu.strengths.includes(constraints.useCase) ? 2.2 : 0)
@@ -280,6 +283,7 @@ function buildSummary({ useCase, resolution, priority }, profile) {
     gaming: `${resolution} gaming`,
     streaming: `${resolution} gaming and streaming`,
     workstation: "creative and technical workloads",
+    development: "software development and local virtual machines",
     efficiency: "everyday productivity",
   }[useCase];
 

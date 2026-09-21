@@ -48,6 +48,7 @@ assert.match(app, /recommendation\.budgetAllocation/);
 assert.match(html, /id="shortfall-panel" hidden/);
 assert.match(html, /id="shortfall-list"/);
 assert.match(app, /recommendation\.shortfalls/);
+assert.match(html, /<option value="development">Software development<\/option>/);
 assert.match(html, /id="build-id"/);
 assert.match(app, /latestRecommendation\.buildId/);
 

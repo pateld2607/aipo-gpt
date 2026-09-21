@@ -143,6 +143,14 @@ function render(constraints, { announce = false } = {}) {
     </div>
   `).join("");
 
+  document.querySelector("#allocation-list").innerHTML = Object.entries(recommendation.budgetAllocation).map(([type, allocation]) => `
+    <div class="allocation-row">
+      <span>${type === "motherboard" ? "board" : type}</span>
+      <div class="allocation-track" aria-hidden="true"><span style="width: ${(allocation.percentage * 100).toFixed(1)}%"></span></div>
+      <strong>${Math.round(allocation.percentage * 100)}%</strong>
+    </div>
+  `).join("");
+
   document.querySelector("#explanation-list").innerHTML = recommendation.checks.map((check) => `
     <li class="${check.pass ? "is-pass" : "is-warning"}">${check.pass ? "✓" : "!"} ${check.label}</li>
   `).join("");

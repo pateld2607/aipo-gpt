@@ -42,5 +42,8 @@ assert.match(html, /id="results-heading" tabindex="-1"/);
 assert.match(html, /id="result-status" role="status" aria-live="polite"/);
 assert.match(app, /render\(syncGoalToFields\(\), \{ announce: true \}\)/);
 assert.match(app, /querySelector\("#results-heading"\)\.focus\(\)/);
+assert.match(html, /<summary>Where the budget goes<\/summary>/);
+assert.match(html, /id="allocation-list"/);
+assert.match(app, /recommendation\.budgetAllocation/);
 
 console.log("UI contract tests passed");

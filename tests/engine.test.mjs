@@ -37,6 +37,8 @@ for (const budget of [1200, 1800, 3000]) {
           assert.equal(result.upgradeReadiness.score % 25, 0);
           assert.ok(["Quiet", "Balanced", "Performance"].includes(result.acoustics.label));
           assert.equal(result.acoustics.decibels, result.parts.cooler.noise);
+          assert.equal(Object.keys(result.budgetAllocation).length, 8);
+          assert.ok(Math.abs(Object.values(result.budgetAllocation).reduce((sum, item) => sum + item.percentage, 0) - 1) < 0.000001);
           assert.equal(result.compatibilityChecks.length, 8);
           assert.equal(result.requirementChecks.length, 6);
           assert.ok(result.compatibilityChecks.every((check) => check.pass));

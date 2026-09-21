@@ -221,12 +221,19 @@ export function recommendBuild(constraints, profile = "balanced") {
 
   const compatibilityChecks = checks.filter((check) => check.category === "compatibility");
   const requirementChecks = checks.filter((check) => check.category === "goal");
+  const budgetAllocation = Object.fromEntries(
+    Object.entries(selected.parts).map(([type, part]) => [type, {
+      amount: part.price,
+      percentage: part.price / selected.total,
+    }]),
+  );
 
   return {
     parts: selected.parts,
     rationales: buildRationales(selected.parts, constraints, selected.platformWatts),
     upgradeReadiness: assessUpgradeReadiness(selected.parts, selected.platformWatts),
     acoustics: describeAcoustics(selected.parts),
+    budgetAllocation,
     total: selected.total,
     platformWatts: selected.platformWatts,
     budgetHeadroom: constraints.budget - selected.total,

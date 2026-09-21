@@ -155,6 +155,20 @@ function describeAcoustics(parts) {
   return { decibels, label };
 }
 
+function buildFingerprint(parts, constraints, profile) {
+  const input = JSON.stringify({
+    parts: Object.values(parts).map((part) => part.id),
+    constraints,
+    profile,
+  });
+  let hash = 2166136261;
+  for (const character of input) {
+    hash ^= character.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return `AIPO-${(hash >>> 0).toString(16).padStart(8, "0").toUpperCase()}`;
+}
+
 function candidateScore(candidate, constraints, profile, targets) {
   const { parts, total, platformWatts } = candidate;
   const cpuWeight = constraints.useCase === "workstation" ? 1.8 : constraints.useCase === "streaming" ? 1.35 : 1;
@@ -247,6 +261,7 @@ export function recommendBuild(constraints, profile = "balanced") {
     upgradeReadiness: assessUpgradeReadiness(selected.parts, selected.platformWatts),
     acoustics: describeAcoustics(selected.parts),
     budgetAllocation,
+    buildId: buildFingerprint(selected.parts, constraints, profile),
     total: selected.total,
     platformWatts: selected.platformWatts,
     budgetHeadroom: constraints.budget - selected.total,

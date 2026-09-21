@@ -18,6 +18,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Runtime catalog validation for duplicate IDs, missing specifications, and invalid prices
 - Per-component budget allocation with a visual percentage breakdown
 - Actionable guidance when a budget cannot meet every workload target
+- Stable build IDs for comparing, exporting, and reproducing recommendations
 
 This first release intentionally keeps the recommendation engine local and inspectable. OpenAI-assisted reasoning and a larger data pipeline are planned as later milestones.
 

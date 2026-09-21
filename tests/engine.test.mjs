@@ -61,6 +61,9 @@ const comparisonConstraints = {
 const performanceBuild = recommendBuild(comparisonConstraints, "performance");
 const valueBuild = recommendBuild(comparisonConstraints, "value");
 assert.ok(performanceBuild.parts.gpu.tier >= valueBuild.parts.gpu.tier);
+assert.match(performanceBuild.buildId, /^AIPO-[0-9A-F]{8}$/);
+assert.equal(performanceBuild.buildId, recommendBuild(comparisonConstraints, "performance").buildId);
+assert.notEqual(performanceBuild.buildId, valueBuild.buildId);
 assert.throws(() => recommendBuild(comparisonConstraints, "unknown"), RangeError);
 
 const unconstrainedWorkstation = recommendBuild({

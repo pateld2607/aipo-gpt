@@ -460,6 +460,7 @@ textarea:focus {
 }
 
 #export-status { min-height: 1em; color: var(--muted); font-size: .7rem; }
+.build-id { margin-left: auto; color: var(--muted); font: 700 .68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
 
 .parts-list { display: grid; gap: 8px; }
 

@@ -20,6 +20,8 @@ assert.equal(resolutionNotBudget.resolution, "1440p");
 
 assert.equal(parseGoal("A 1440p gaming PC around $1.8k", fallback).budget, 1800);
 assert.equal(parseGoal("Workstation budget is 2.6 grand", fallback).budget, 2600);
+assert.equal(parseGoal("Gaming PC for 1,950 dollars", fallback).budget, 1950);
+assert.equal(parseGoal("Development workstation under USD 2.4k", fallback).budget, 2400);
 assert.equal(parseGoal("Maximum performance under $7k", fallback).budget, 5000);
 assert.equal(parseGoal("Coding and virtual machines around $1.6k", fallback).useCase, "development");
 

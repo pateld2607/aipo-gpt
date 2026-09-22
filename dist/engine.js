@@ -5,9 +5,11 @@ const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 export function parseGoal(goal, fallback) {
   const text = goal.toLowerCase();
   const amount = text.match(/\$\s*([\d,.]+)\s*(k|grand)?\b/)
+    ?? text.match(/\busd\s*([\d,.]+)\s*(k|grand)?\b/)
+    ?? text.match(/\b([\d,.]+)\s*(k|grand|dollars?)\b/)
     ?? text.match(/(?:budget|around|under|up to)\s*(?:of|is|about)?\s*\$?\s*([\d,.]+)\s*(k|grand)?\b/);
   const budgetNumber = amount ? Number(amount[1].replace(/,/g, "")) : fallback.budget;
-  const parsedBudget = budgetNumber * (amount?.[2] ? 1000 : 1);
+  const parsedBudget = budgetNumber * (["k", "grand"].includes(amount?.[2]) ? 1000 : 1);
 
   let useCase = fallback.useCase;
   if (/render|editing|creative|workstation|cad|modeling/.test(text)) useCase = "workstation";

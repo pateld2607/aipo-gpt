@@ -1,5 +1,5 @@
 const CATEGORY_RULES = {
-  cpu: ["socket", "memory", "watts"],
+  cpu: ["socket", "memory", "watts", "cores", "threads"],
   gpu: ["watts", "length", "slots", "vram", "powerConnector"],
   motherboard: ["socket", "memory", "form"],
   memory: ["memory", "capacity"],

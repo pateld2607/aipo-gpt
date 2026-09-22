@@ -2,9 +2,9 @@ import { validateCatalog } from "./catalog-validator.js";
 
 export const catalog = {
   cpu: [
-    { id: "r5-7600", name: "AMD Ryzen 5 7600", price: 189, socket: "AM5", memory: "DDR5", watts: 88, tier: 2, strengths: ["gaming", "efficiency"] },
-    { id: "r7-9700x", name: "AMD Ryzen 7 9700X", price: 329, socket: "AM5", memory: "DDR5", watts: 105, tier: 4, strengths: ["gaming", "streaming", "development", "efficiency"] },
-    { id: "r9-9900x", name: "AMD Ryzen 9 9900X", price: 449, socket: "AM5", memory: "DDR5", watts: 162, tier: 5, strengths: ["workstation", "streaming", "development"] },
+    { id: "r5-7600", name: "AMD Ryzen 5 7600", price: 189, socket: "AM5", memory: "DDR5", watts: 88, cores: 6, threads: 12, tier: 2, strengths: ["gaming", "efficiency"] },
+    { id: "r7-9700x", name: "AMD Ryzen 7 9700X", price: 329, socket: "AM5", memory: "DDR5", watts: 105, cores: 8, threads: 16, tier: 4, strengths: ["gaming", "streaming", "development", "efficiency"] },
+    { id: "r9-9900x", name: "AMD Ryzen 9 9900X", price: 449, socket: "AM5", memory: "DDR5", watts: 162, cores: 12, threads: 24, tier: 5, strengths: ["workstation", "streaming", "development"] },
   ],
   gpu: [
     { id: "rx-7700xt", name: "Radeon RX 7700 XT 12GB", price: 399, watts: 245, length: 267, slots: 2.5, vram: 12, powerConnector: "2x8-pin", tier: 2, strengths: ["1080p", "1440p", "value"] },

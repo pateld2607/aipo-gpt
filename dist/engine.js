@@ -58,11 +58,11 @@ function requirementsFor(constraints) {
     productivity: 8,
   }[constraints.resolution];
   const workload = {
-    gaming: { cpuTier: 2, gpuTier: resolutionGpuTier, vram: resolutionVram, memory: 32, storage: 1 },
-    streaming: { cpuTier: 4, gpuTier: Math.max(4, resolutionGpuTier), vram: Math.max(12, resolutionVram), memory: 32, storage: 2 },
-    workstation: { cpuTier: 5, gpuTier: Math.max(4, resolutionGpuTier), vram: Math.max(16, resolutionVram), memory: 64, storage: 2 },
-    development: { cpuTier: 4, gpuTier: 2, vram: 8, memory: 32, storage: 2 },
-    efficiency: { cpuTier: 2, gpuTier: 2, vram: 8, memory: 32, storage: 1 },
+    gaming: { cpuTier: 2, cores: 6, gpuTier: resolutionGpuTier, vram: resolutionVram, memory: 32, storage: 1 },
+    streaming: { cpuTier: 4, cores: 8, gpuTier: Math.max(4, resolutionGpuTier), vram: Math.max(12, resolutionVram), memory: 32, storage: 2 },
+    workstation: { cpuTier: 5, cores: 12, gpuTier: Math.max(4, resolutionGpuTier), vram: Math.max(16, resolutionVram), memory: 64, storage: 2 },
+    development: { cpuTier: 4, cores: 8, gpuTier: 2, vram: 8, memory: 32, storage: 2 },
+    efficiency: { cpuTier: 2, cores: 6, gpuTier: 2, vram: 8, memory: 32, storage: 1 },
   }[constraints.useCase];
 
   return workload;
@@ -102,6 +102,7 @@ function goalChecks(parts, constraints, total) {
   const requirements = requirementsFor(constraints);
   return [
     { key: "cpu", category: "goal", label: `CPU tier supports ${constraints.useCase} workloads`, pass: parts.cpu.tier >= requirements.cpuTier },
+    { key: "cores", category: "goal", label: `${requirements.cores}-core CPU target is met`, pass: parts.cpu.cores >= requirements.cores },
     { key: "gpu", category: "goal", label: `GPU tier supports the ${constraints.resolution} target`, pass: parts.gpu.tier >= requirements.gpuTier },
     { key: "vram", category: "goal", label: `${requirements.vram}GB graphics memory target is met`, pass: parts.gpu.vram >= requirements.vram },
     { key: "memory", category: "goal", label: `${requirements.memory}GB memory target is met`, pass: parts.memory.capacity >= requirements.memory },
@@ -113,6 +114,7 @@ function goalChecks(parts, constraints, total) {
 function shortfallAdvice(requirementChecks) {
   const advice = {
     cpu: "CPU target missed: raise the budget or choose a lighter primary workload.",
+    cores: "CPU core target missed: choose a higher-core processor for parallel workloads.",
     gpu: "GPU target missed: raise the budget or lower the target resolution.",
     vram: "Graphics-memory target missed: select a GPU with more VRAM for this workload.",
     memory: "System-memory target missed: increase RAM capacity for larger projects and multitasking.",
@@ -129,7 +131,7 @@ function buildRationales(parts, constraints, platformWatts) {
   const powerHeadroom = parts.psu.capacity - platformWatts;
 
   return {
-    cpu: `Tier ${parts.cpu.tier} compute is matched to ${constraints.useCase} work at ${parts.cpu.watts}W package power.`,
+    cpu: `${parts.cpu.cores} cores and ${parts.cpu.threads} threads provide tier ${parts.cpu.tier} compute at ${parts.cpu.watts}W package power.`,
     gpu: `Tier ${parts.gpu.tier} graphics with ${parts.gpu.vram}GB VRAM is prioritized for the ${constraints.resolution} target.`,
     motherboard: `${parts.motherboard.socket} and ${parts.motherboard.memory} support match the selected processor and memory.`,
     memory: `${parts.memory.capacity}GB of ${parts.memory.memory} is allocated for the selected workload.`,

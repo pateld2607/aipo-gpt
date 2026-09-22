@@ -11,6 +11,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Transparent cost and power estimates
 - Upgrade-readiness scoring for power, memory, motherboard, and case headroom
 - Visible cooler-noise classification for quiet-build decisions
+- Workload-specific CPU core targets with core and thread explanations
 - Accessible validation for missing goals and out-of-range budgets
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile

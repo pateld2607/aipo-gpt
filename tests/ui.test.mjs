@@ -56,5 +56,7 @@ assert.match(app, /recommendation\.searchStats\.evaluated/);
 assert.match(html, /<summary>Runner-up configurations<\/summary>/);
 assert.match(html, /id="alternatives-list"/);
 assert.match(app, /recommendation\.alternatives/);
+assert.match(html, /id="balance-score"/);
+assert.match(app, /recommendation\.componentBalance\.score/);
 
 console.log("UI contract tests passed");

@@ -175,6 +175,20 @@ function buildFingerprint(parts, constraints, profile) {
   return `AIPO-${(hash >>> 0).toString(16).padStart(8, "0").toUpperCase()}`;
 }
 
+function assessComponentBalance(parts, constraints) {
+  const targetGpuLead = {
+    gaming: 1,
+    streaming: 0,
+    workstation: 0,
+    development: -2,
+    efficiency: 0,
+  }[constraints.useCase];
+  const actualGpuLead = parts.gpu.tier - parts.cpu.tier;
+  const score = clamp(100 - Math.abs(actualGpuLead - targetGpuLead) * 20, 40, 100);
+  const label = score >= 80 ? "Workload-aligned" : score >= 60 ? "Specialized" : "Uneven";
+  return { score, label, cpuTier: parts.cpu.tier, gpuTier: parts.gpu.tier };
+}
+
 function candidateScore(candidate, constraints, profile, targets) {
   const { parts, total, platformWatts } = candidate;
   const cpuWeight = constraints.useCase === "workstation" ? 1.8 : constraints.useCase === "development" ? 1.55 : constraints.useCase === "streaming" ? 1.35 : 1;
@@ -290,6 +304,7 @@ export function recommendBuild(constraints, profile = "balanced") {
       affordable: affordable.length,
     },
     alternatives,
+    componentBalance: assessComponentBalance(selected.parts, constraints),
     total: selected.total,
     platformWatts: selected.platformWatts,
     budgetHeadroom: constraints.budget - selected.total,

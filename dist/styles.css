@@ -382,9 +382,15 @@ textarea:focus {
 }
 
 .search-stats {
-  margin: -7px 0 18px;
+  margin: -7px 0 5px;
   color: var(--muted);
   font: .7rem/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.balance-score {
+  margin: 0 0 18px;
+  color: var(--cyan);
+  font: 700 .7rem/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .profile-comparison {

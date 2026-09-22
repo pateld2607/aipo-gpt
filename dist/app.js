@@ -13,6 +13,7 @@ const presetButtons = [...document.querySelectorAll("[data-preset]")];
 const copyButton = document.querySelector("#copy-build");
 const copyLinkButton = document.querySelector("#copy-link");
 const downloadButton = document.querySelector("#download-build");
+const printButton = document.querySelector("#print-build");
 const exportStatus = document.querySelector("#export-status");
 const comparisonBody = document.querySelector("#profile-comparison-body");
 const formError = document.querySelector("#form-error");
@@ -224,6 +225,11 @@ downloadButton.addEventListener("click", () => {
   link.click();
   URL.revokeObjectURL(url);
   exportStatus.textContent = "JSON build plan downloaded.";
+});
+
+printButton.addEventListener("click", () => {
+  exportStatus.textContent = "Opening a print-ready build sheet.";
+  window.print();
 });
 
 form.addEventListener("submit", (event) => {

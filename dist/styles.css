@@ -598,6 +598,25 @@ footer {
   footer { flex-direction: column; }
 }
 
+@media print {
+  :root { color-scheme: light; }
+  body { background: #fff; color: #111; }
+  .ambient, .skip-link, .topbar, .intro, .control-panel, .profile-switcher,
+  .profile-comparison, .export-actions, .method, footer { display: none !important; }
+  main, .workspace { width: 100%; margin: 0; display: block; }
+  .results-panel { padding: 0; border: 0; background: #fff; }
+  .results-heading-row { padding-top: 0; }
+  .panel-heading p, .search-stats, .balance-score, .part-reason,
+  .part-type, .alternative-row span, .build-id { color: #444; }
+  .compatibility-score { position: static; display: inline-block; margin: 10px 0; color: #111 !important; }
+  .metrics, .part-row, .allocation, .alternatives, .explanation, .shortfall-panel,
+  .alternative-row { border-color: #bbb; background: #fff; break-inside: avoid; }
+  .metric + .metric { border-color: #bbb; }
+  .allocation, .alternatives, .explanation { break-inside: avoid; }
+  details { display: block; }
+  details > *:not(summary) { display: block !important; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .01ms !important; }

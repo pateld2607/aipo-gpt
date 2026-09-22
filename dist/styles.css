@@ -381,6 +381,12 @@ textarea:focus {
   color: var(--acid);
 }
 
+.search-stats {
+  margin: -7px 0 18px;
+  color: var(--muted);
+  font: .7rem/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
 .profile-comparison {
   margin: -4px 0 18px;
   border: 1px solid var(--line);

@@ -242,6 +242,7 @@ export function recommendBuild(constraints, profile = "balanced") {
 
   const candidates = enumerateCandidates(constraints, profile);
   const affordable = candidates.filter((candidate) => candidate.total <= constraints.budget);
+  const evaluatedCount = Object.values(catalog).reduce((count, entries) => count * entries.length, 1);
   const pool = affordable.length ? affordable : candidates;
   const selected = [...pool].sort((a, b) => b.score - a.score || a.total - b.total)[0];
 
@@ -268,6 +269,11 @@ export function recommendBuild(constraints, profile = "balanced") {
     acoustics: describeAcoustics(selected.parts),
     budgetAllocation,
     buildId: buildFingerprint(selected.parts, constraints, profile),
+    searchStats: {
+      evaluated: evaluatedCount,
+      compatible: candidates.length,
+      affordable: affordable.length,
+    },
     total: selected.total,
     platformWatts: selected.platformWatts,
     budgetHeadroom: constraints.budget - selected.total,

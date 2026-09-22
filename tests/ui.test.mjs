@@ -51,5 +51,7 @@ assert.match(app, /recommendation\.shortfalls/);
 assert.match(html, /<option value="development">Software development<\/option>/);
 assert.match(html, /id="build-id"/);
 assert.match(app, /latestRecommendation\.buildId/);
+assert.match(html, /id="search-stats"/);
+assert.match(app, /recommendation\.searchStats\.evaluated/);
 
 console.log("UI contract tests passed");

@@ -24,6 +24,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Three distinct runner-up CPU and GPU configurations for comparison
 - Workload-aware CPU-to-GPU component balance scoring
 - Print-ready build sheets that remove controls and expand recommendation details
+- One-click reset to a complete, shareable default configuration
 
 This first release intentionally keeps the recommendation engine local and inspectable. OpenAI-assisted reasoning and a larger data pipeline are planned as later milestones.
 

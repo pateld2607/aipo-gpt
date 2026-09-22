@@ -60,5 +60,9 @@ assert.match(html, /id="alternatives-list"/);
 assert.match(app, /recommendation\.alternatives/);
 assert.match(html, /id="balance-score"/);
 assert.match(app, /recommendation\.componentBalance\.score/);
+assert.match(html, /id="reset-build"/);
+assert.match(app, /DEFAULT_STATE = Object\.freeze/);
+assert.match(app, /Optimizer defaults restored/);
+assert.match(app, /fields\.goal\.focus\(\)/);
 
 console.log("UI contract tests passed");

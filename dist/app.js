@@ -1,5 +1,14 @@
 import { parseGoal, recommendBuild } from "./engine.js";
 
+const DEFAULT_STATE = Object.freeze({
+  goal: "A quiet 1440p gaming PC around $1,800 with room for streaming.",
+  budget: 1800,
+  useCase: "gaming",
+  resolution: "1440p",
+  priority: "quiet",
+  profile: "balanced",
+});
+
 const form = document.querySelector("#optimizer-form");
 const fields = {
   goal: document.querySelector("#goal"),
@@ -14,6 +23,7 @@ const copyButton = document.querySelector("#copy-build");
 const copyLinkButton = document.querySelector("#copy-link");
 const downloadButton = document.querySelector("#download-build");
 const printButton = document.querySelector("#print-build");
+const resetButton = document.querySelector("#reset-build");
 const exportStatus = document.querySelector("#export-status");
 const comparisonBody = document.querySelector("#profile-comparison-body");
 const formError = document.querySelector("#form-error");
@@ -230,6 +240,25 @@ downloadButton.addEventListener("click", () => {
 printButton.addEventListener("click", () => {
   exportStatus.textContent = "Opening a print-ready build sheet.";
   window.print();
+});
+
+resetButton.addEventListener("click", () => {
+  fields.goal.value = DEFAULT_STATE.goal;
+  fields.budget.value = DEFAULT_STATE.budget;
+  fields.useCase.value = DEFAULT_STATE.useCase;
+  fields.resolution.value = DEFAULT_STATE.resolution;
+  fields.priority.value = DEFAULT_STATE.priority;
+  activeProfile = DEFAULT_STATE.profile;
+  formError.textContent = "";
+  exportStatus.textContent = "";
+  render({
+    budget: DEFAULT_STATE.budget,
+    useCase: DEFAULT_STATE.useCase,
+    resolution: DEFAULT_STATE.resolution,
+    priority: DEFAULT_STATE.priority,
+  });
+  resultStatus.textContent = "Optimizer defaults restored.";
+  fields.goal.focus();
 });
 
 form.addEventListener("submit", (event) => {

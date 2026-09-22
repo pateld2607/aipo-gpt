@@ -182,6 +182,15 @@ function render(constraints, { announce = false } = {}) {
   const warningPanel = document.querySelector("#shortfall-panel");
   warningPanel.hidden = recommendation.shortfalls.length === 0;
   document.querySelector("#shortfall-list").innerHTML = recommendation.shortfalls.map((advice) => `<li>${advice}</li>`).join("");
+  const recoveryPath = document.querySelector("#recovery-path");
+  const recovery = recommendation.goalRecovery;
+  recoveryPath.hidden = !recovery || recommendation.shortfalls.length === 0;
+  if (recovery) {
+    const gap = recovery.additionalBudget > 0
+      ? `${formatMoney(recovery.additionalBudget)} above this budget`
+      : "within this budget";
+    recoveryPath.textContent = `A configuration meeting every performance target starts at ${formatMoney(recovery.total)} (${gap}) with ${recovery.cpu} and ${recovery.gpu}.`;
+  }
 
   document.querySelector("#parsed-goal").textContent = `constraints = ${JSON.stringify(constraints)}`;
 }

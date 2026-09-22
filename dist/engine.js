@@ -292,6 +292,18 @@ export function recommendBuild(constraints, profile = "balanced") {
     headroom: constraints.budget - candidate.total,
     buildId: buildFingerprint(candidate.parts, constraints, profile),
   }));
+  const goalReadyCandidate = [...candidates]
+    .filter((candidate) => goalChecks(candidate.parts, constraints, candidate.total)
+      .filter((check) => check.key !== "budget")
+      .every((check) => check.pass))
+    .sort((a, b) => a.total - b.total)[0];
+  const goalRecovery = goalReadyCandidate ? {
+    total: goalReadyCandidate.total,
+    additionalBudget: Math.max(0, goalReadyCandidate.total - constraints.budget),
+    cpu: goalReadyCandidate.parts.cpu.name,
+    gpu: goalReadyCandidate.parts.gpu.name,
+    buildId: buildFingerprint(goalReadyCandidate.parts, constraints, profile),
+  } : null;
 
   return {
     parts: selected.parts,
@@ -306,6 +318,7 @@ export function recommendBuild(constraints, profile = "balanced") {
       affordable: affordable.length,
     },
     alternatives,
+    goalRecovery,
     componentBalance: assessComponentBalance(selected.parts, constraints),
     total: selected.total,
     platformWatts: selected.platformWatts,

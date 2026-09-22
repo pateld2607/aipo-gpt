@@ -64,5 +64,8 @@ assert.match(html, /id="reset-build"/);
 assert.match(app, /DEFAULT_STATE = Object\.freeze/);
 assert.match(app, /Optimizer defaults restored/);
 assert.match(app, /fields\.goal\.focus\(\)/);
+assert.match(html, /id="recovery-path" hidden/);
+assert.match(app, /recommendation\.goalRecovery/);
+assert.match(app, /meeting every performance target/);
 
 console.log("UI contract tests passed");

@@ -50,6 +50,9 @@ for (const budget of [1200, 1800, 3000]) {
           assert.equal(new Set(result.alternatives.map((alternative) => `${alternative.cpu}:${alternative.gpu}`)).size, result.alternatives.length);
           assert.ok(result.componentBalance.score >= 40 && result.componentBalance.score <= 100);
           assert.ok(["Workload-aligned", "Specialized", "Uneven"].includes(result.componentBalance.label));
+          assert.ok(result.goalRecovery);
+          assert.ok(result.goalRecovery.total >= constraints.budget || result.goalRecovery.additionalBudget === 0);
+          assert.match(result.goalRecovery.buildId, /^AIPO-[0-9A-F]{8}$/);
           assert.equal(result.compatibilityChecks.length, 9);
           assert.equal(result.requirementChecks.length, 7);
           assert.ok(result.compatibilityChecks.every((check) => check.pass));
@@ -100,5 +103,8 @@ assert.ok(constrainedWorkstation.requirementChecks.some((check) => !check.pass))
 assert.equal(constrainedWorkstation.goalFit < 1, true);
 assert.ok(constrainedWorkstation.shortfalls.length > 0);
 assert.ok(constrainedWorkstation.shortfalls.every((advice) => advice.includes(":")));
+assert.ok(constrainedWorkstation.goalRecovery.additionalBudget > 0);
+assert.ok(constrainedWorkstation.goalRecovery.total > constrainedWorkstation.total);
+assert.match(constrainedWorkstation.goalRecovery.cpu, /Ryzen 9/);
 
 console.log("engine tests passed");

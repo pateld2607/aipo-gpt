@@ -1,12 +1,12 @@
 const CATEGORY_RULES = {
   cpu: ["socket", "memory", "watts"],
-  gpu: ["watts", "length", "slots", "vram"],
+  gpu: ["watts", "length", "slots", "vram", "powerConnector"],
   motherboard: ["socket", "memory", "form"],
   memory: ["memory", "capacity"],
   storage: ["capacity"],
   cooler: ["capacity", "noise"],
   case: ["forms", "gpuClearance", "gpuSlots"],
-  psu: ["capacity"],
+  psu: ["capacity", "connectors"],
 };
 
 export function validateCatalog(catalog) {

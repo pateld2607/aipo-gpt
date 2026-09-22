@@ -7,10 +7,10 @@ export const catalog = {
     { id: "r9-9900x", name: "AMD Ryzen 9 9900X", price: 449, socket: "AM5", memory: "DDR5", watts: 162, tier: 5, strengths: ["workstation", "streaming", "development"] },
   ],
   gpu: [
-    { id: "rx-7700xt", name: "Radeon RX 7700 XT 12GB", price: 399, watts: 245, length: 267, slots: 2.5, vram: 12, tier: 2, strengths: ["1080p", "1440p", "value"] },
-    { id: "rtx-5070", name: "GeForce RTX 5070 12GB", price: 549, watts: 250, length: 304, slots: 2.5, vram: 12, tier: 4, strengths: ["1440p", "streaming", "workstation"] },
-    { id: "rx-9070xt", name: "Radeon RX 9070 XT 16GB", price: 699, watts: 304, length: 320, slots: 3, vram: 16, tier: 5, strengths: ["1440p", "4k", "value"] },
-    { id: "rtx-5080", name: "GeForce RTX 5080 16GB", price: 999, watts: 360, length: 329, slots: 3.5, vram: 16, tier: 6, strengths: ["4k", "streaming", "workstation"] },
+    { id: "rx-7700xt", name: "Radeon RX 7700 XT 12GB", price: 399, watts: 245, length: 267, slots: 2.5, vram: 12, powerConnector: "2x8-pin", tier: 2, strengths: ["1080p", "1440p", "value"] },
+    { id: "rtx-5070", name: "GeForce RTX 5070 12GB", price: 549, watts: 250, length: 304, slots: 2.5, vram: 12, powerConnector: "12V-2x6", tier: 4, strengths: ["1440p", "streaming", "workstation"] },
+    { id: "rx-9070xt", name: "Radeon RX 9070 XT 16GB", price: 699, watts: 304, length: 320, slots: 3, vram: 16, powerConnector: "3x8-pin", tier: 5, strengths: ["1440p", "4k", "value"] },
+    { id: "rtx-5080", name: "GeForce RTX 5080 16GB", price: 999, watts: 360, length: 329, slots: 3.5, vram: 16, powerConnector: "12V-2x6", tier: 6, strengths: ["4k", "streaming", "workstation"] },
   ],
   motherboard: [
     { id: "b650m", name: "B650M WiFi — mATX", price: 159, socket: "AM5", memory: "DDR5", form: "mATX", tier: 2 },
@@ -34,9 +34,9 @@ export const catalog = {
     { id: "air-mid", name: "High-Airflow ATX Mid Tower", price: 119, forms: ["ATX", "mATX"], gpuClearance: 390, gpuSlots: 4, tier: 4 },
   ],
   psu: [
-    { id: "650-gold", name: "650W 80+ Gold Modular PSU", price: 89, capacity: 650, tier: 2 },
-    { id: "850-gold", name: "850W ATX 3.1 Gold Modular PSU", price: 139, capacity: 850, tier: 4 },
-    { id: "1000-gold", name: "1000W ATX 3.1 Gold Modular PSU", price: 189, capacity: 1000, tier: 5 },
+    { id: "650-gold", name: "650W 80+ Gold Modular PSU", price: 89, capacity: 650, connectors: ["2x8-pin"], tier: 2 },
+    { id: "850-gold", name: "850W ATX 3.1 Gold Modular PSU", price: 139, capacity: 850, connectors: ["2x8-pin", "3x8-pin", "12V-2x6"], tier: 4 },
+    { id: "1000-gold", name: "1000W ATX 3.1 Gold Modular PSU", price: 189, capacity: 1000, connectors: ["2x8-pin", "3x8-pin", "12V-2x6"], tier: 5 },
   ],
 };
 

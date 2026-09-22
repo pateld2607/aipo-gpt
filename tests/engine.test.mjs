@@ -40,12 +40,13 @@ for (const budget of [1200, 1800, 3000]) {
           assert.equal(result.acoustics.decibels, result.parts.cooler.noise);
           assert.equal(Object.keys(result.budgetAllocation).length, 8);
           assert.ok(Math.abs(Object.values(result.budgetAllocation).reduce((sum, item) => sum + item.percentage, 0) - 1) < 0.000001);
-          assert.equal(result.compatibilityChecks.length, 8);
+          assert.equal(result.compatibilityChecks.length, 9);
           assert.equal(result.requirementChecks.length, 6);
           assert.ok(result.compatibilityChecks.every((check) => check.pass));
           assert.ok(result.parts.gpu.vram >= 12);
           assert.ok(result.parts.psu.capacity >= result.platformWatts * 1.35);
           assert.ok(result.parts.case.gpuSlots >= result.parts.gpu.slots);
+          assert.ok(result.parts.psu.connectors.includes(result.parts.gpu.powerConnector));
           assert.ok(result.total <= constraints.budget);
         }
       }

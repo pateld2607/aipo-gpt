@@ -93,6 +93,7 @@ function technicalChecks(parts, platformWatts) {
     { category: "compatibility", label: "Motherboard form factor fits the case", pass: parts.case.forms.includes(parts.motherboard.form) },
     { category: "compatibility", label: "GPU length fits with safety clearance", pass: parts.case.gpuClearance >= parts.gpu.length + 15 },
     { category: "compatibility", label: "GPU thickness fits the case expansion slots", pass: parts.case.gpuSlots >= parts.gpu.slots },
+    { category: "compatibility", label: "PSU includes the GPU power connector", pass: parts.psu.connectors.includes(parts.gpu.powerConnector) },
     { category: "compatibility", label: "PSU provides at least 35% power headroom", pass: parts.psu.capacity >= platformWatts * 1.35 },
   ];
 }
@@ -135,7 +136,7 @@ function buildRationales(parts, constraints, platformWatts) {
     storage: `${parts.storage.capacity}TB of NVMe storage balances working space with the total budget.`,
     cooler: `${coolerMargin}W of thermal margin remains above the CPU safety target.`,
     case: `${gpuClearance}mm of length clearance and ${(parts.case.gpuSlots - parts.gpu.slots).toFixed(1)} expansion slots remain.`,
-    psu: `${powerHeadroom}W of power capacity remains above estimated peak draw.`,
+    psu: `${powerHeadroom}W remains above estimated peak draw, with native ${parts.gpu.powerConnector} GPU power.`,
   };
 }
 

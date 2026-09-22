@@ -21,6 +21,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Actionable guidance when a budget cannot meet every workload target
 - Stable build IDs for comparing, exporting, and reproducing recommendations
 - Search transparency showing evaluated, compatible, and affordable candidate counts
+- Three distinct runner-up CPU and GPU configurations for comparison
 
 This first release intentionally keeps the recommendation engine local and inspectable. OpenAI-assisted reasoning and a larger data pipeline are planned as later milestones.
 

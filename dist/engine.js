@@ -244,7 +244,8 @@ export function recommendBuild(constraints, profile = "balanced") {
   const affordable = candidates.filter((candidate) => candidate.total <= constraints.budget);
   const evaluatedCount = Object.values(catalog).reduce((count, entries) => count * entries.length, 1);
   const pool = affordable.length ? affordable : candidates;
-  const selected = [...pool].sort((a, b) => b.score - a.score || a.total - b.total)[0];
+  const ranked = [...pool].sort((a, b) => b.score - a.score || a.total - b.total);
+  const selected = ranked[0];
 
   if (!selected) throw new Error("No technically compatible build is available");
 
@@ -261,6 +262,20 @@ export function recommendBuild(constraints, profile = "balanced") {
       percentage: part.price / selected.total,
     }]),
   );
+  const selectedCore = `${selected.parts.cpu.id}:${selected.parts.gpu.id}`;
+  const seenAlternatives = new Set([selectedCore]);
+  const alternatives = ranked.filter((candidate) => {
+    const key = `${candidate.parts.cpu.id}:${candidate.parts.gpu.id}`;
+    if (seenAlternatives.has(key)) return false;
+    seenAlternatives.add(key);
+    return true;
+  }).slice(0, 3).map((candidate) => ({
+    cpu: candidate.parts.cpu.name,
+    gpu: candidate.parts.gpu.name,
+    total: candidate.total,
+    headroom: constraints.budget - candidate.total,
+    buildId: buildFingerprint(candidate.parts, constraints, profile),
+  }));
 
   return {
     parts: selected.parts,
@@ -274,6 +289,7 @@ export function recommendBuild(constraints, profile = "balanced") {
       compatible: candidates.length,
       affordable: affordable.length,
     },
+    alternatives,
     total: selected.total,
     platformWatts: selected.platformWatts,
     budgetHeadroom: constraints.budget - selected.total,

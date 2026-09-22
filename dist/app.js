@@ -153,6 +153,16 @@ function render(constraints, { announce = false } = {}) {
     </div>
   `).join("");
 
+  const alternativesPanel = document.querySelector("#alternatives-panel");
+  alternativesPanel.hidden = recommendation.alternatives.length === 0;
+  document.querySelector("#alternatives-list").innerHTML = recommendation.alternatives.map((alternative) => `
+    <article class="alternative-row">
+      <div><strong>${alternative.cpu}</strong><span>${alternative.gpu}</span></div>
+      <div><strong>${formatMoney(alternative.total)}</strong><span>${formatMoney(alternative.headroom)} headroom</span></div>
+      <code>${alternative.buildId}</code>
+    </article>
+  `).join("");
+
   document.querySelector("#explanation-list").innerHTML = recommendation.checks.map((check) => `
     <li class="${check.pass ? "is-pass" : "is-warning"}">${check.pass ? "✓" : "!"} ${check.label}</li>
   `).join("");

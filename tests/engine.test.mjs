@@ -43,6 +43,9 @@ for (const budget of [1200, 1800, 3000]) {
           assert.ok(result.searchStats.evaluated >= result.searchStats.compatible);
           assert.ok(result.searchStats.compatible >= result.searchStats.affordable);
           assert.ok(result.searchStats.affordable > 0);
+          assert.ok(result.alternatives.length <= 3);
+          assert.ok(result.alternatives.every((alternative) => alternative.total <= constraints.budget));
+          assert.equal(new Set(result.alternatives.map((alternative) => `${alternative.cpu}:${alternative.gpu}`)).size, result.alternatives.length);
           assert.equal(result.compatibilityChecks.length, 9);
           assert.equal(result.requirementChecks.length, 7);
           assert.ok(result.compatibilityChecks.every((check) => check.pass));

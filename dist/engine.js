@@ -91,6 +91,7 @@ function technicalChecks(parts, platformWatts) {
     { category: "compatibility", label: "CPU socket matches the motherboard", pass: parts.cpu.socket === parts.motherboard.socket },
     { category: "compatibility", label: "CPU and motherboard share a memory standard", pass: parts.cpu.memory === parts.motherboard.memory },
     { category: "compatibility", label: "RAM matches the motherboard", pass: parts.memory.memory === parts.motherboard.memory },
+    { category: "compatibility", label: "RAM capacity stays within the motherboard limit", pass: parts.memory.capacity <= parts.motherboard.maxMemory },
     { category: "compatibility", label: "Cooler capacity covers CPU package power", pass: parts.cooler.capacity >= parts.cpu.watts * 1.25 },
     { category: "compatibility", label: "Motherboard form factor fits the case", pass: parts.case.forms.includes(parts.motherboard.form) },
     { category: "compatibility", label: "GPU length fits with safety clearance", pass: parts.case.gpuClearance >= parts.gpu.length + 15 },
@@ -135,7 +136,7 @@ function buildRationales(parts, constraints, platformWatts) {
   return {
     cpu: `${parts.cpu.cores} cores and ${parts.cpu.threads} threads provide tier ${parts.cpu.tier} compute at ${parts.cpu.watts}W package power.`,
     gpu: `Tier ${parts.gpu.tier} graphics with ${parts.gpu.vram}GB VRAM is prioritized for the ${constraints.resolution} target.`,
-    motherboard: `${parts.motherboard.socket} and ${parts.motherboard.memory} support match the selected processor and memory.`,
+    motherboard: `${parts.motherboard.socket} and ${parts.motherboard.memory} support match the selected processor and memory, with capacity support up to ${parts.motherboard.maxMemory}GB.`,
     memory: `${parts.memory.capacity}GB of ${parts.memory.memory} is allocated for the selected workload.`,
     storage: `${parts.storage.capacity}TB of NVMe storage balances working space with the total budget.`,
     cooler: `${coolerMargin}W of thermal margin remains above the CPU safety target.`,

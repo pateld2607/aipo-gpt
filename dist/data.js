@@ -13,8 +13,8 @@ export const catalog = {
     { id: "rtx-5080", name: "GeForce RTX 5080 16GB", price: 999, watts: 360, length: 329, slots: 3.5, vram: 16, powerConnector: "12V-2x6", tier: 6, strengths: ["4k", "streaming", "workstation"] },
   ],
   motherboard: [
-    { id: "b650m", name: "B650M WiFi — mATX", price: 159, socket: "AM5", memory: "DDR5", form: "mATX", tier: 2 },
-    { id: "b850", name: "B850 WiFi — ATX", price: 219, socket: "AM5", memory: "DDR5", form: "ATX", tier: 4 },
+    { id: "b650m", name: "B650M WiFi — mATX", price: 159, socket: "AM5", memory: "DDR5", maxMemory: 128, form: "mATX", tier: 2 },
+    { id: "b850", name: "B850 WiFi — ATX", price: 219, socket: "AM5", memory: "DDR5", maxMemory: 192, form: "ATX", tier: 4 },
   ],
   memory: [
     { id: "32-ddr5", name: "32GB DDR5-6000 CL30", price: 104, memory: "DDR5", capacity: 32, tier: 2 },

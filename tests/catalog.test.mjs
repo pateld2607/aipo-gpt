@@ -16,4 +16,8 @@ const invalidPrice = structuredClone(catalog);
 invalidPrice.storage[0].price = 0;
 assert.throws(() => validateCatalog(invalidPrice), /positive price/);
 
+const missingMemoryLimit = structuredClone(catalog);
+delete missingMemoryLimit.motherboard[0].maxMemory;
+assert.throws(() => validateCatalog(missingMemoryLimit), /invalid maxMemory/);
+
 console.log("catalog tests passed");

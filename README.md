@@ -22,7 +22,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Actionable guidance when a budget cannot meet every workload target
 - Stable build IDs for comparing, exporting, and reproducing recommendations
 - Search transparency showing evaluated, compatible, and affordable candidate counts
-- Three distinct runner-up CPU and GPU configurations for comparison
+- Three distinct runner-up configurations with price, headroom, peak power, and goal coverage
 - Workload-aware CPU-to-GPU component balance scoring
 - Print-ready build sheets that remove controls and expand recommendation details
 - One-click reset to a complete, shareable default configuration

@@ -171,7 +171,7 @@ function render(constraints, { announce = false } = {}) {
   document.querySelector("#alternatives-list").innerHTML = recommendation.alternatives.map((alternative) => `
     <article class="alternative-row">
       <div><strong>${alternative.cpu}</strong><span>${alternative.gpu}</span></div>
-      <div><strong>${formatMoney(alternative.total)}</strong><span>${formatMoney(alternative.headroom)} headroom</span></div>
+      <div><strong>${formatMoney(alternative.total)}</strong><span>${formatMoney(alternative.headroom)} headroom</span><span>${alternative.platformWatts}W peak · ${alternative.goalsMet}/${alternative.goalCount} goals</span></div>
       <code>${alternative.buildId}</code>
     </article>
   `).join("");

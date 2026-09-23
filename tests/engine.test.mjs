@@ -50,6 +50,8 @@ for (const budget of [1200, 1800, 3000]) {
           assert.ok(result.searchStats.affordable > 0);
           assert.ok(result.alternatives.length <= 3);
           assert.ok(result.alternatives.every((alternative) => alternative.total <= constraints.budget));
+          assert.ok(result.alternatives.every((alternative) => alternative.platformWatts > 0));
+          assert.ok(result.alternatives.every((alternative) => alternative.goalsMet <= alternative.goalCount));
           assert.equal(new Set(result.alternatives.map((alternative) => `${alternative.cpu}:${alternative.gpu}`)).size, result.alternatives.length);
           assert.ok(result.componentBalance.score >= 40 && result.componentBalance.score <= 100);
           assert.ok(["Workload-aligned", "Specialized", "Uneven"].includes(result.componentBalance.label));

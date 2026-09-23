@@ -60,6 +60,8 @@ assert.match(app, /recommendation\.searchStats\.evaluated/);
 assert.match(html, /<summary>Runner-up configurations<\/summary>/);
 assert.match(html, /id="alternatives-list"/);
 assert.match(app, /recommendation\.alternatives/);
+assert.match(app, /alternative\.platformWatts/);
+assert.match(app, /alternative\.goalsMet/);
 assert.match(html, /id="balance-score"/);
 assert.match(app, /recommendation\.componentBalance\.score/);
 assert.match(html, /id="reset-build"/);

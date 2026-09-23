@@ -300,13 +300,19 @@ export function recommendBuild(constraints, profile = "balanced") {
     if (seenAlternatives.has(key)) return false;
     seenAlternatives.add(key);
     return true;
-  }).slice(0, 3).map((candidate) => ({
-    cpu: candidate.parts.cpu.name,
-    gpu: candidate.parts.gpu.name,
-    total: candidate.total,
-    headroom: constraints.budget - candidate.total,
-    buildId: buildFingerprint(candidate.parts, constraints, profile),
-  }));
+  }).slice(0, 3).map((candidate) => {
+    const candidateGoals = goalChecks(candidate.parts, constraints, candidate.total);
+    return {
+      cpu: candidate.parts.cpu.name,
+      gpu: candidate.parts.gpu.name,
+      total: candidate.total,
+      headroom: constraints.budget - candidate.total,
+      platformWatts: candidate.platformWatts,
+      goalsMet: candidateGoals.filter((check) => check.pass).length,
+      goalCount: candidateGoals.length,
+      buildId: buildFingerprint(candidate.parts, constraints, profile),
+    };
+  });
   const goalReadyCandidate = [...candidates]
     .filter((candidate) => goalChecks(candidate.parts, constraints, candidate.total)
       .filter((check) => check.key !== "budget")

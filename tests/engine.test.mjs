@@ -40,6 +40,9 @@ for (const budget of [1200, 1800, 3000]) {
           assert.equal(result.upgradeReadiness.score % 25, 0);
           assert.ok(["Quiet", "Balanced", "Performance"].includes(result.acoustics.label));
           assert.equal(result.acoustics.decibels, result.parts.cooler.noise);
+          assert.equal(result.powerReserve.watts, result.parts.psu.capacity - result.platformWatts);
+          assert.ok(result.powerReserve.percentage >= 35);
+          assert.ok(["Safe", "Comfortable", "Expandable"].includes(result.powerReserve.label));
           assert.equal(Object.keys(result.budgetAllocation).length, 8);
           assert.ok(Math.abs(Object.values(result.budgetAllocation).reduce((sum, item) => sum + item.percentage, 0) - 1) < 0.000001);
           assert.ok(result.searchStats.evaluated >= result.searchStats.compatible);

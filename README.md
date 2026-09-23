@@ -9,6 +9,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Side-by-side balanced, maximum-performance, and best-value profile comparison
 - Socket, memory type and capacity, cooling performance and physical fit, form-factor, GPU length, thickness and power connector, PSU headroom, and workload-specific VRAM checks
 - Transparent cost and power estimates
+- Exact PSU wattage and percentage reserve for future upgrades
 - Upgrade-readiness scoring for power, memory, motherboard, and case headroom
 - Visible cooler-noise classification for quiet-build decisions
 - Workload-specific CPU core targets with core and thread explanations

@@ -171,6 +171,13 @@ function describeAcoustics(parts) {
   return { decibels, label };
 }
 
+function describePowerReserve(parts, platformWatts) {
+  const watts = parts.psu.capacity - platformWatts;
+  const percentage = Math.round((watts / platformWatts) * 100);
+  const label = percentage >= 70 ? "Expandable" : percentage >= 45 ? "Comfortable" : "Safe";
+  return { watts, percentage, label };
+}
+
 function buildFingerprint(parts, constraints, profile) {
   const input = JSON.stringify({
     parts: Object.values(parts).map((part) => part.id),
@@ -318,6 +325,7 @@ export function recommendBuild(constraints, profile = "balanced") {
     rationales: buildRationales(selected.parts, constraints, selected.platformWatts),
     upgradeReadiness: assessUpgradeReadiness(selected.parts, selected.platformWatts),
     acoustics: describeAcoustics(selected.parts),
+    powerReserve: describePowerReserve(selected.parts, selected.platformWatts),
     budgetAllocation,
     buildId: buildFingerprint(selected.parts, constraints, profile),
     searchStats: {

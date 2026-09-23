@@ -450,7 +450,7 @@ textarea:focus {
 
 .metrics {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   margin-bottom: 26px;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -459,6 +459,8 @@ textarea:focus {
 
 .metric { padding: 16px; }
 .metric + .metric { border-left: 1px solid var(--line); }
+.metric:nth-child(4) { border-left: 0; }
+.metric:nth-child(n + 4) { border-top: 1px solid var(--line); }
 .metric span { display: block; margin-bottom: 7px; color: var(--muted); font-size: .68rem; }
 .metric strong { font-size: 1.05rem; }
 

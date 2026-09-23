@@ -8,6 +8,13 @@ const DEFAULT_STATE = Object.freeze({
   priority: "quiet",
   profile: "balanced",
 });
+const SAVED_BUILD_KEY = "aipo-gpt-saved-build-v1";
+const ALLOWED_OPTIONS = {
+  useCase: new Set(["gaming", "streaming", "workstation", "development", "efficiency"]),
+  resolution: new Set(["1080p", "1440p", "4k", "productivity"]),
+  priority: new Set(["balanced", "performance", "quiet", "efficiency"]),
+  profile: new Set(["balanced", "performance", "value"]),
+};
 
 const form = document.querySelector("#optimizer-form");
 const fields = {
@@ -25,6 +32,8 @@ const downloadButton = document.querySelector("#download-build");
 const downloadMarkdownButton = document.querySelector("#download-markdown");
 const printButton = document.querySelector("#print-build");
 const resetButton = document.querySelector("#reset-build");
+const saveLocalButton = document.querySelector("#save-local");
+const loadLocalButton = document.querySelector("#load-local");
 const exportStatus = document.querySelector("#export-status");
 const comparisonBody = document.querySelector("#profile-comparison-body");
 const formError = document.querySelector("#form-error");
@@ -71,26 +80,36 @@ function updateShareUrl(constraints) {
 
 function restoreFromUrl(fallback) {
   const params = new URLSearchParams(location.search);
-  const allowed = {
-    useCase: new Set(["gaming", "streaming", "workstation", "development", "efficiency"]),
-    resolution: new Set(["1080p", "1440p", "4k", "productivity"]),
-    priority: new Set(["balanced", "performance", "quiet", "efficiency"]),
-    profile: new Set(["balanced", "performance", "value"]),
-  };
   const budget = Number(params.get("budget"));
   const restored = {
     budget: Number.isFinite(budget) && budget >= 800 && budget <= 5000 ? budget : fallback.budget,
-    useCase: allowed.useCase.has(params.get("useCase")) ? params.get("useCase") : fallback.useCase,
-    resolution: allowed.resolution.has(params.get("resolution")) ? params.get("resolution") : fallback.resolution,
-    priority: allowed.priority.has(params.get("priority")) ? params.get("priority") : fallback.priority,
+    useCase: ALLOWED_OPTIONS.useCase.has(params.get("useCase")) ? params.get("useCase") : fallback.useCase,
+    resolution: ALLOWED_OPTIONS.resolution.has(params.get("resolution")) ? params.get("resolution") : fallback.resolution,
+    priority: ALLOWED_OPTIONS.priority.has(params.get("priority")) ? params.get("priority") : fallback.priority,
   };
-  if (allowed.profile.has(params.get("profile"))) activeProfile = params.get("profile");
+  if (ALLOWED_OPTIONS.profile.has(params.get("profile"))) activeProfile = params.get("profile");
   if (params.get("goal")) fields.goal.value = params.get("goal");
   fields.budget.value = restored.budget;
   fields.useCase.value = restored.useCase;
   fields.resolution.value = restored.resolution;
   fields.priority.value = restored.priority;
   return restored;
+}
+
+function readSavedBuild() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(SAVED_BUILD_KEY));
+    const budget = Number(saved?.budget);
+    if (!saved || typeof saved.goal !== "string" || saved.goal.length < 12) return null;
+    if (!Number.isFinite(budget) || budget < 800 || budget > 5000) return null;
+    if (!ALLOWED_OPTIONS.useCase.has(saved.useCase)
+      || !ALLOWED_OPTIONS.resolution.has(saved.resolution)
+      || !ALLOWED_OPTIONS.priority.has(saved.priority)
+      || !ALLOWED_OPTIONS.profile.has(saved.profile)) return null;
+    return { ...saved, budget };
+  } catch {
+    return null;
+  }
 }
 
 function render(constraints, { announce = false } = {}) {
@@ -295,6 +314,42 @@ printButton.addEventListener("click", () => {
   window.print();
 });
 
+saveLocalButton.addEventListener("click", () => {
+  try {
+    localStorage.setItem(SAVED_BUILD_KEY, JSON.stringify({
+      goal: fields.goal.value.trim(),
+      ...currentConstraints(),
+      profile: activeProfile,
+    }));
+    loadLocalButton.disabled = false;
+    exportStatus.textContent = "Build saved in this browser.";
+  } catch {
+    exportStatus.textContent = "Browser storage is unavailable.";
+  }
+});
+
+loadLocalButton.addEventListener("click", () => {
+  const saved = readSavedBuild();
+  if (!saved) {
+    loadLocalButton.disabled = true;
+    exportStatus.textContent = "No valid saved build was found.";
+    return;
+  }
+  fields.goal.value = saved.goal;
+  fields.budget.value = saved.budget;
+  fields.useCase.value = saved.useCase;
+  fields.resolution.value = saved.resolution;
+  fields.priority.value = saved.priority;
+  activeProfile = saved.profile;
+  render({
+    budget: saved.budget,
+    useCase: saved.useCase,
+    resolution: saved.resolution,
+    priority: saved.priority,
+  }, { announce: true });
+  exportStatus.textContent = "Saved build restored.";
+});
+
 resetButton.addEventListener("click", () => {
   fields.goal.value = DEFAULT_STATE.goal;
   fields.budget.value = DEFAULT_STATE.budget;
@@ -353,4 +408,5 @@ comparisonBody.addEventListener("click", (event) => {
   render(currentConstraints());
 });
 
+loadLocalButton.disabled = !readSavedBuild();
 render(restoreFromUrl(syncGoalToFields()));

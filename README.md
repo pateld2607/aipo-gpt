@@ -27,6 +27,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Print-ready build sheets that remove controls and expand recommendation details
 - Portable Markdown build sheets with components, prices, and validation results
 - One-click reset to a complete, shareable default configuration
+- Device-local save and restore for revisiting a configuration without an account
 - Lowest-cost recovery paths for builds that miss workload targets
 
 This first release intentionally keeps the recommendation engine local and inspectable. OpenAI-assisted reasoning and a larger data pipeline are planned as later milestones.

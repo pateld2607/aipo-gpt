@@ -74,5 +74,11 @@ assert.match(app, /fields\.goal\.focus\(\)/);
 assert.match(html, /id="recovery-path" hidden/);
 assert.match(app, /recommendation\.goalRecovery/);
 assert.match(app, /meeting every performance target/);
+assert.match(html, /id="save-local"/);
+assert.match(html, /id="load-local"/);
+assert.match(app, /localStorage\.setItem\(SAVED_BUILD_KEY/);
+assert.match(app, /function readSavedBuild\(\)/);
+assert.match(app, /Build saved in this browser/);
+assert.match(app, /Saved build restored/);
 
 console.log("UI contract tests passed");

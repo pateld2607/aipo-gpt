@@ -53,7 +53,7 @@ for (const budget of [1200, 1800, 3000]) {
           assert.ok(result.goalRecovery);
           assert.ok(result.goalRecovery.total >= constraints.budget || result.goalRecovery.additionalBudget === 0);
           assert.match(result.goalRecovery.buildId, /^AIPO-[0-9A-F]{8}$/);
-          assert.equal(result.compatibilityChecks.length, 10);
+          assert.equal(result.compatibilityChecks.length, 11);
           assert.equal(result.requirementChecks.length, 7);
           assert.ok(result.compatibilityChecks.every((check) => check.pass));
           assert.ok(result.parts.gpu.vram >= 12);
@@ -62,6 +62,9 @@ for (const budget of [1200, 1800, 3000]) {
           assert.ok(result.parts.case.gpuSlots >= result.parts.gpu.slots);
           assert.ok(result.parts.psu.connectors.includes(result.parts.gpu.powerConnector));
           assert.ok(result.parts.memory.capacity <= result.parts.motherboard.maxMemory);
+          assert.ok(result.parts.cooler.kind === "air"
+            ? result.parts.cooler.height <= result.parts.case.maxAirCoolerHeight
+            : result.parts.cooler.radiatorSize <= result.parts.case.maxRadiatorSize);
           assert.ok(result.total <= constraints.budget);
         }
       }

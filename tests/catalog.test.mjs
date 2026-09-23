@@ -20,4 +20,8 @@ const missingMemoryLimit = structuredClone(catalog);
 delete missingMemoryLimit.motherboard[0].maxMemory;
 assert.throws(() => validateCatalog(missingMemoryLimit), /invalid maxMemory/);
 
+const missingCoolerHeight = structuredClone(catalog);
+delete missingCoolerHeight.cooler[0].height;
+assert.throws(() => validateCatalog(missingCoolerHeight), /invalid height/);
+
 console.log("catalog tests passed");

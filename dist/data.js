@@ -25,13 +25,13 @@ export const catalog = {
     { id: "2tb-nvme", name: "2TB PCIe 4.0 NVMe SSD", price: 139, capacity: 2, tier: 4 },
   ],
   cooler: [
-    { id: "tower-120", name: "120mm dual-fan air cooler", price: 49, capacity: 150, noise: 27, tier: 2 },
-    { id: "tower-140", name: "140mm premium air cooler", price: 89, capacity: 220, noise: 23, tier: 4 },
-    { id: "aio-360", name: "360mm liquid cooler", price: 139, capacity: 300, noise: 30, tier: 5 },
+    { id: "tower-120", name: "120mm dual-fan air cooler", price: 49, capacity: 150, noise: 27, kind: "air", height: 155, tier: 2 },
+    { id: "tower-140", name: "140mm premium air cooler", price: 89, capacity: 220, noise: 23, kind: "air", height: 160, tier: 4 },
+    { id: "aio-360", name: "360mm liquid cooler", price: 139, capacity: 300, noise: 30, kind: "liquid", radiatorSize: 360, tier: 5 },
   ],
   case: [
-    { id: "air-mini", name: "Compact Airflow mATX Case", price: 79, forms: ["mATX"], gpuClearance: 330, gpuSlots: 3, tier: 2 },
-    { id: "air-mid", name: "High-Airflow ATX Mid Tower", price: 119, forms: ["ATX", "mATX"], gpuClearance: 390, gpuSlots: 4, tier: 4 },
+    { id: "air-mini", name: "Compact Airflow mATX Case", price: 79, forms: ["mATX"], gpuClearance: 330, gpuSlots: 3, maxAirCoolerHeight: 160, maxRadiatorSize: 240, tier: 2 },
+    { id: "air-mid", name: "High-Airflow ATX Mid Tower", price: 119, forms: ["ATX", "mATX"], gpuClearance: 390, gpuSlots: 4, maxAirCoolerHeight: 175, maxRadiatorSize: 360, tier: 4 },
   ],
   psu: [
     { id: "650-gold", name: "650W 80+ Gold Modular PSU", price: 89, capacity: 650, connectors: ["2x8-pin"], tier: 2 },

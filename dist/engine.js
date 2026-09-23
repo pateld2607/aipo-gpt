@@ -87,12 +87,16 @@ function targetsFor(constraints, profile) {
 }
 
 function technicalChecks(parts, platformWatts) {
+  const coolerFits = parts.cooler.kind === "air"
+    ? parts.cooler.height <= parts.case.maxAirCoolerHeight
+    : parts.cooler.radiatorSize <= parts.case.maxRadiatorSize;
   return [
     { category: "compatibility", label: "CPU socket matches the motherboard", pass: parts.cpu.socket === parts.motherboard.socket },
     { category: "compatibility", label: "CPU and motherboard share a memory standard", pass: parts.cpu.memory === parts.motherboard.memory },
     { category: "compatibility", label: "RAM matches the motherboard", pass: parts.memory.memory === parts.motherboard.memory },
     { category: "compatibility", label: "RAM capacity stays within the motherboard limit", pass: parts.memory.capacity <= parts.motherboard.maxMemory },
     { category: "compatibility", label: "Cooler capacity covers CPU package power", pass: parts.cooler.capacity >= parts.cpu.watts * 1.25 },
+    { category: "compatibility", label: "Cooler dimensions fit the selected case", pass: coolerFits },
     { category: "compatibility", label: "Motherboard form factor fits the case", pass: parts.case.forms.includes(parts.motherboard.form) },
     { category: "compatibility", label: "GPU length fits with safety clearance", pass: parts.case.gpuClearance >= parts.gpu.length + 15 },
     { category: "compatibility", label: "GPU thickness fits the case expansion slots", pass: parts.case.gpuSlots >= parts.gpu.slots },
@@ -132,6 +136,9 @@ function buildRationales(parts, constraints, platformWatts) {
   const coolerMargin = Math.round(parts.cooler.capacity - parts.cpu.watts * 1.25);
   const gpuClearance = parts.case.gpuClearance - parts.gpu.length;
   const powerHeadroom = parts.psu.capacity - platformWatts;
+  const coolerFit = parts.cooler.kind === "air"
+    ? `${parts.cooler.height}mm tall in a ${parts.case.maxAirCoolerHeight}mm limit`
+    : `${parts.cooler.radiatorSize}mm radiator in a ${parts.case.maxRadiatorSize}mm mount`;
 
   return {
     cpu: `${parts.cpu.cores} cores and ${parts.cpu.threads} threads provide tier ${parts.cpu.tier} compute at ${parts.cpu.watts}W package power.`,
@@ -139,8 +146,8 @@ function buildRationales(parts, constraints, platformWatts) {
     motherboard: `${parts.motherboard.socket} and ${parts.motherboard.memory} support match the selected processor and memory, with capacity support up to ${parts.motherboard.maxMemory}GB.`,
     memory: `${parts.memory.capacity}GB of ${parts.memory.memory} is allocated for the selected workload.`,
     storage: `${parts.storage.capacity}TB of NVMe storage balances working space with the total budget.`,
-    cooler: `${coolerMargin}W of thermal margin remains above the CPU safety target.`,
-    case: `${gpuClearance}mm of length clearance and ${(parts.case.gpuSlots - parts.gpu.slots).toFixed(1)} expansion slots remain.`,
+    cooler: `${coolerMargin}W of thermal margin remains above the CPU safety target; the cooler is ${coolerFit}.`,
+    case: `${gpuClearance}mm of GPU length clearance and ${(parts.case.gpuSlots - parts.gpu.slots).toFixed(1)} expansion slots remain.`,
     psu: `${powerHeadroom}W remains above estimated peak draw, with native ${parts.gpu.powerConnector} GPU power.`,
   };
 }

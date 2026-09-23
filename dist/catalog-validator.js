@@ -4,8 +4,8 @@ const CATEGORY_RULES = {
   motherboard: ["socket", "memory", "maxMemory", "form"],
   memory: ["memory", "capacity"],
   storage: ["capacity"],
-  cooler: ["capacity", "noise"],
-  case: ["forms", "gpuClearance", "gpuSlots"],
+  cooler: ["capacity", "noise", "kind"],
+  case: ["forms", "gpuClearance", "gpuSlots", "maxAirCoolerHeight", "maxRadiatorSize"],
   psu: ["capacity", "connectors"],
 };
 
@@ -29,6 +29,12 @@ export function validateCatalog(catalog) {
         const value = part[field];
         const valid = Array.isArray(value) ? value.length > 0 : typeof value === "string" ? value.length > 0 : Number.isFinite(value) && value > 0;
         if (!valid) throw new TypeError(`${part.id} has an invalid ${field}`);
+      }
+
+      if (category === "cooler") {
+        if (!new Set(["air", "liquid"]).has(part.kind)) throw new TypeError(`${part.id} has an invalid cooler kind`);
+        if (part.kind === "air" && (!Number.isFinite(part.height) || part.height <= 0)) throw new TypeError(`${part.id} has an invalid height`);
+        if (part.kind === "liquid" && (!Number.isFinite(part.radiatorSize) || part.radiatorSize <= 0)) throw new TypeError(`${part.id} has an invalid radiatorSize`);
       }
     }
   }

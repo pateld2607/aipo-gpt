@@ -25,6 +25,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Three distinct runner-up configurations with price, headroom, peak power, and goal coverage
 - Workload-aware CPU-to-GPU component balance scoring
 - Print-ready build sheets that remove controls and expand recommendation details
+- Portable Markdown build sheets with components, prices, and validation results
 - One-click reset to a complete, shareable default configuration
 - Lowest-cost recovery paths for builds that miss workload targets
 

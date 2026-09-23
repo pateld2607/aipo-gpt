@@ -22,6 +22,7 @@ const presetButtons = [...document.querySelectorAll("[data-preset]")];
 const copyButton = document.querySelector("#copy-build");
 const copyLinkButton = document.querySelector("#copy-link");
 const downloadButton = document.querySelector("#download-build");
+const downloadMarkdownButton = document.querySelector("#download-markdown");
 const printButton = document.querySelector("#print-build");
 const resetButton = document.querySelector("#reset-build");
 const exportStatus = document.querySelector("#export-status");
@@ -212,6 +213,37 @@ function buildShareText() {
   ].join("\n");
 }
 
+function buildMarkdown() {
+  const partRows = Object.entries(latestRecommendation.parts).map(([type, part]) =>
+    `| ${type === "motherboard" ? "Motherboard" : `${type[0].toUpperCase()}${type.slice(1)}`} | ${part.name} | ${formatMoney(part.price)} |`,
+  );
+  const checkRows = latestRecommendation.checks.map((check) =>
+    `- ${check.pass ? "[x]" : "[ ]"} ${check.label}`,
+  );
+
+  return [
+    `# AIPO-GPT ${activeProfile} build`,
+    "",
+    latestRecommendation.summary,
+    "",
+    `- **Estimated total:** ${formatMoney(latestRecommendation.total)}`,
+    `- **Budget headroom:** ${formatMoney(latestRecommendation.budgetHeadroom)}`,
+    `- **Estimated peak draw:** ${latestRecommendation.platformWatts}W`,
+    `- **Build ID:** ${latestRecommendation.buildId}`,
+    "",
+    "## Components",
+    "",
+    "| Component | Selection | Price |",
+    "| --- | --- | ---: |",
+    ...partRows,
+    "",
+    "## Validation",
+    "",
+    ...checkRows,
+    "",
+  ].join("\n");
+}
+
 copyButton.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(buildShareText());
@@ -245,6 +277,17 @@ downloadButton.addEventListener("click", () => {
   link.click();
   URL.revokeObjectURL(url);
   exportStatus.textContent = "JSON build plan downloaded.";
+});
+
+downloadMarkdownButton.addEventListener("click", () => {
+  const blob = new Blob([buildMarkdown()], { type: "text/markdown" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `aipo-gpt-${activeProfile}-build.md`;
+  link.click();
+  URL.revokeObjectURL(url);
+  exportStatus.textContent = "Markdown build sheet downloaded.";
 });
 
 printButton.addEventListener("click", () => {

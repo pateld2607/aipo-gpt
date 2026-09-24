@@ -32,4 +32,8 @@ const missingPsuForm = structuredClone(catalog);
 delete missingPsuForm.psu[0].form;
 assert.throws(() => validateCatalog(missingPsuForm), /invalid form/);
 
+const missingMemoryModules = structuredClone(catalog);
+delete missingMemoryModules.memory[0].modules;
+assert.throws(() => validateCatalog(missingMemoryModules), /invalid modules/);
+
 console.log("catalog tests passed");

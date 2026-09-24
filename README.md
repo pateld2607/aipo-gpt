@@ -7,7 +7,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Goal parsing for gaming, streaming, workstation, software development, efficiency, resolution, and budgets including `1.8k`, `2 grand`, `USD 2.4k`, or `1,950 dollars`
 - Deterministic recommendations across CPU, GPU, motherboard, RAM, storage, PSU, cooler, and case
 - Side-by-side balanced, maximum-performance, and best-value profile comparison
-- Socket, memory type and capacity, cooling performance and physical fit, form-factor, GPU length, thickness and power connector, PSU headroom, and workload-specific VRAM checks
+- Socket, memory type and capacity, storage interface, cooling performance and physical fit, form-factor, GPU length, thickness and power connector, PSU headroom, and workload-specific VRAM checks
 - Transparent cost and power estimates
 - Exact PSU wattage and percentage reserve for future upgrades
 - Upgrade-readiness scoring for power, memory, motherboard, and case headroom

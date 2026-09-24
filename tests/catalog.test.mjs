@@ -24,4 +24,8 @@ const missingCoolerHeight = structuredClone(catalog);
 delete missingCoolerHeight.cooler[0].height;
 assert.throws(() => validateCatalog(missingCoolerHeight), /invalid height/);
 
+const missingStorageInterface = structuredClone(catalog);
+delete missingStorageInterface.storage[0].interface;
+assert.throws(() => validateCatalog(missingStorageInterface), /invalid interface/);
+
 console.log("catalog tests passed");

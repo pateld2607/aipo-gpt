@@ -32,6 +32,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Safe JSON plan import that validates constraints and recalculates the recommendation
 - One-click reset to a complete, shareable default configuration
 - Device-local save and restore for revisiting a configuration without an account
+- Clear-saved-build control for managing browser-stored configuration data
 - Lowest-cost recovery paths for builds that miss workload targets
 
 This first release intentionally keeps the recommendation engine local and inspectable. OpenAI-assisted reasoning and a larger data pipeline are planned as later milestones.

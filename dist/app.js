@@ -37,6 +37,7 @@ const printButton = document.querySelector("#print-build");
 const resetButton = document.querySelector("#reset-build");
 const saveLocalButton = document.querySelector("#save-local");
 const loadLocalButton = document.querySelector("#load-local");
+const clearLocalButton = document.querySelector("#clear-local");
 const exportStatus = document.querySelector("#export-status");
 const comparisonBody = document.querySelector("#profile-comparison-body");
 const formError = document.querySelector("#form-error");
@@ -367,6 +368,7 @@ saveLocalButton.addEventListener("click", () => {
       profile: activeProfile,
     }));
     loadLocalButton.disabled = false;
+    clearLocalButton.disabled = false;
     exportStatus.textContent = "Build saved in this browser.";
   } catch {
     exportStatus.textContent = "Browser storage is unavailable.";
@@ -394,6 +396,17 @@ loadLocalButton.addEventListener("click", () => {
     priority: saved.priority,
   }, { announce: true });
   exportStatus.textContent = "Saved build restored.";
+});
+
+clearLocalButton.addEventListener("click", () => {
+  try {
+    localStorage.removeItem(SAVED_BUILD_KEY);
+    loadLocalButton.disabled = true;
+    clearLocalButton.disabled = true;
+    exportStatus.textContent = "Saved browser build cleared.";
+  } catch {
+    exportStatus.textContent = "Browser storage is unavailable.";
+  }
 });
 
 resetButton.addEventListener("click", () => {
@@ -464,5 +477,7 @@ comparisonBody.addEventListener("click", (event) => {
   render(currentConstraints());
 });
 
-loadLocalButton.disabled = !readSavedBuild();
+const hasSavedBuild = Boolean(readSavedBuild());
+loadLocalButton.disabled = !hasSavedBuild;
+clearLocalButton.disabled = !hasSavedBuild;
 render(restoreFromUrl(syncGoalToFields()));

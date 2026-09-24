@@ -90,9 +90,12 @@ assert.match(app, /recommendation\.goalRecovery/);
 assert.match(app, /meeting every performance target/);
 assert.match(html, /id="save-local"/);
 assert.match(html, /id="load-local"/);
+assert.match(html, /id="clear-local"/);
 assert.match(app, /localStorage\.setItem\(SAVED_BUILD_KEY/);
 assert.match(app, /function readSavedBuild\(\)/);
 assert.match(app, /Build saved in this browser/);
 assert.match(app, /Saved build restored/);
+assert.match(app, /localStorage\.removeItem\(SAVED_BUILD_KEY\)/);
+assert.match(app, /Saved browser build cleared/);
 
 console.log("UI contract tests passed");

@@ -30,6 +30,8 @@ const presetButtons = [...document.querySelectorAll("[data-preset]")];
 const copyButton = document.querySelector("#copy-build");
 const copyLinkButton = document.querySelector("#copy-link");
 const downloadButton = document.querySelector("#download-build");
+const importInput = document.querySelector("#import-build");
+const importButton = document.querySelector("#import-trigger");
 const downloadMarkdownButton = document.querySelector("#download-markdown");
 const printButton = document.querySelector("#print-build");
 const resetButton = document.querySelector("#reset-build");
@@ -287,6 +289,7 @@ copyLinkButton.addEventListener("click", async () => {
 downloadButton.addEventListener("click", () => {
   const payload = {
     generatedAt: new Date().toISOString(),
+    goal: fields.goal.value.trim(),
     constraints: latestConstraints,
     profile: activeProfile,
     recommendation: latestRecommendation,
@@ -300,6 +303,41 @@ downloadButton.addEventListener("click", () => {
   URL.revokeObjectURL(url);
   exportStatus.textContent = "JSON build plan downloaded.";
 });
+
+importInput.addEventListener("change", async () => {
+  const file = importInput.files?.[0];
+  if (!file) return;
+  try {
+    if (file.size > 1_000_000) throw new RangeError("File is too large");
+    const payload = JSON.parse(await file.text());
+    const constraints = payload?.constraints;
+    const budget = Number(constraints?.budget);
+    const valid = Number.isFinite(budget) && budget >= 800 && budget <= 5000
+      && ALLOWED_OPTIONS.useCase.has(constraints?.useCase)
+      && ALLOWED_OPTIONS.resolution.has(constraints?.resolution)
+      && ALLOWED_OPTIONS.priority.has(constraints?.priority)
+      && ALLOWED_OPTIONS.profile.has(payload?.profile);
+    if (!valid) throw new TypeError("Invalid build plan");
+
+    fields.goal.value = typeof payload.goal === "string" && payload.goal.length >= 12
+      ? payload.goal
+      : `Imported ${constraints.resolution} ${constraints.useCase} build under $${budget}`;
+    fields.budget.value = budget;
+    fields.budgetRange.value = budget;
+    fields.useCase.value = constraints.useCase;
+    fields.resolution.value = constraints.resolution;
+    fields.priority.value = constraints.priority;
+    activeProfile = payload.profile;
+    render({ ...constraints, budget }, { announce: true });
+    exportStatus.textContent = "JSON build plan imported and recalculated.";
+  } catch {
+    exportStatus.textContent = "That file is not a valid AIPO-GPT build plan.";
+  } finally {
+    importInput.value = "";
+  }
+});
+
+importButton.addEventListener("click", () => importInput.click());
 
 downloadMarkdownButton.addEventListener("click", () => {
   const blob = new Blob([buildMarkdown()], { type: "text/markdown" });

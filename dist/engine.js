@@ -27,6 +27,7 @@ export function parseGoal(goal, fallback) {
   let priority = fallback.priority;
   if (/quiet|silent|low noise/.test(text)) priority = "quiet";
   else if (/efficient|low power|power saving/.test(text)) priority = "efficiency";
+  else if (/upgrade|future[ -]?proof|long[ -]?term platform/.test(text)) priority = "upgradeability";
   else if (/fastest|max|peak performance/.test(text)) priority = "performance";
 
   return {
@@ -75,12 +76,13 @@ function targetsFor(constraints, profile) {
   const performance = constraints.priority === "performance";
   const workstation = constraints.useCase === "workstation";
   const development = constraints.useCase === "development";
+  const upgradeability = constraints.priority === "upgradeability";
   const profileLift = profile === "performance" ? 1 : profile === "value" ? -1 : 0;
 
   return {
     cpu: clamp(tier + (workstation || development ? 1 : 0) - (constraints.useCase === "gaming" ? 1 : 0) + profileLift, 2, 5),
     gpu: clamp(tier + (performance ? 1 : 0) + profileLift, 2, 6),
-    motherboard: clamp(tier + profileLift, 2, 4),
+    motherboard: clamp(tier + profileLift + (upgradeability ? 1 : 0), 2, 4),
     memory: workstation || constraints.budget >= 2300 ? 4 : 2,
     storage: constraints.budget >= 1450 && profile !== "value" ? 4 : 2,
   };
@@ -225,17 +227,18 @@ function candidateScore(candidate, constraints, profile, targets) {
   const budgetUse = total / constraints.budget;
   const quietBonus = constraints.priority === "quiet" ? (35 - parts.cooler.noise) * .28 : 0;
   const efficiencyBonus = constraints.priority === "efficiency" ? (750 - platformWatts) / 80 : 0;
+  const upgradeBonus = constraints.priority === "upgradeability" ? assessUpgradeReadiness(parts, platformWatts).score / 8 : 0;
   const goalFit = goalChecks(parts, constraints, total).filter((check) => check.pass).length;
 
   if (profile === "performance") {
-    return performance * 4.2 + workloadFit * 1.5 + targetFit + goalFit * 3 - Math.abs(1 - budgetUse) * 2 + quietBonus + efficiencyBonus;
+    return performance * 4.2 + workloadFit * 1.5 + targetFit + goalFit * 3 - Math.abs(1 - budgetUse) * 2 + quietBonus + efficiencyBonus + upgradeBonus;
   }
 
   if (profile === "value") {
-    return performance * 6 / (total / 1000) + workloadFit + targetFit * .45 + goalFit * 2 + Math.max(0, 1 - budgetUse) * 2 + quietBonus + efficiencyBonus;
+    return performance * 6 / (total / 1000) + workloadFit + targetFit * .45 + goalFit * 2 + Math.max(0, 1 - budgetUse) * 2 + quietBonus + efficiencyBonus + upgradeBonus;
   }
 
-  return performance * 2.1 + workloadFit * 1.7 + targetFit + goalFit * 3.5 - Math.abs(.9 - budgetUse) * 3 + quietBonus + efficiencyBonus;
+  return performance * 2.1 + workloadFit * 1.7 + targetFit + goalFit * 3.5 - Math.abs(.9 - budgetUse) * 3 + quietBonus + efficiencyBonus + upgradeBonus;
 }
 
 function enumerateCandidates(constraints, profile) {
@@ -372,6 +375,7 @@ function buildSummary({ useCase, resolution, priority }, profile) {
     performance: "maximum performance",
     quiet: "low acoustic output",
     efficiency: "lower power draw",
+    upgradeability: "long-term expansion headroom",
   }[priority];
 
   const profileLabel = {

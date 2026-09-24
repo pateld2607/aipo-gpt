@@ -11,6 +11,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Transparent cost and power estimates
 - Exact PSU wattage and percentage reserve for future upgrades
 - Upgrade-readiness scoring for power, memory, motherboard, and case headroom
+- Upgrade-headroom priority that favors stronger expansion paths and parses future-proofing language
 - Visible cooler-noise classification for quiet-build decisions
 - Workload-specific CPU core targets with core and thread explanations
 - Accessible validation for missing goals and out-of-range budgets

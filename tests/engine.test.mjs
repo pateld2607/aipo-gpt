@@ -24,11 +24,12 @@ assert.equal(parseGoal("Gaming PC for 1,950 dollars", fallback).budget, 1950);
 assert.equal(parseGoal("Development workstation under USD 2.4k", fallback).budget, 2400);
 assert.equal(parseGoal("Maximum performance under $7k", fallback).budget, 5000);
 assert.equal(parseGoal("Coding and virtual machines around $1.6k", fallback).useCase, "development");
+assert.equal(parseGoal("A future-proof gaming PC under $2k", fallback).priority, "upgradeability");
 
 for (const budget of [1200, 1800, 3000]) {
   for (const useCase of ["gaming", "streaming", "workstation", "development", "efficiency"]) {
     for (const resolution of ["1080p", "1440p", "4k", "productivity"]) {
-      for (const priority of ["balanced", "performance", "quiet", "efficiency"]) {
+      for (const priority of ["balanced", "performance", "quiet", "efficiency", "upgradeability"]) {
         const constraints = { budget, useCase, resolution, priority };
 
         for (const profile of ["balanced", "performance", "value"]) {
@@ -93,6 +94,9 @@ assert.match(performanceBuild.buildId, /^AIPO-[0-9A-F]{8}$/);
 assert.equal(performanceBuild.buildId, recommendBuild(comparisonConstraints, "performance").buildId);
 assert.notEqual(performanceBuild.buildId, valueBuild.buildId);
 assert.throws(() => recommendBuild(comparisonConstraints, "unknown"), RangeError);
+
+const upgradeableBuild = recommendBuild({ ...comparisonConstraints, priority: "upgradeability" });
+assert.ok(upgradeableBuild.upgradeReadiness.score >= recommendBuild(comparisonConstraints).upgradeReadiness.score);
 
 const unconstrainedWorkstation = recommendBuild({
   budget: 3000,

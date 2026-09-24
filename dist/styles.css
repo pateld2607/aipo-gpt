@@ -417,10 +417,15 @@ textarea:focus {
 }
 
 .balance-score {
-  margin: 0 0 18px;
+  margin: 0 0 7px;
   color: var(--cyan);
   font: 700 .7rem/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
+
+.budget-usage-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; margin: 0 0 18px; color: var(--muted); font-size: .72rem; }
+.budget-usage-row strong { color: #d5dfe3; font-size: .72rem; }
+.budget-progress { height: 7px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.07); }
+.budget-progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--acid)); transition: width .25s ease; }
 
 .profile-comparison {
   margin: -4px 0 18px;

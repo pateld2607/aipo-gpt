@@ -163,6 +163,10 @@ function render(constraints, { announce = false } = {}) {
   document.querySelector("#build-id").textContent = recommendation.buildId;
   document.querySelector("#search-stats").textContent = `${recommendation.searchStats.evaluated.toLocaleString()} combinations checked · ${recommendation.searchStats.compatible.toLocaleString()} compatible · ${recommendation.searchStats.affordable.toLocaleString()} within budget`;
   document.querySelector("#balance-score").textContent = `${recommendation.componentBalance.label} · ${recommendation.componentBalance.score}% balance`;
+  const budgetProgress = document.querySelector("#budget-progress");
+  document.querySelector("#budget-usage").textContent = `${recommendation.budgetUsage.percentage}% · ${recommendation.budgetUsage.label}`;
+  budgetProgress.setAttribute("aria-valuenow", String(Math.min(recommendation.budgetUsage.percentage, 100)));
+  budgetProgress.querySelector("span").style.width = `${Math.min(recommendation.budgetUsage.percentage, 100)}%`;
 
   const score = document.querySelector("#compatibility-score");
   score.textContent = `${compatible}/${recommendation.compatibilityChecks.length} safe · ${goalsMet}/${recommendation.requirementChecks.length} goals`;

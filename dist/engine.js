@@ -183,6 +183,12 @@ function describePowerReserve(parts, platformWatts) {
   return { watts, percentage, label };
 }
 
+function describeBudgetUsage(total, budget) {
+  const percentage = Math.round((total / budget) * 100);
+  const label = percentage <= 80 ? "Roomy" : percentage <= 95 ? "On target" : percentage <= 100 ? "Near limit" : "Over budget";
+  return { percentage, label, remaining: budget - total };
+}
+
 function buildFingerprint(parts, constraints, profile) {
   const input = JSON.stringify({
     parts: Object.values(parts).map((part) => part.id),
@@ -338,6 +344,7 @@ export function recommendBuild(constraints, profile = "balanced") {
     upgradeReadiness: assessUpgradeReadiness(selected.parts, selected.platformWatts),
     acoustics: describeAcoustics(selected.parts),
     powerReserve: describePowerReserve(selected.parts, selected.platformWatts),
+    budgetUsage: describeBudgetUsage(selected.total, constraints.budget),
     budgetAllocation,
     buildId: buildFingerprint(selected.parts, constraints, profile),
     searchStats: {

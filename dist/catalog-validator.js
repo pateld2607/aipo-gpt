@@ -5,8 +5,8 @@ const CATEGORY_RULES = {
   memory: ["memory", "capacity"],
   storage: ["capacity", "interface"],
   cooler: ["capacity", "noise", "kind"],
-  case: ["forms", "gpuClearance", "gpuSlots", "maxAirCoolerHeight", "maxRadiatorSize"],
-  psu: ["capacity", "connectors"],
+  case: ["forms", "psuForms", "gpuClearance", "gpuSlots", "maxAirCoolerHeight", "maxRadiatorSize"],
+  psu: ["capacity", "form", "connectors"],
 };
 
 export function validateCatalog(catalog) {

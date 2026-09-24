@@ -28,4 +28,8 @@ const missingStorageInterface = structuredClone(catalog);
 delete missingStorageInterface.storage[0].interface;
 assert.throws(() => validateCatalog(missingStorageInterface), /invalid interface/);
 
+const missingPsuForm = structuredClone(catalog);
+delete missingPsuForm.psu[0].form;
+assert.throws(() => validateCatalog(missingPsuForm), /invalid form/);
+
 console.log("catalog tests passed");

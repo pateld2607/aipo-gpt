@@ -99,6 +99,7 @@ function technicalChecks(parts, platformWatts) {
     { category: "compatibility", label: "Cooler capacity covers CPU package power", pass: parts.cooler.capacity >= parts.cpu.watts * 1.25 },
     { category: "compatibility", label: "Cooler dimensions fit the selected case", pass: coolerFits },
     { category: "compatibility", label: "Motherboard form factor fits the case", pass: parts.case.forms.includes(parts.motherboard.form) },
+    { category: "compatibility", label: "Power supply form factor fits the case", pass: parts.case.psuForms.includes(parts.psu.form) },
     { category: "compatibility", label: "GPU length fits with safety clearance", pass: parts.case.gpuClearance >= parts.gpu.length + 15 },
     { category: "compatibility", label: "GPU thickness fits the case expansion slots", pass: parts.case.gpuSlots >= parts.gpu.slots },
     { category: "compatibility", label: "PSU includes the GPU power connector", pass: parts.psu.connectors.includes(parts.gpu.powerConnector) },
@@ -149,7 +150,7 @@ function buildRationales(parts, constraints, platformWatts) {
     storage: `${parts.storage.capacity}TB of ${parts.storage.interface} storage balances working space with the total budget.`,
     cooler: `${coolerMargin}W of thermal margin remains above the CPU safety target; the cooler is ${coolerFit}.`,
     case: `${gpuClearance}mm of GPU length clearance and ${(parts.case.gpuSlots - parts.gpu.slots).toFixed(1)} expansion slots remain.`,
-    psu: `${powerHeadroom}W remains above estimated peak draw, with native ${parts.gpu.powerConnector} GPU power.`,
+    psu: `${powerHeadroom}W remains above estimated peak draw; the ${parts.psu.form} unit fits the case and includes native ${parts.gpu.powerConnector} GPU power.`,
   };
 }
 

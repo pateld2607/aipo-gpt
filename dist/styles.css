@@ -292,6 +292,14 @@ textarea:focus {
 .input-prefix > span { text-align: right; color: var(--muted); font-size: .92rem; }
 .input-prefix input { border: 0; }
 
+.budget-range {
+  width: 100%;
+  margin-top: 10px;
+  padding: 0;
+  accent-color: var(--acid);
+  cursor: pointer;
+}
+
 .form-actions {
   display: grid;
   grid-template-columns: 1fr auto;

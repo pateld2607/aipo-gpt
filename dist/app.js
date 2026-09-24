@@ -20,6 +20,7 @@ const form = document.querySelector("#optimizer-form");
 const fields = {
   goal: document.querySelector("#goal"),
   budget: document.querySelector("#budget"),
+  budgetRange: document.querySelector("#budget-range"),
   useCase: document.querySelector("#use-case"),
   resolution: document.querySelector("#resolution"),
   priority: document.querySelector("#priority"),
@@ -60,6 +61,7 @@ function currentConstraints() {
 function syncGoalToFields() {
   const parsed = parseGoal(fields.goal.value, currentConstraints());
   fields.budget.value = parsed.budget;
+  fields.budgetRange.value = parsed.budget;
   fields.useCase.value = parsed.useCase;
   fields.resolution.value = parsed.resolution;
   fields.priority.value = parsed.priority;
@@ -90,6 +92,7 @@ function restoreFromUrl(fallback) {
   if (ALLOWED_OPTIONS.profile.has(params.get("profile"))) activeProfile = params.get("profile");
   if (params.get("goal")) fields.goal.value = params.get("goal");
   fields.budget.value = restored.budget;
+  fields.budgetRange.value = restored.budget;
   fields.useCase.value = restored.useCase;
   fields.resolution.value = restored.resolution;
   fields.priority.value = restored.priority;
@@ -337,6 +340,7 @@ loadLocalButton.addEventListener("click", () => {
   }
   fields.goal.value = saved.goal;
   fields.budget.value = saved.budget;
+  fields.budgetRange.value = saved.budget;
   fields.useCase.value = saved.useCase;
   fields.resolution.value = saved.resolution;
   fields.priority.value = saved.priority;
@@ -353,6 +357,7 @@ loadLocalButton.addEventListener("click", () => {
 resetButton.addEventListener("click", () => {
   fields.goal.value = DEFAULT_STATE.goal;
   fields.budget.value = DEFAULT_STATE.budget;
+  fields.budgetRange.value = DEFAULT_STATE.budget;
   fields.useCase.value = DEFAULT_STATE.useCase;
   fields.resolution.value = DEFAULT_STATE.resolution;
   fields.priority.value = DEFAULT_STATE.priority;
@@ -385,6 +390,15 @@ form.addEventListener("invalid", (event) => {
 
 form.addEventListener("input", () => {
   formError.textContent = "";
+});
+
+fields.budgetRange.addEventListener("input", () => {
+  fields.budget.value = fields.budgetRange.value;
+});
+
+fields.budget.addEventListener("input", () => {
+  const budget = Number(fields.budget.value);
+  if (Number.isFinite(budget) && budget >= 800 && budget <= 5000) fields.budgetRange.value = budget;
 });
 
 for (const button of profileButtons) {

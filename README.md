@@ -15,6 +15,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Visible cooler-noise classification for quiet-build decisions
 - Workload-specific CPU core targets with core and thread explanations
 - Accessible validation for missing goals and out-of-range budgets
+- Synchronized number and range controls for quick, precise budget changes
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile
 - Keyboard skip navigation, result focus management, and screen-reader build summaries

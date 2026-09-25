@@ -33,6 +33,8 @@ export function parseGoal(goal, fallback) {
 
   const requestedMemory = text.match(/\b(32|64)\s*gb\s*(?:ram|memory)\b/);
   const memoryTarget = requestedMemory ? requestedMemory[1] : (fallback.memoryTarget ?? "auto");
+  const requestedStorage = text.match(/\b(1|2)\s*tb\s*(?:ssd|storage|drive)?\b/);
+  const storageTarget = requestedStorage ? requestedStorage[1] : (fallback.storageTarget ?? "auto");
 
   return {
     budget: clamp(parsedBudget, 800, 5000),
@@ -40,6 +42,7 @@ export function parseGoal(goal, fallback) {
     resolution,
     priority,
     memoryTarget,
+    storageTarget,
   };
 }
 
@@ -77,7 +80,10 @@ function requirementsFor(constraints) {
   const memory = constraints.memoryTarget && constraints.memoryTarget !== "auto"
     ? Number(constraints.memoryTarget)
     : workload.memory;
-  return { ...workload, memory };
+  const storage = constraints.storageTarget && constraints.storageTarget !== "auto"
+    ? Number(constraints.storageTarget)
+    : workload.storage;
+  return { ...workload, memory, storage };
 }
 
 function targetsFor(constraints, profile) {
@@ -94,7 +100,7 @@ function targetsFor(constraints, profile) {
     gpu: clamp(tier + (performance || ai ? 1 : 0) + profileLift, 2, 6),
     motherboard: clamp(tier + profileLift + (upgradeability ? 1 : 0), 2, 4),
     memory: constraints.memoryTarget === "64" || workstation || ai || constraints.budget >= 2300 ? 4 : 2,
-    storage: constraints.budget >= 1450 && profile !== "value" ? 4 : 2,
+    storage: constraints.storageTarget === "2" || (constraints.budget >= 1450 && profile !== "value") ? 4 : 2,
   };
 }
 

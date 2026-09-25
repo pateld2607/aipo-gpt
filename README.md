@@ -16,6 +16,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Visible cooler-noise classification for quiet-build decisions
 - Workload-specific CPU core targets with core and thread explanations
 - Explicit automatic, 32GB, or 64GB system-memory targets, including natural-language parsing
+- Explicit automatic, 1TB, or 2TB storage targets, including natural-language parsing
 - Accessible validation for missing goals and out-of-range budgets
 - Synchronized number and range controls for quick, precise budget changes
 - One-click gaming, streaming, and workstation goal presets

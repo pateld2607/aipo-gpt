@@ -10,6 +10,7 @@ assert.deepEqual(parsed, {
   resolution: "4k",
   priority: "quiet",
   memoryTarget: "auto",
+  storageTarget: "auto",
 });
 
 const resolutionNotBudget = parseGoal(
@@ -28,6 +29,7 @@ assert.equal(parseGoal("Coding and virtual machines around $1.6k", fallback).use
 assert.equal(parseGoal("A future-proof gaming PC under $2k", fallback).priority, "upgradeability");
 assert.equal(parseGoal("Local LLM and machine learning workstation under $3k", fallback).useCase, "ai");
 assert.equal(parseGoal("A workstation with 64GB RAM around $2.5k", fallback).memoryTarget, "64");
+assert.equal(parseGoal("A development PC with a 2TB SSD under $2k", fallback).storageTarget, "2");
 
 for (const budget of [1200, 1800, 3000]) {
   for (const useCase of ["gaming", "streaming", "workstation", "development", "ai", "efficiency"]) {
@@ -107,6 +109,9 @@ assert.ok(upgradeableBuild.upgradeReadiness.score >= recommendBuild(comparisonCo
 
 const highMemoryBuild = recommendBuild({ ...comparisonConstraints, memoryTarget: "64" });
 assert.equal(highMemoryBuild.parts.memory.capacity, 64);
+
+const highStorageBuild = recommendBuild({ ...comparisonConstraints, storageTarget: "2" });
+assert.equal(highStorageBuild.parts.storage.capacity, 2);
 
 const unconstrainedWorkstation = recommendBuild({
   budget: 3000,

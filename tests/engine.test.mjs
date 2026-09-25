@@ -11,6 +11,7 @@ assert.deepEqual(parsed, {
   priority: "quiet",
   memoryTarget: "auto",
   storageTarget: "auto",
+  noiseTarget: "auto",
 });
 
 const resolutionNotBudget = parseGoal(
@@ -30,6 +31,7 @@ assert.equal(parseGoal("A future-proof gaming PC under $2k", fallback).priority,
 assert.equal(parseGoal("Local LLM and machine learning workstation under $3k", fallback).useCase, "ai");
 assert.equal(parseGoal("A workstation with 64GB RAM around $2.5k", fallback).memoryTarget, "64");
 assert.equal(parseGoal("A development PC with a 2TB SSD under $2k", fallback).storageTarget, "2");
+assert.equal(parseGoal("A quiet gaming PC under 24dBA for $2k", fallback).noiseTarget, "24");
 
 for (const budget of [1200, 1800, 3000]) {
   for (const useCase of ["gaming", "streaming", "workstation", "development", "ai", "efficiency"]) {
@@ -68,7 +70,7 @@ for (const budget of [1200, 1800, 3000]) {
           assert.ok(result.goalRecovery.total >= constraints.budget || result.goalRecovery.additionalBudget === 0);
           assert.match(result.goalRecovery.buildId, /^AIPO-[0-9A-F]{8}$/);
           assert.equal(result.compatibilityChecks.length, 15);
-          assert.equal(result.requirementChecks.length, 7);
+          assert.equal(result.requirementChecks.length, 8);
           assert.ok(result.compatibilityChecks.every((check) => check.pass));
           assert.ok(result.parts.gpu.vram >= 12);
           assert.ok(result.parts.cpu.cores >= 6);
@@ -112,6 +114,9 @@ assert.equal(highMemoryBuild.parts.memory.capacity, 64);
 
 const highStorageBuild = recommendBuild({ ...comparisonConstraints, storageTarget: "2" });
 assert.equal(highStorageBuild.parts.storage.capacity, 2);
+
+const lowNoiseBuild = recommendBuild({ ...comparisonConstraints, noiseTarget: "24" });
+assert.ok(lowNoiseBuild.parts.cooler.noise <= 24);
 
 const unconstrainedWorkstation = recommendBuild({
   budget: 3000,

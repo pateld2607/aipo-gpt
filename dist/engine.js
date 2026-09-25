@@ -35,6 +35,8 @@ export function parseGoal(goal, fallback) {
   const memoryTarget = requestedMemory ? requestedMemory[1] : (fallback.memoryTarget ?? "auto");
   const requestedStorage = text.match(/\b(1|2)\s*tb\s*(?:ssd|storage|drive)?\b/);
   const storageTarget = requestedStorage ? requestedStorage[1] : (fallback.storageTarget ?? "auto");
+  const requestedNoise = text.match(/(?:under|below|max(?:imum)?)?\s*(24|28|32)\s*dba\b/);
+  const noiseTarget = requestedNoise ? requestedNoise[1] : (fallback.noiseTarget ?? "auto");
 
   return {
     budget: clamp(parsedBudget, 800, 5000),
@@ -43,6 +45,7 @@ export function parseGoal(goal, fallback) {
     priority,
     memoryTarget,
     storageTarget,
+    noiseTarget,
   };
 }
 
@@ -83,7 +86,10 @@ function requirementsFor(constraints) {
   const storage = constraints.storageTarget && constraints.storageTarget !== "auto"
     ? Number(constraints.storageTarget)
     : workload.storage;
-  return { ...workload, memory, storage };
+  const noise = constraints.noiseTarget && constraints.noiseTarget !== "auto"
+    ? Number(constraints.noiseTarget)
+    : constraints.priority === "quiet" ? 24 : 32;
+  return { ...workload, memory, storage, noise };
 }
 
 function targetsFor(constraints, profile) {
@@ -136,6 +142,7 @@ function goalChecks(parts, constraints, total) {
     { key: "vram", category: "goal", label: `${requirements.vram}GB graphics memory target is met`, pass: parts.gpu.vram >= requirements.vram },
     { key: "memory", category: "goal", label: `${requirements.memory}GB memory target is met`, pass: parts.memory.capacity >= requirements.memory },
     { key: "storage", category: "goal", label: `${requirements.storage}TB storage target is met`, pass: parts.storage.capacity >= requirements.storage },
+    { key: "noise", category: "goal", label: `${requirements.noise}dBA cooler-noise ceiling is met`, pass: parts.cooler.noise <= requirements.noise },
     { key: "budget", category: "goal", label: "Estimated price stays within the stated budget", pass: total <= constraints.budget },
   ];
 }
@@ -148,6 +155,7 @@ function shortfallAdvice(requirementChecks) {
     vram: "Graphics-memory target missed: select a GPU with more VRAM for this workload.",
     memory: "System-memory target missed: increase RAM capacity for larger projects and multitasking.",
     storage: "Storage target missed: add capacity for applications, recordings, or project files.",
+    noise: "Noise target missed: select a quieter cooler or relax the acoustic ceiling.",
     budget: "Budget target missed: use the best-value profile or increase the spending limit.",
   };
 

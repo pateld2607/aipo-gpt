@@ -127,6 +127,16 @@
                 <option value="2">At least 2TB</option>
               </select>
             </label>
+
+            <label class="field" for="noise-target">
+              <span>Cooler noise ceiling</span>
+              <select id="noise-target" name="noiseTarget">
+                <option value="auto" selected>Automatic</option>
+                <option value="24">24dBA — quiet</option>
+                <option value="28">28dBA — balanced</option>
+                <option value="32">32dBA — unrestricted</option>
+              </select>
+            </label>
           </div>
 
           <div class="form-actions">
@@ -149,7 +159,7 @@
               <h2 id="results-heading" tabindex="-1">Recommended system</h2>
               <p id="recommendation-summary">Balanced for smooth 1440p gaming and occasional streaming.</p>
             </div>
-            <span class="compatibility-score" id="compatibility-score">15/15 safe · 7/7 goals</span>
+            <span class="compatibility-score" id="compatibility-score">15/15 safe · 8/8 goals</span>
           </div>
 
           <div class="profile-switcher" role="group" aria-label="Recommendation profile">

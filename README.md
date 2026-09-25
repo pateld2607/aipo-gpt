@@ -14,6 +14,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Upgrade-readiness scoring for power, memory, motherboard, and case headroom
 - Upgrade-headroom priority that favors stronger expansion paths and parses future-proofing language
 - Visible cooler-noise classification for quiet-build decisions
+- Automatic or explicit 24dBA, 28dBA, and 32dBA cooler-noise ceilings with goal validation
 - Workload-specific CPU core targets with core and thread explanations
 - Explicit automatic, 32GB, or 64GB system-memory targets, including natural-language parsing
 - Explicit automatic, 1TB, or 2TB storage targets, including natural-language parsing

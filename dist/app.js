@@ -8,6 +8,7 @@ const DEFAULT_STATE = Object.freeze({
   priority: "quiet",
   memoryTarget: "auto",
   storageTarget: "auto",
+  noiseTarget: "auto",
   profile: "balanced",
 });
 const SAVED_BUILD_KEY = "aipo-gpt-saved-build-v1";
@@ -18,6 +19,7 @@ const ALLOWED_OPTIONS = {
   profile: new Set(["balanced", "performance", "value"]),
   memoryTarget: new Set(["auto", "32", "64"]),
   storageTarget: new Set(["auto", "1", "2"]),
+  noiseTarget: new Set(["auto", "24", "28", "32"]),
 };
 
 const form = document.querySelector("#optimizer-form");
@@ -30,6 +32,7 @@ const fields = {
   priority: document.querySelector("#priority"),
   memoryTarget: document.querySelector("#memory-target"),
   storageTarget: document.querySelector("#storage-target"),
+  noiseTarget: document.querySelector("#noise-target"),
 };
 const profileButtons = [...document.querySelectorAll("[data-profile]")];
 const presetButtons = [...document.querySelectorAll("[data-preset]")];
@@ -66,6 +69,7 @@ function currentConstraints() {
     priority: fields.priority.value,
     memoryTarget: fields.memoryTarget.value,
     storageTarget: fields.storageTarget.value,
+    noiseTarget: fields.noiseTarget.value,
   };
 }
 
@@ -78,6 +82,7 @@ function syncGoalToFields() {
   fields.priority.value = parsed.priority;
   fields.memoryTarget.value = parsed.memoryTarget;
   fields.storageTarget.value = parsed.storageTarget;
+  fields.noiseTarget.value = parsed.noiseTarget;
   return parsed;
 }
 
@@ -89,6 +94,7 @@ function updateShareUrl(constraints) {
     priority: constraints.priority,
     memoryTarget: constraints.memoryTarget,
     storageTarget: constraints.storageTarget,
+    noiseTarget: constraints.noiseTarget,
     profile: activeProfile,
     goal: fields.goal.value.trim(),
   });
@@ -105,6 +111,7 @@ function restoreFromUrl(fallback) {
     priority: ALLOWED_OPTIONS.priority.has(params.get("priority")) ? params.get("priority") : fallback.priority,
     memoryTarget: ALLOWED_OPTIONS.memoryTarget.has(params.get("memoryTarget")) ? params.get("memoryTarget") : fallback.memoryTarget,
     storageTarget: ALLOWED_OPTIONS.storageTarget.has(params.get("storageTarget")) ? params.get("storageTarget") : fallback.storageTarget,
+    noiseTarget: ALLOWED_OPTIONS.noiseTarget.has(params.get("noiseTarget")) ? params.get("noiseTarget") : fallback.noiseTarget,
   };
   if (ALLOWED_OPTIONS.profile.has(params.get("profile"))) activeProfile = params.get("profile");
   if (params.get("goal")) fields.goal.value = params.get("goal");
@@ -115,6 +122,7 @@ function restoreFromUrl(fallback) {
   fields.priority.value = restored.priority;
   fields.memoryTarget.value = restored.memoryTarget;
   fields.storageTarget.value = restored.storageTarget;
+  fields.noiseTarget.value = restored.noiseTarget;
   return restored;
 }
 
@@ -126,13 +134,15 @@ function readSavedBuild() {
     if (!Number.isFinite(budget) || budget < 800 || budget > 5000) return null;
     const memoryTarget = saved.memoryTarget ?? "auto";
     const storageTarget = saved.storageTarget ?? "auto";
+    const noiseTarget = saved.noiseTarget ?? "auto";
     if (!ALLOWED_OPTIONS.useCase.has(saved.useCase)
       || !ALLOWED_OPTIONS.resolution.has(saved.resolution)
       || !ALLOWED_OPTIONS.priority.has(saved.priority)
       || !ALLOWED_OPTIONS.profile.has(saved.profile)
       || !ALLOWED_OPTIONS.memoryTarget.has(memoryTarget)
-      || !ALLOWED_OPTIONS.storageTarget.has(storageTarget)) return null;
-    return { ...saved, budget, memoryTarget, storageTarget };
+      || !ALLOWED_OPTIONS.storageTarget.has(storageTarget)
+      || !ALLOWED_OPTIONS.noiseTarget.has(noiseTarget)) return null;
+    return { ...saved, budget, memoryTarget, storageTarget, noiseTarget };
   } catch {
     return null;
   }
@@ -339,13 +349,15 @@ importInput.addEventListener("change", async () => {
     const budget = Number(constraints?.budget);
     const memoryTarget = constraints?.memoryTarget ?? "auto";
     const storageTarget = constraints?.storageTarget ?? "auto";
+    const noiseTarget = constraints?.noiseTarget ?? "auto";
     const valid = Number.isFinite(budget) && budget >= 800 && budget <= 5000
       && ALLOWED_OPTIONS.useCase.has(constraints?.useCase)
       && ALLOWED_OPTIONS.resolution.has(constraints?.resolution)
       && ALLOWED_OPTIONS.priority.has(constraints?.priority)
       && ALLOWED_OPTIONS.profile.has(payload?.profile)
       && ALLOWED_OPTIONS.memoryTarget.has(memoryTarget)
-      && ALLOWED_OPTIONS.storageTarget.has(storageTarget);
+      && ALLOWED_OPTIONS.storageTarget.has(storageTarget)
+      && ALLOWED_OPTIONS.noiseTarget.has(noiseTarget);
     if (!valid) throw new TypeError("Invalid build plan");
 
     fields.goal.value = typeof payload.goal === "string" && payload.goal.length >= 12
@@ -358,8 +370,9 @@ importInput.addEventListener("change", async () => {
     fields.priority.value = constraints.priority;
     fields.memoryTarget.value = memoryTarget;
     fields.storageTarget.value = storageTarget;
+    fields.noiseTarget.value = noiseTarget;
     activeProfile = payload.profile;
-    render({ ...constraints, budget, memoryTarget, storageTarget }, { announce: true });
+    render({ ...constraints, budget, memoryTarget, storageTarget, noiseTarget }, { announce: true });
     exportStatus.textContent = "JSON build plan imported and recalculated.";
   } catch {
     exportStatus.textContent = "That file is not a valid AIPO-GPT build plan.";
@@ -416,6 +429,7 @@ loadLocalButton.addEventListener("click", () => {
   fields.priority.value = saved.priority;
   fields.memoryTarget.value = saved.memoryTarget;
   fields.storageTarget.value = saved.storageTarget;
+  fields.noiseTarget.value = saved.noiseTarget;
   activeProfile = saved.profile;
   render({
     budget: saved.budget,
@@ -424,6 +438,7 @@ loadLocalButton.addEventListener("click", () => {
     priority: saved.priority,
     memoryTarget: saved.memoryTarget,
     storageTarget: saved.storageTarget,
+    noiseTarget: saved.noiseTarget,
   }, { announce: true });
   exportStatus.textContent = "Saved build restored.";
 });
@@ -448,6 +463,7 @@ resetButton.addEventListener("click", () => {
   fields.priority.value = DEFAULT_STATE.priority;
   fields.memoryTarget.value = DEFAULT_STATE.memoryTarget;
   fields.storageTarget.value = DEFAULT_STATE.storageTarget;
+  fields.noiseTarget.value = DEFAULT_STATE.noiseTarget;
   activeProfile = DEFAULT_STATE.profile;
   formError.textContent = "";
   exportStatus.textContent = "";
@@ -458,6 +474,7 @@ resetButton.addEventListener("click", () => {
     priority: DEFAULT_STATE.priority,
     memoryTarget: DEFAULT_STATE.memoryTarget,
     storageTarget: DEFAULT_STATE.storageTarget,
+    noiseTarget: DEFAULT_STATE.noiseTarget,
   });
   resultStatus.textContent = "Optimizer defaults restored.";
   fields.goal.focus();

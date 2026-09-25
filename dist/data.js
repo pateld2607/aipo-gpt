@@ -4,13 +4,13 @@ export const catalog = {
   cpu: [
     { id: "r5-7600", name: "AMD Ryzen 5 7600", price: 189, socket: "AM5", memory: "DDR5", watts: 88, cores: 6, threads: 12, tier: 2, strengths: ["gaming", "efficiency"] },
     { id: "r7-9700x", name: "AMD Ryzen 7 9700X", price: 329, socket: "AM5", memory: "DDR5", watts: 105, cores: 8, threads: 16, tier: 4, strengths: ["gaming", "streaming", "development", "efficiency"] },
-    { id: "r9-9900x", name: "AMD Ryzen 9 9900X", price: 449, socket: "AM5", memory: "DDR5", watts: 162, cores: 12, threads: 24, tier: 5, strengths: ["workstation", "streaming", "development"] },
+    { id: "r9-9900x", name: "AMD Ryzen 9 9900X", price: 449, socket: "AM5", memory: "DDR5", watts: 162, cores: 12, threads: 24, tier: 5, strengths: ["workstation", "streaming", "development", "ai"] },
   ],
   gpu: [
     { id: "rx-7700xt", name: "Radeon RX 7700 XT 12GB", price: 399, watts: 245, length: 267, slots: 2.5, vram: 12, powerConnector: "2x8-pin", tier: 2, strengths: ["1080p", "1440p", "value"] },
-    { id: "rtx-5070", name: "GeForce RTX 5070 12GB", price: 549, watts: 250, length: 304, slots: 2.5, vram: 12, powerConnector: "12V-2x6", tier: 4, strengths: ["1440p", "streaming", "workstation"] },
+    { id: "rtx-5070", name: "GeForce RTX 5070 12GB", price: 549, watts: 250, length: 304, slots: 2.5, vram: 12, powerConnector: "12V-2x6", tier: 4, strengths: ["1440p", "streaming", "workstation", "ai"] },
     { id: "rx-9070xt", name: "Radeon RX 9070 XT 16GB", price: 699, watts: 304, length: 320, slots: 3, vram: 16, powerConnector: "3x8-pin", tier: 5, strengths: ["1440p", "4k", "value"] },
-    { id: "rtx-5080", name: "GeForce RTX 5080 16GB", price: 999, watts: 360, length: 329, slots: 3.5, vram: 16, powerConnector: "12V-2x6", tier: 6, strengths: ["4k", "streaming", "workstation"] },
+    { id: "rtx-5080", name: "GeForce RTX 5080 16GB", price: 999, watts: 360, length: 329, slots: 3.5, vram: 16, powerConnector: "12V-2x6", tier: 6, strengths: ["4k", "streaming", "workstation", "ai"] },
   ],
   motherboard: [
     { id: "b650m", name: "B650M WiFi — mATX", price: 159, socket: "AM5", memory: "DDR5", memorySlots: 4, maxMemory: 128, storageInterfaces: ["PCIe 4.0 NVMe"], form: "mATX", tier: 2 },

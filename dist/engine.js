@@ -12,7 +12,8 @@ export function parseGoal(goal, fallback) {
   const parsedBudget = budgetNumber * (["k", "grand"].includes(amount?.[2]) ? 1000 : 1);
 
   let useCase = fallback.useCase;
-  if (/render|editing|creative|workstation|cad|modeling/.test(text)) useCase = "workstation";
+  if (/machine learning|deep learning|local ai|\bllm\b|ai model|stable diffusion/.test(text)) useCase = "ai";
+  else if (/render|editing|creative|workstation|cad|modeling/.test(text)) useCase = "workstation";
   else if (/stream/.test(text)) useCase = "streaming";
   else if (/\bcode|coding|developer|development|programming|virtual machine|\bvm\b/.test(text)) useCase = "development";
   else if (/efficient|everyday|office|school/.test(text)) useCase = "efficiency";
@@ -65,6 +66,7 @@ function requirementsFor(constraints) {
     streaming: { cpuTier: 4, cores: 8, gpuTier: Math.max(4, resolutionGpuTier), vram: Math.max(12, resolutionVram), memory: 32, storage: 2 },
     workstation: { cpuTier: 5, cores: 12, gpuTier: Math.max(4, resolutionGpuTier), vram: Math.max(16, resolutionVram), memory: 64, storage: 2 },
     development: { cpuTier: 4, cores: 8, gpuTier: 2, vram: 8, memory: 32, storage: 2 },
+    ai: { cpuTier: 5, cores: 12, gpuTier: 5, vram: 16, memory: 64, storage: 2 },
     efficiency: { cpuTier: 2, cores: 6, gpuTier: 2, vram: 8, memory: 32, storage: 1 },
   }[constraints.useCase];
 
@@ -76,12 +78,13 @@ function targetsFor(constraints, profile) {
   const performance = constraints.priority === "performance";
   const workstation = constraints.useCase === "workstation";
   const development = constraints.useCase === "development";
+  const ai = constraints.useCase === "ai";
   const upgradeability = constraints.priority === "upgradeability";
   const profileLift = profile === "performance" ? 1 : profile === "value" ? -1 : 0;
 
   return {
-    cpu: clamp(tier + (workstation || development ? 1 : 0) - (constraints.useCase === "gaming" ? 1 : 0) + profileLift, 2, 5),
-    gpu: clamp(tier + (performance ? 1 : 0) + profileLift, 2, 6),
+    cpu: clamp(tier + (workstation || development || ai ? 1 : 0) - (constraints.useCase === "gaming" ? 1 : 0) + profileLift, 2, 5),
+    gpu: clamp(tier + (performance || ai ? 1 : 0) + profileLift, 2, 6),
     motherboard: clamp(tier + profileLift + (upgradeability ? 1 : 0), 2, 4),
     memory: workstation || constraints.budget >= 2300 ? 4 : 2,
     storage: constraints.budget >= 1450 && profile !== "value" ? 4 : 2,
@@ -210,6 +213,7 @@ function assessComponentBalance(parts, constraints) {
     streaming: 0,
     workstation: 0,
     development: -2,
+    ai: 1,
     efficiency: 0,
   }[constraints.useCase];
   const actualGpuLead = parts.gpu.tier - parts.cpu.tier;
@@ -220,8 +224,8 @@ function assessComponentBalance(parts, constraints) {
 
 function candidateScore(candidate, constraints, profile, targets) {
   const { parts, total, platformWatts } = candidate;
-  const cpuWeight = constraints.useCase === "workstation" ? 1.8 : constraints.useCase === "development" ? 1.55 : constraints.useCase === "streaming" ? 1.35 : 1;
-  const gpuWeight = constraints.resolution === "4k" ? 2 : constraints.resolution === "1440p" ? 1.65 : 1.25;
+  const cpuWeight = constraints.useCase === "workstation" ? 1.8 : constraints.useCase === "ai" ? 1.6 : constraints.useCase === "development" ? 1.55 : constraints.useCase === "streaming" ? 1.35 : 1;
+  const gpuWeight = constraints.useCase === "ai" ? 2.2 : constraints.resolution === "4k" ? 2 : constraints.resolution === "1440p" ? 1.65 : 1.25;
   const performance = parts.cpu.tier * cpuWeight + parts.gpu.tier * gpuWeight + parts.memory.tier * .28 + parts.storage.tier * .18;
   const workloadFit = (parts.cpu.strengths.includes(constraints.useCase) ? 2.2 : 0)
     + (parts.gpu.strengths.includes(constraints.resolution) ? 2.4 : 0)
@@ -375,6 +379,7 @@ function buildSummary({ useCase, resolution, priority }, profile) {
     streaming: `${resolution} gaming and streaming`,
     workstation: "creative and technical workloads",
     development: "software development and local virtual machines",
+    ai: "local AI and machine-learning workloads",
     efficiency: "everyday productivity",
   }[useCase];
 

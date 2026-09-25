@@ -10,7 +10,7 @@ const DEFAULT_STATE = Object.freeze({
 });
 const SAVED_BUILD_KEY = "aipo-gpt-saved-build-v1";
 const ALLOWED_OPTIONS = {
-  useCase: new Set(["gaming", "streaming", "workstation", "development", "efficiency"]),
+  useCase: new Set(["gaming", "streaming", "workstation", "development", "ai", "efficiency"]),
   resolution: new Set(["1080p", "1440p", "4k", "productivity"]),
   priority: new Set(["balanced", "performance", "quiet", "efficiency", "upgradeability"]),
   profile: new Set(["balanced", "performance", "value"]),

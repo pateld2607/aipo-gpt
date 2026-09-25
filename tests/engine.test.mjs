@@ -25,9 +25,10 @@ assert.equal(parseGoal("Development workstation under USD 2.4k", fallback).budge
 assert.equal(parseGoal("Maximum performance under $7k", fallback).budget, 5000);
 assert.equal(parseGoal("Coding and virtual machines around $1.6k", fallback).useCase, "development");
 assert.equal(parseGoal("A future-proof gaming PC under $2k", fallback).priority, "upgradeability");
+assert.equal(parseGoal("Local LLM and machine learning workstation under $3k", fallback).useCase, "ai");
 
 for (const budget of [1200, 1800, 3000]) {
-  for (const useCase of ["gaming", "streaming", "workstation", "development", "efficiency"]) {
+  for (const useCase of ["gaming", "streaming", "workstation", "development", "ai", "efficiency"]) {
     for (const resolution of ["1080p", "1440p", "4k", "productivity"]) {
       for (const priority of ["balanced", "performance", "quiet", "efficiency", "upgradeability"]) {
         const constraints = { budget, useCase, resolution, priority };

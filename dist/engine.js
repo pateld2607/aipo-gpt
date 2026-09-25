@@ -100,6 +100,7 @@ function technicalChecks(parts, platformWatts) {
     { category: "compatibility", label: "RAM kit fits the available motherboard slots", pass: parts.memory.modules <= parts.motherboard.memorySlots },
     { category: "compatibility", label: "Storage interface is supported by the motherboard", pass: parts.motherboard.storageInterfaces.includes(parts.storage.interface) },
     { category: "compatibility", label: "Cooler capacity covers CPU package power", pass: parts.cooler.capacity >= parts.cpu.watts * 1.25 },
+    { category: "compatibility", label: "Cooler mounting hardware supports the CPU socket", pass: parts.cooler.sockets.includes(parts.cpu.socket) },
     { category: "compatibility", label: "Cooler dimensions fit the selected case", pass: coolerFits },
     { category: "compatibility", label: "Motherboard form factor fits the case", pass: parts.case.forms.includes(parts.motherboard.form) },
     { category: "compatibility", label: "Power supply form factor fits the case", pass: parts.case.psuForms.includes(parts.psu.form) },
@@ -151,7 +152,7 @@ function buildRationales(parts, constraints, platformWatts) {
     motherboard: `${parts.motherboard.socket} and ${parts.motherboard.memory} support match the selected processor and memory, with capacity support up to ${parts.motherboard.maxMemory}GB.`,
     memory: `${parts.memory.capacity}GB of ${parts.memory.memory} uses ${parts.memory.modules} of ${parts.motherboard.memorySlots} motherboard slots.`,
     storage: `${parts.storage.capacity}TB of ${parts.storage.interface} storage balances working space with the total budget.`,
-    cooler: `${coolerMargin}W of thermal margin remains above the CPU safety target; the cooler is ${coolerFit}.`,
+    cooler: `${coolerMargin}W of thermal margin remains above the CPU safety target; ${parts.cpu.socket} mounting is included and the cooler is ${coolerFit}.`,
     case: `${gpuClearance}mm of GPU length clearance and ${(parts.case.gpuSlots - parts.gpu.slots).toFixed(1)} expansion slots remain.`,
     psu: `${powerHeadroom}W remains above estimated peak draw; the ${parts.psu.form} unit fits the case and includes native ${parts.gpu.powerConnector} GPU power.`,
   };

@@ -36,4 +36,8 @@ const missingMemoryModules = structuredClone(catalog);
 delete missingMemoryModules.memory[0].modules;
 assert.throws(() => validateCatalog(missingMemoryModules), /invalid modules/);
 
+const missingCoolerSockets = structuredClone(catalog);
+missingCoolerSockets.cooler[0].sockets = [];
+assert.throws(() => validateCatalog(missingCoolerSockets), /invalid sockets/);
+
 console.log("catalog tests passed");

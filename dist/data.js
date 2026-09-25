@@ -25,9 +25,9 @@ export const catalog = {
     { id: "2tb-nvme", name: "2TB PCIe 4.0 NVMe SSD", price: 139, capacity: 2, interface: "PCIe 4.0 NVMe", tier: 4 },
   ],
   cooler: [
-    { id: "tower-120", name: "120mm dual-fan air cooler", price: 49, capacity: 150, noise: 27, kind: "air", height: 155, tier: 2 },
-    { id: "tower-140", name: "140mm premium air cooler", price: 89, capacity: 220, noise: 23, kind: "air", height: 160, tier: 4 },
-    { id: "aio-360", name: "360mm liquid cooler", price: 139, capacity: 300, noise: 30, kind: "liquid", radiatorSize: 360, tier: 5 },
+    { id: "tower-120", name: "120mm dual-fan air cooler", price: 49, capacity: 150, noise: 27, sockets: ["AM5"], kind: "air", height: 155, tier: 2 },
+    { id: "tower-140", name: "140mm premium air cooler", price: 89, capacity: 220, noise: 23, sockets: ["AM5"], kind: "air", height: 160, tier: 4 },
+    { id: "aio-360", name: "360mm liquid cooler", price: 139, capacity: 300, noise: 30, sockets: ["AM5"], kind: "liquid", radiatorSize: 360, tier: 5 },
   ],
   case: [
     { id: "air-mini", name: "Compact Airflow mATX Case", price: 79, forms: ["mATX"], psuForms: ["ATX", "SFX"], gpuClearance: 330, gpuSlots: 3, maxAirCoolerHeight: 160, maxRadiatorSize: 240, tier: 2 },

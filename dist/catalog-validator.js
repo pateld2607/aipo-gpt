@@ -4,7 +4,7 @@ const CATEGORY_RULES = {
   motherboard: ["socket", "memory", "memorySlots", "maxMemory", "storageInterfaces", "form"],
   memory: ["memory", "capacity", "modules"],
   storage: ["capacity", "interface"],
-  cooler: ["capacity", "noise", "kind"],
+  cooler: ["capacity", "noise", "sockets", "kind"],
   case: ["forms", "psuForms", "gpuClearance", "gpuSlots", "maxAirCoolerHeight", "maxRadiatorSize"],
   psu: ["capacity", "form", "connectors"],
 };

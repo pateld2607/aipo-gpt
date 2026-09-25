@@ -6,6 +6,7 @@ const DEFAULT_STATE = Object.freeze({
   useCase: "gaming",
   resolution: "1440p",
   priority: "quiet",
+  memoryTarget: "auto",
   profile: "balanced",
 });
 const SAVED_BUILD_KEY = "aipo-gpt-saved-build-v1";
@@ -14,6 +15,7 @@ const ALLOWED_OPTIONS = {
   resolution: new Set(["1080p", "1440p", "4k", "productivity"]),
   priority: new Set(["balanced", "performance", "quiet", "efficiency", "upgradeability"]),
   profile: new Set(["balanced", "performance", "value"]),
+  memoryTarget: new Set(["auto", "32", "64"]),
 };
 
 const form = document.querySelector("#optimizer-form");
@@ -24,6 +26,7 @@ const fields = {
   useCase: document.querySelector("#use-case"),
   resolution: document.querySelector("#resolution"),
   priority: document.querySelector("#priority"),
+  memoryTarget: document.querySelector("#memory-target"),
 };
 const profileButtons = [...document.querySelectorAll("[data-profile]")];
 const presetButtons = [...document.querySelectorAll("[data-preset]")];
@@ -58,6 +61,7 @@ function currentConstraints() {
     useCase: fields.useCase.value,
     resolution: fields.resolution.value,
     priority: fields.priority.value,
+    memoryTarget: fields.memoryTarget.value,
   };
 }
 
@@ -68,6 +72,7 @@ function syncGoalToFields() {
   fields.useCase.value = parsed.useCase;
   fields.resolution.value = parsed.resolution;
   fields.priority.value = parsed.priority;
+  fields.memoryTarget.value = parsed.memoryTarget;
   return parsed;
 }
 
@@ -77,6 +82,7 @@ function updateShareUrl(constraints) {
     useCase: constraints.useCase,
     resolution: constraints.resolution,
     priority: constraints.priority,
+    memoryTarget: constraints.memoryTarget,
     profile: activeProfile,
     goal: fields.goal.value.trim(),
   });
@@ -91,6 +97,7 @@ function restoreFromUrl(fallback) {
     useCase: ALLOWED_OPTIONS.useCase.has(params.get("useCase")) ? params.get("useCase") : fallback.useCase,
     resolution: ALLOWED_OPTIONS.resolution.has(params.get("resolution")) ? params.get("resolution") : fallback.resolution,
     priority: ALLOWED_OPTIONS.priority.has(params.get("priority")) ? params.get("priority") : fallback.priority,
+    memoryTarget: ALLOWED_OPTIONS.memoryTarget.has(params.get("memoryTarget")) ? params.get("memoryTarget") : fallback.memoryTarget,
   };
   if (ALLOWED_OPTIONS.profile.has(params.get("profile"))) activeProfile = params.get("profile");
   if (params.get("goal")) fields.goal.value = params.get("goal");
@@ -99,6 +106,7 @@ function restoreFromUrl(fallback) {
   fields.useCase.value = restored.useCase;
   fields.resolution.value = restored.resolution;
   fields.priority.value = restored.priority;
+  fields.memoryTarget.value = restored.memoryTarget;
   return restored;
 }
 
@@ -108,11 +116,13 @@ function readSavedBuild() {
     const budget = Number(saved?.budget);
     if (!saved || typeof saved.goal !== "string" || saved.goal.length < 12) return null;
     if (!Number.isFinite(budget) || budget < 800 || budget > 5000) return null;
+    const memoryTarget = saved.memoryTarget ?? "auto";
     if (!ALLOWED_OPTIONS.useCase.has(saved.useCase)
       || !ALLOWED_OPTIONS.resolution.has(saved.resolution)
       || !ALLOWED_OPTIONS.priority.has(saved.priority)
-      || !ALLOWED_OPTIONS.profile.has(saved.profile)) return null;
-    return { ...saved, budget };
+      || !ALLOWED_OPTIONS.profile.has(saved.profile)
+      || !ALLOWED_OPTIONS.memoryTarget.has(memoryTarget)) return null;
+    return { ...saved, budget, memoryTarget };
   } catch {
     return null;
   }
@@ -317,11 +327,13 @@ importInput.addEventListener("change", async () => {
     const payload = JSON.parse(await file.text());
     const constraints = payload?.constraints;
     const budget = Number(constraints?.budget);
+    const memoryTarget = constraints?.memoryTarget ?? "auto";
     const valid = Number.isFinite(budget) && budget >= 800 && budget <= 5000
       && ALLOWED_OPTIONS.useCase.has(constraints?.useCase)
       && ALLOWED_OPTIONS.resolution.has(constraints?.resolution)
       && ALLOWED_OPTIONS.priority.has(constraints?.priority)
-      && ALLOWED_OPTIONS.profile.has(payload?.profile);
+      && ALLOWED_OPTIONS.profile.has(payload?.profile)
+      && ALLOWED_OPTIONS.memoryTarget.has(memoryTarget);
     if (!valid) throw new TypeError("Invalid build plan");
 
     fields.goal.value = typeof payload.goal === "string" && payload.goal.length >= 12
@@ -332,8 +344,9 @@ importInput.addEventListener("change", async () => {
     fields.useCase.value = constraints.useCase;
     fields.resolution.value = constraints.resolution;
     fields.priority.value = constraints.priority;
+    fields.memoryTarget.value = memoryTarget;
     activeProfile = payload.profile;
-    render({ ...constraints, budget }, { announce: true });
+    render({ ...constraints, budget, memoryTarget }, { announce: true });
     exportStatus.textContent = "JSON build plan imported and recalculated.";
   } catch {
     exportStatus.textContent = "That file is not a valid AIPO-GPT build plan.";
@@ -388,12 +401,14 @@ loadLocalButton.addEventListener("click", () => {
   fields.useCase.value = saved.useCase;
   fields.resolution.value = saved.resolution;
   fields.priority.value = saved.priority;
+  fields.memoryTarget.value = saved.memoryTarget;
   activeProfile = saved.profile;
   render({
     budget: saved.budget,
     useCase: saved.useCase,
     resolution: saved.resolution,
     priority: saved.priority,
+    memoryTarget: saved.memoryTarget,
   }, { announce: true });
   exportStatus.textContent = "Saved build restored.";
 });
@@ -416,6 +431,7 @@ resetButton.addEventListener("click", () => {
   fields.useCase.value = DEFAULT_STATE.useCase;
   fields.resolution.value = DEFAULT_STATE.resolution;
   fields.priority.value = DEFAULT_STATE.priority;
+  fields.memoryTarget.value = DEFAULT_STATE.memoryTarget;
   activeProfile = DEFAULT_STATE.profile;
   formError.textContent = "";
   exportStatus.textContent = "";
@@ -424,6 +440,7 @@ resetButton.addEventListener("click", () => {
     useCase: DEFAULT_STATE.useCase,
     resolution: DEFAULT_STATE.resolution,
     priority: DEFAULT_STATE.priority,
+    memoryTarget: DEFAULT_STATE.memoryTarget,
   });
   resultStatus.textContent = "Optimizer defaults restored.";
   fields.goal.focus();

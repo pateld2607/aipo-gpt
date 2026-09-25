@@ -71,6 +71,9 @@ assert.match(html, /<option value="development">Software development<\/option>/)
 assert.match(html, /<option value="ai">Local AI \/ machine learning<\/option>/);
 assert.match(html, /<option value="upgradeability">Upgrade headroom<\/option>/);
 assert.match(app, /"upgradeability"/);
+assert.match(html, /id="memory-target"/);
+assert.match(html, /<option value="64">At least 64GB<\/option>/);
+assert.match(app, /memoryTarget: fields\.memoryTarget\.value/);
 assert.match(html, /id="build-id"/);
 assert.match(app, /latestRecommendation\.buildId/);
 assert.match(html, /id="search-stats"/);

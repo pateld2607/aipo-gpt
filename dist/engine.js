@@ -31,11 +31,15 @@ export function parseGoal(goal, fallback) {
   else if (/upgrade|future[ -]?proof|long[ -]?term platform/.test(text)) priority = "upgradeability";
   else if (/fastest|max|peak performance/.test(text)) priority = "performance";
 
+  const requestedMemory = text.match(/\b(32|64)\s*gb\s*(?:ram|memory)\b/);
+  const memoryTarget = requestedMemory ? requestedMemory[1] : (fallback.memoryTarget ?? "auto");
+
   return {
     budget: clamp(parsedBudget, 800, 5000),
     useCase,
     resolution,
     priority,
+    memoryTarget,
   };
 }
 
@@ -70,7 +74,10 @@ function requirementsFor(constraints) {
     efficiency: { cpuTier: 2, cores: 6, gpuTier: 2, vram: 8, memory: 32, storage: 1 },
   }[constraints.useCase];
 
-  return workload;
+  const memory = constraints.memoryTarget && constraints.memoryTarget !== "auto"
+    ? Number(constraints.memoryTarget)
+    : workload.memory;
+  return { ...workload, memory };
 }
 
 function targetsFor(constraints, profile) {
@@ -86,7 +93,7 @@ function targetsFor(constraints, profile) {
     cpu: clamp(tier + (workstation || development || ai ? 1 : 0) - (constraints.useCase === "gaming" ? 1 : 0) + profileLift, 2, 5),
     gpu: clamp(tier + (performance || ai ? 1 : 0) + profileLift, 2, 6),
     motherboard: clamp(tier + profileLift + (upgradeability ? 1 : 0), 2, 4),
-    memory: workstation || constraints.budget >= 2300 ? 4 : 2,
+    memory: constraints.memoryTarget === "64" || workstation || ai || constraints.budget >= 2300 ? 4 : 2,
     storage: constraints.budget >= 1450 && profile !== "value" ? 4 : 2,
   };
 }

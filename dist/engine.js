@@ -37,6 +37,8 @@ export function parseGoal(goal, fallback) {
   const storageTarget = requestedStorage ? requestedStorage[1] : (fallback.storageTarget ?? "auto");
   const requestedNoise = text.match(/(?:under|below|max(?:imum)?)?\s*(24|28|32)\s*dba\b/);
   const noiseTarget = requestedNoise ? requestedNoise[1] : (fallback.noiseTarget ?? "auto");
+  const requestedVram = text.match(/\b(12|16)\s*gb\s*(?:vram|graphics memory)\b/);
+  const vramTarget = requestedVram ? requestedVram[1] : (fallback.vramTarget ?? "auto");
 
   return {
     budget: clamp(parsedBudget, 800, 5000),
@@ -46,6 +48,7 @@ export function parseGoal(goal, fallback) {
     memoryTarget,
     storageTarget,
     noiseTarget,
+    vramTarget,
   };
 }
 
@@ -89,7 +92,10 @@ function requirementsFor(constraints) {
   const noise = constraints.noiseTarget && constraints.noiseTarget !== "auto"
     ? Number(constraints.noiseTarget)
     : constraints.priority === "quiet" ? 24 : 32;
-  return { ...workload, memory, storage, noise };
+  const vram = constraints.vramTarget && constraints.vramTarget !== "auto"
+    ? Number(constraints.vramTarget)
+    : workload.vram;
+  return { ...workload, memory, storage, noise, vram };
 }
 
 function targetsFor(constraints, profile) {

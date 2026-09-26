@@ -9,6 +9,7 @@ const DEFAULT_STATE = Object.freeze({
   memoryTarget: "auto",
   storageTarget: "auto",
   noiseTarget: "auto",
+  vramTarget: "auto",
   profile: "balanced",
 });
 const SAVED_BUILD_KEY = "aipo-gpt-saved-build-v1";
@@ -20,6 +21,7 @@ const ALLOWED_OPTIONS = {
   memoryTarget: new Set(["auto", "32", "64"]),
   storageTarget: new Set(["auto", "1", "2"]),
   noiseTarget: new Set(["auto", "24", "28", "32"]),
+  vramTarget: new Set(["auto", "12", "16"]),
 };
 
 const form = document.querySelector("#optimizer-form");
@@ -33,6 +35,7 @@ const fields = {
   memoryTarget: document.querySelector("#memory-target"),
   storageTarget: document.querySelector("#storage-target"),
   noiseTarget: document.querySelector("#noise-target"),
+  vramTarget: document.querySelector("#vram-target"),
 };
 const profileButtons = [...document.querySelectorAll("[data-profile]")];
 const presetButtons = [...document.querySelectorAll("[data-preset]")];
@@ -70,6 +73,7 @@ function currentConstraints() {
     memoryTarget: fields.memoryTarget.value,
     storageTarget: fields.storageTarget.value,
     noiseTarget: fields.noiseTarget.value,
+    vramTarget: fields.vramTarget.value,
   };
 }
 
@@ -83,6 +87,7 @@ function syncGoalToFields() {
   fields.memoryTarget.value = parsed.memoryTarget;
   fields.storageTarget.value = parsed.storageTarget;
   fields.noiseTarget.value = parsed.noiseTarget;
+  fields.vramTarget.value = parsed.vramTarget;
   return parsed;
 }
 
@@ -95,6 +100,7 @@ function updateShareUrl(constraints) {
     memoryTarget: constraints.memoryTarget,
     storageTarget: constraints.storageTarget,
     noiseTarget: constraints.noiseTarget,
+    vramTarget: constraints.vramTarget,
     profile: activeProfile,
     goal: fields.goal.value.trim(),
   });
@@ -112,6 +118,7 @@ function restoreFromUrl(fallback) {
     memoryTarget: ALLOWED_OPTIONS.memoryTarget.has(params.get("memoryTarget")) ? params.get("memoryTarget") : fallback.memoryTarget,
     storageTarget: ALLOWED_OPTIONS.storageTarget.has(params.get("storageTarget")) ? params.get("storageTarget") : fallback.storageTarget,
     noiseTarget: ALLOWED_OPTIONS.noiseTarget.has(params.get("noiseTarget")) ? params.get("noiseTarget") : fallback.noiseTarget,
+    vramTarget: ALLOWED_OPTIONS.vramTarget.has(params.get("vramTarget")) ? params.get("vramTarget") : fallback.vramTarget,
   };
   if (ALLOWED_OPTIONS.profile.has(params.get("profile"))) activeProfile = params.get("profile");
   if (params.get("goal")) fields.goal.value = params.get("goal");
@@ -123,6 +130,7 @@ function restoreFromUrl(fallback) {
   fields.memoryTarget.value = restored.memoryTarget;
   fields.storageTarget.value = restored.storageTarget;
   fields.noiseTarget.value = restored.noiseTarget;
+  fields.vramTarget.value = restored.vramTarget;
   return restored;
 }
 
@@ -135,14 +143,16 @@ function readSavedBuild() {
     const memoryTarget = saved.memoryTarget ?? "auto";
     const storageTarget = saved.storageTarget ?? "auto";
     const noiseTarget = saved.noiseTarget ?? "auto";
+    const vramTarget = saved.vramTarget ?? "auto";
     if (!ALLOWED_OPTIONS.useCase.has(saved.useCase)
       || !ALLOWED_OPTIONS.resolution.has(saved.resolution)
       || !ALLOWED_OPTIONS.priority.has(saved.priority)
       || !ALLOWED_OPTIONS.profile.has(saved.profile)
       || !ALLOWED_OPTIONS.memoryTarget.has(memoryTarget)
       || !ALLOWED_OPTIONS.storageTarget.has(storageTarget)
-      || !ALLOWED_OPTIONS.noiseTarget.has(noiseTarget)) return null;
-    return { ...saved, budget, memoryTarget, storageTarget, noiseTarget };
+      || !ALLOWED_OPTIONS.noiseTarget.has(noiseTarget)
+      || !ALLOWED_OPTIONS.vramTarget.has(vramTarget)) return null;
+    return { ...saved, budget, memoryTarget, storageTarget, noiseTarget, vramTarget };
   } catch {
     return null;
   }
@@ -350,6 +360,7 @@ importInput.addEventListener("change", async () => {
     const memoryTarget = constraints?.memoryTarget ?? "auto";
     const storageTarget = constraints?.storageTarget ?? "auto";
     const noiseTarget = constraints?.noiseTarget ?? "auto";
+    const vramTarget = constraints?.vramTarget ?? "auto";
     const valid = Number.isFinite(budget) && budget >= 800 && budget <= 5000
       && ALLOWED_OPTIONS.useCase.has(constraints?.useCase)
       && ALLOWED_OPTIONS.resolution.has(constraints?.resolution)
@@ -357,7 +368,8 @@ importInput.addEventListener("change", async () => {
       && ALLOWED_OPTIONS.profile.has(payload?.profile)
       && ALLOWED_OPTIONS.memoryTarget.has(memoryTarget)
       && ALLOWED_OPTIONS.storageTarget.has(storageTarget)
-      && ALLOWED_OPTIONS.noiseTarget.has(noiseTarget);
+      && ALLOWED_OPTIONS.noiseTarget.has(noiseTarget)
+      && ALLOWED_OPTIONS.vramTarget.has(vramTarget);
     if (!valid) throw new TypeError("Invalid build plan");
 
     fields.goal.value = typeof payload.goal === "string" && payload.goal.length >= 12
@@ -371,8 +383,9 @@ importInput.addEventListener("change", async () => {
     fields.memoryTarget.value = memoryTarget;
     fields.storageTarget.value = storageTarget;
     fields.noiseTarget.value = noiseTarget;
+    fields.vramTarget.value = vramTarget;
     activeProfile = payload.profile;
-    render({ ...constraints, budget, memoryTarget, storageTarget, noiseTarget }, { announce: true });
+    render({ ...constraints, budget, memoryTarget, storageTarget, noiseTarget, vramTarget }, { announce: true });
     exportStatus.textContent = "JSON build plan imported and recalculated.";
   } catch {
     exportStatus.textContent = "That file is not a valid AIPO-GPT build plan.";
@@ -430,6 +443,7 @@ loadLocalButton.addEventListener("click", () => {
   fields.memoryTarget.value = saved.memoryTarget;
   fields.storageTarget.value = saved.storageTarget;
   fields.noiseTarget.value = saved.noiseTarget;
+  fields.vramTarget.value = saved.vramTarget;
   activeProfile = saved.profile;
   render({
     budget: saved.budget,
@@ -439,6 +453,7 @@ loadLocalButton.addEventListener("click", () => {
     memoryTarget: saved.memoryTarget,
     storageTarget: saved.storageTarget,
     noiseTarget: saved.noiseTarget,
+    vramTarget: saved.vramTarget,
   }, { announce: true });
   exportStatus.textContent = "Saved build restored.";
 });
@@ -464,6 +479,7 @@ resetButton.addEventListener("click", () => {
   fields.memoryTarget.value = DEFAULT_STATE.memoryTarget;
   fields.storageTarget.value = DEFAULT_STATE.storageTarget;
   fields.noiseTarget.value = DEFAULT_STATE.noiseTarget;
+  fields.vramTarget.value = DEFAULT_STATE.vramTarget;
   activeProfile = DEFAULT_STATE.profile;
   formError.textContent = "";
   exportStatus.textContent = "";
@@ -475,6 +491,7 @@ resetButton.addEventListener("click", () => {
     memoryTarget: DEFAULT_STATE.memoryTarget,
     storageTarget: DEFAULT_STATE.storageTarget,
     noiseTarget: DEFAULT_STATE.noiseTarget,
+    vramTarget: DEFAULT_STATE.vramTarget,
   });
   resultStatus.textContent = "Optimizer defaults restored.";
   fields.goal.focus();

@@ -121,6 +121,7 @@ function technicalChecks(parts, platformWatts) {
     { category: "compatibility", label: "RAM capacity stays within the motherboard limit", pass: parts.memory.capacity <= parts.motherboard.maxMemory },
     { category: "compatibility", label: "RAM kit fits the available motherboard slots", pass: parts.memory.modules <= parts.motherboard.memorySlots },
     { category: "compatibility", label: "Storage interface is supported by the motherboard", pass: parts.motherboard.storageInterfaces.includes(parts.storage.interface) },
+    { category: "compatibility", label: "Graphics card interface is supported by the motherboard", pass: parts.motherboard.expansionInterfaces.includes(parts.gpu.interface) },
     { category: "compatibility", label: "Cooler capacity covers CPU package power", pass: parts.cooler.capacity >= parts.cpu.watts * 1.25 },
     { category: "compatibility", label: "Cooler mounting hardware supports the CPU socket", pass: parts.cooler.sockets.includes(parts.cpu.socket) },
     { category: "compatibility", label: "Cooler dimensions fit the selected case", pass: coolerFits },
@@ -173,7 +174,7 @@ function buildRationales(parts, constraints, platformWatts) {
 
   return {
     cpu: `${parts.cpu.cores} cores and ${parts.cpu.threads} threads provide tier ${parts.cpu.tier} compute at ${parts.cpu.watts}W package power.`,
-    gpu: `Tier ${parts.gpu.tier} graphics with ${parts.gpu.vram}GB VRAM is prioritized for the ${constraints.resolution} target.`,
+    gpu: `Tier ${parts.gpu.tier} graphics with ${parts.gpu.vram}GB VRAM uses the supported ${parts.gpu.interface} interface for the ${constraints.resolution} target.`,
     motherboard: `${parts.motherboard.socket} and ${parts.motherboard.memory} support match the selected processor and memory, with capacity support up to ${parts.motherboard.maxMemory}GB.`,
     memory: `${parts.memory.capacity}GB of ${parts.memory.memory} uses ${parts.memory.modules} of ${parts.motherboard.memorySlots} motherboard slots.`,
     storage: `${parts.storage.capacity}TB of ${parts.storage.interface} storage balances working space with the total budget.`,

@@ -44,4 +44,8 @@ const missingPsuLength = structuredClone(catalog);
 delete missingPsuLength.psu[0].length;
 assert.throws(() => validateCatalog(missingPsuLength), /invalid length/);
 
+const missingGpuInterface = structuredClone(catalog);
+delete missingGpuInterface.gpu[0].interface;
+assert.throws(() => validateCatalog(missingGpuInterface), /invalid interface/);
+
 console.log("catalog tests passed");

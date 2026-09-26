@@ -207,6 +207,8 @@ function render(constraints, { announce = false } = {}) {
         <td>${formatMoney(option.total)}</td>
         <td>${option.parts.cpu.name}</td>
         <td>${option.parts.gpu.name}</td>
+        <td>${option.platformWatts}W</td>
+        <td>${option.upgradeReadiness.score}%</td>
         <td>${goalsMet}/${option.requirementChecks.length}</td>
       </tr>
     `;

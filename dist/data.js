@@ -30,13 +30,13 @@ export const catalog = {
     { id: "aio-360", name: "360mm liquid cooler", price: 139, capacity: 300, noise: 30, sockets: ["AM5"], kind: "liquid", radiatorSize: 360, tier: 5 },
   ],
   case: [
-    { id: "air-mini", name: "Compact Airflow mATX Case", price: 79, forms: ["mATX"], psuForms: ["ATX", "SFX"], gpuClearance: 330, gpuSlots: 3, maxAirCoolerHeight: 160, maxRadiatorSize: 240, tier: 2 },
-    { id: "air-mid", name: "High-Airflow ATX Mid Tower", price: 119, forms: ["ATX", "mATX"], psuForms: ["ATX", "SFX"], gpuClearance: 390, gpuSlots: 4, maxAirCoolerHeight: 175, maxRadiatorSize: 360, tier: 4 },
+    { id: "air-mini", name: "Compact Airflow mATX Case", price: 79, forms: ["mATX"], psuForms: ["ATX", "SFX"], maxPsuLength: 180, gpuClearance: 330, gpuSlots: 3, maxAirCoolerHeight: 160, maxRadiatorSize: 240, tier: 2 },
+    { id: "air-mid", name: "High-Airflow ATX Mid Tower", price: 119, forms: ["ATX", "mATX"], psuForms: ["ATX", "SFX"], maxPsuLength: 220, gpuClearance: 390, gpuSlots: 4, maxAirCoolerHeight: 175, maxRadiatorSize: 360, tier: 4 },
   ],
   psu: [
-    { id: "650-gold", name: "650W 80+ Gold Modular PSU", price: 89, capacity: 650, form: "ATX", connectors: ["2x8-pin"], tier: 2 },
-    { id: "850-gold", name: "850W ATX 3.1 Gold Modular PSU", price: 139, capacity: 850, form: "ATX", connectors: ["2x8-pin", "3x8-pin", "12V-2x6"], tier: 4 },
-    { id: "1000-gold", name: "1000W ATX 3.1 Gold Modular PSU", price: 189, capacity: 1000, form: "ATX", connectors: ["2x8-pin", "3x8-pin", "12V-2x6"], tier: 5 },
+    { id: "650-gold", name: "650W 80+ Gold Modular PSU", price: 89, capacity: 650, form: "ATX", length: 150, connectors: ["2x8-pin"], tier: 2 },
+    { id: "850-gold", name: "850W ATX 3.1 Gold Modular PSU", price: 139, capacity: 850, form: "ATX", length: 160, connectors: ["2x8-pin", "3x8-pin", "12V-2x6"], tier: 4 },
+    { id: "1000-gold", name: "1000W ATX 3.1 Gold Modular PSU", price: 189, capacity: 1000, form: "ATX", length: 180, connectors: ["2x8-pin", "3x8-pin", "12V-2x6"], tier: 5 },
   ],
 };
 

@@ -40,4 +40,8 @@ const missingCoolerSockets = structuredClone(catalog);
 missingCoolerSockets.cooler[0].sockets = [];
 assert.throws(() => validateCatalog(missingCoolerSockets), /invalid sockets/);
 
+const missingPsuLength = structuredClone(catalog);
+delete missingPsuLength.psu[0].length;
+assert.throws(() => validateCatalog(missingPsuLength), /invalid length/);
+
 console.log("catalog tests passed");

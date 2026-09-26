@@ -35,6 +35,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Workload-aware CPU-to-GPU component balance scoring
 - Print-ready build sheets that remove controls and expand recommendation details
 - Portable Markdown build sheets with components, prices, and validation results
+- Spreadsheet-ready CSV bills of materials with prices and component rationales
 - Safe JSON plan import that validates constraints and recalculates the recommendation
 - One-click reset to a complete, shareable default configuration
 - Device-local save and restore for revisiting a configuration without an account

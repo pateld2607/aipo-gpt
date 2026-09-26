@@ -51,6 +51,7 @@ const downloadButton = document.querySelector("#download-build");
 const importInput = document.querySelector("#import-build");
 const importButton = document.querySelector("#import-trigger");
 const downloadMarkdownButton = document.querySelector("#download-markdown");
+const downloadCsvButton = document.querySelector("#download-csv");
 const printButton = document.querySelector("#print-build");
 const resetButton = document.querySelector("#reset-build");
 const saveLocalButton = document.querySelector("#save-local");
@@ -335,6 +336,27 @@ function buildMarkdown() {
   ].join("\n");
 }
 
+function buildCsv() {
+  const cell = (value) => `"${String(value).replaceAll('"', '""')}"`;
+  const rows = [
+    ["AIPO-GPT build", latestRecommendation.buildId],
+    ["Profile", activeProfile],
+    ["Estimated total", latestRecommendation.total],
+    ["Budget", latestConstraints.budget],
+    ["Budget headroom", latestRecommendation.budgetHeadroom],
+    ["Estimated peak draw (W)", latestRecommendation.platformWatts],
+    [],
+    ["Component", "Selection", "Price (USD)", "Rationale"],
+    ...Object.entries(latestRecommendation.parts).map(([type, part]) => [
+      type === "motherboard" ? "Motherboard" : `${type[0].toUpperCase()}${type.slice(1)}`,
+      part.name,
+      part.price,
+      latestRecommendation.rationales[type],
+    ]),
+  ];
+  return rows.map((row) => row.map(cell).join(",")).join("\n");
+}
+
 copyButton.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(buildShareText());
@@ -433,6 +455,17 @@ downloadMarkdownButton.addEventListener("click", () => {
   link.click();
   URL.revokeObjectURL(url);
   exportStatus.textContent = "Markdown build sheet downloaded.";
+});
+
+downloadCsvButton.addEventListener("click", () => {
+  const blob = new Blob([buildCsv()], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `aipo-gpt-${activeProfile}-build.csv`;
+  link.click();
+  URL.revokeObjectURL(url);
+  exportStatus.textContent = "CSV bill of materials downloaded.";
 });
 
 printButton.addEventListener("click", () => {

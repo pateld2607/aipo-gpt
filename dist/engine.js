@@ -39,6 +39,8 @@ export function parseGoal(goal, fallback) {
   const noiseTarget = requestedNoise ? requestedNoise[1] : (fallback.noiseTarget ?? "auto");
   const requestedVram = text.match(/\b(12|16)\s*gb\s*(?:vram|graphics memory)\b/);
   const vramTarget = requestedVram ? requestedVram[1] : (fallback.vramTarget ?? "auto");
+  const requestedCores = text.match(/\b(6|8|12)[ -]?core\b/);
+  const coreTarget = requestedCores ? requestedCores[1] : (fallback.coreTarget ?? "auto");
 
   return {
     budget: clamp(parsedBudget, 800, 5000),
@@ -49,6 +51,7 @@ export function parseGoal(goal, fallback) {
     storageTarget,
     noiseTarget,
     vramTarget,
+    coreTarget,
   };
 }
 
@@ -95,7 +98,10 @@ function requirementsFor(constraints) {
   const vram = constraints.vramTarget && constraints.vramTarget !== "auto"
     ? Number(constraints.vramTarget)
     : workload.vram;
-  return { ...workload, memory, storage, noise, vram };
+  const cores = constraints.coreTarget && constraints.coreTarget !== "auto"
+    ? Number(constraints.coreTarget)
+    : workload.cores;
+  return { ...workload, memory, storage, noise, vram, cores };
 }
 
 function targetsFor(constraints, profile) {

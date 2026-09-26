@@ -13,6 +13,7 @@ assert.deepEqual(parsed, {
   storageTarget: "auto",
   noiseTarget: "auto",
   vramTarget: "auto",
+  coreTarget: "auto",
 });
 
 const resolutionNotBudget = parseGoal(
@@ -34,6 +35,7 @@ assert.equal(parseGoal("A workstation with 64GB RAM around $2.5k", fallback).mem
 assert.equal(parseGoal("A development PC with a 2TB SSD under $2k", fallback).storageTarget, "2");
 assert.equal(parseGoal("A quiet gaming PC under 24dBA for $2k", fallback).noiseTarget, "24");
 assert.equal(parseGoal("A local AI PC with 16GB VRAM under $3k", fallback).vramTarget, "16");
+assert.equal(parseGoal("A 12-core workstation around $2.5k", fallback).coreTarget, "12");
 
 for (const budget of [1200, 1800, 3000]) {
   for (const useCase of ["gaming", "streaming", "workstation", "development", "ai", "efficiency"]) {
@@ -124,6 +126,9 @@ assert.ok(lowNoiseBuild.parts.cooler.noise <= 24);
 
 const highVramBuild = recommendBuild({ ...comparisonConstraints, vramTarget: "16" });
 assert.ok(highVramBuild.parts.gpu.vram >= 16);
+
+const highCoreBuild = recommendBuild({ ...comparisonConstraints, coreTarget: "12" });
+assert.ok(highCoreBuild.parts.cpu.cores >= 12);
 
 const unconstrainedWorkstation = recommendBuild({
   budget: 3000,

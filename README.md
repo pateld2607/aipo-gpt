@@ -17,6 +17,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Automatic or explicit 24dBA, 28dBA, and 32dBA cooler-noise ceilings with goal validation
 - Explicit automatic, 12GB, or 16GB graphics-memory targets, including natural-language parsing
 - Workload-specific CPU core targets with core and thread explanations
+- Explicit automatic, 6-core, 8-core, or 12-core CPU requirements, including natural-language parsing
 - Explicit automatic, 32GB, or 64GB system-memory targets, including natural-language parsing
 - Explicit automatic, 1TB, or 2TB storage targets, including natural-language parsing
 - Accessible validation for missing goals and out-of-range budgets

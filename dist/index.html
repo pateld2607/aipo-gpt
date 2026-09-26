@@ -156,6 +156,16 @@
                 <option value="12">At least 12 cores</option>
               </select>
             </label>
+
+            <label class="field" for="power-target">
+              <span>Peak power ceiling</span>
+              <select id="power-target" name="powerTarget">
+                <option value="auto" selected>Automatic</option>
+                <option value="450">450W — efficient</option>
+                <option value="550">550W — balanced</option>
+                <option value="650">650W — unrestricted</option>
+              </select>
+            </label>
           </div>
 
           <div class="form-actions">
@@ -178,7 +188,7 @@
               <h2 id="results-heading" tabindex="-1">Recommended system</h2>
               <p id="recommendation-summary">Balanced for smooth 1440p gaming and occasional streaming.</p>
             </div>
-            <span class="compatibility-score" id="compatibility-score">17/17 safe · 8/8 goals</span>
+            <span class="compatibility-score" id="compatibility-score">17/17 safe · 9/9 goals</span>
           </div>
 
           <div class="profile-switcher" role="group" aria-label="Recommendation profile">

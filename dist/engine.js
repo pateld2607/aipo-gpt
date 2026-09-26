@@ -41,6 +41,8 @@ export function parseGoal(goal, fallback) {
   const vramTarget = requestedVram ? requestedVram[1] : (fallback.vramTarget ?? "auto");
   const requestedCores = text.match(/\b(6|8|12)[ -]?core\b/);
   const coreTarget = requestedCores ? requestedCores[1] : (fallback.coreTarget ?? "auto");
+  const requestedPower = text.match(/(?:under|below|max(?:imum)?)\s*(450|550|650)\s*w(?:atts?)?\b/);
+  const powerTarget = requestedPower ? requestedPower[1] : (fallback.powerTarget ?? "auto");
 
   return {
     budget: clamp(parsedBudget, 800, 5000),
@@ -52,6 +54,7 @@ export function parseGoal(goal, fallback) {
     noiseTarget,
     vramTarget,
     coreTarget,
+    powerTarget,
   };
 }
 
@@ -101,7 +104,10 @@ function requirementsFor(constraints) {
   const cores = constraints.coreTarget && constraints.coreTarget !== "auto"
     ? Number(constraints.coreTarget)
     : workload.cores;
-  return { ...workload, memory, storage, noise, vram, cores };
+  const power = constraints.powerTarget && constraints.powerTarget !== "auto"
+    ? Number(constraints.powerTarget)
+    : 650;
+  return { ...workload, memory, storage, noise, vram, cores, power };
 }
 
 function targetsFor(constraints, profile) {
@@ -157,6 +163,7 @@ function goalChecks(parts, constraints, total) {
     { key: "memory", category: "goal", label: `${requirements.memory}GB memory target is met`, pass: parts.memory.capacity >= requirements.memory },
     { key: "storage", category: "goal", label: `${requirements.storage}TB storage target is met`, pass: parts.storage.capacity >= requirements.storage },
     { key: "noise", category: "goal", label: `${requirements.noise}dBA cooler-noise ceiling is met`, pass: parts.cooler.noise <= requirements.noise },
+    { key: "power", category: "goal", label: `${requirements.power}W peak-power ceiling is met`, pass: parts.cpu.watts + parts.gpu.watts + 95 <= requirements.power },
     { key: "budget", category: "goal", label: "Estimated price stays within the stated budget", pass: total <= constraints.budget },
   ];
 }
@@ -170,6 +177,7 @@ function shortfallAdvice(requirementChecks) {
     memory: "System-memory target missed: increase RAM capacity for larger projects and multitasking.",
     storage: "Storage target missed: add capacity for applications, recordings, or project files.",
     noise: "Noise target missed: select a quieter cooler or relax the acoustic ceiling.",
+    power: "Power target missed: select more efficient CPU or GPU tiers, or relax the peak-power ceiling.",
     budget: "Budget target missed: use the best-value profile or increase the spending limit.",
   };
 

@@ -11,6 +11,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Transparent cost and power estimates
 - Visual budget-utilization meter with an at-a-glance spending label
 - Exact PSU wattage and percentage reserve for future upgrades
+- Automatic or explicit 450W, 550W, and 650W peak-power ceilings with goal validation
 - Upgrade-readiness scoring for power, memory, motherboard, and case headroom
 - Upgrade-headroom priority that favors stronger expansion paths and parses future-proofing language
 - Visible cooler-noise classification for quiet-build decisions

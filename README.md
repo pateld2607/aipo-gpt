@@ -29,6 +29,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile
 - Keyboard skip navigation, result focus management, and screen-reader build summaries
+- Copyable pass/fail validation reports for compatibility and workload goals
 - Runtime catalog validation for duplicate IDs, missing specifications, and invalid prices
 - Per-component budget allocation with a visual percentage breakdown
 - Actionable guidance when a budget cannot meet every workload target

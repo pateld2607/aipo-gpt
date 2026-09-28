@@ -49,6 +49,7 @@ const fields = {
 const profileButtons = [...document.querySelectorAll("[data-profile]")];
 const presetButtons = [...document.querySelectorAll("[data-preset]")];
 const copyButton = document.querySelector("#copy-build");
+const copyValidationButton = document.querySelector("#copy-validation");
 const copyLinkButton = document.querySelector("#copy-link");
 const downloadButton = document.querySelector("#download-build");
 const importInput = document.querySelector("#import-build");
@@ -325,6 +326,24 @@ function buildShareText() {
   ].join("\n");
 }
 
+function buildValidationText() {
+  const compatibility = latestRecommendation.compatibilityChecks.map((check) =>
+    `${check.pass ? "PASS" : "FAIL"} · ${check.label}`,
+  );
+  const goals = latestRecommendation.requirementChecks.map((check) =>
+    `${check.pass ? "MET" : "MISS"} · ${check.label}`,
+  );
+  return [
+    `AIPO-GPT validation report · ${latestRecommendation.buildId}`,
+    "",
+    "Compatibility",
+    ...compatibility,
+    "",
+    "Build goals",
+    ...goals,
+  ].join("\n");
+}
+
 function buildMarkdown() {
   const partRows = Object.entries(latestRecommendation.parts).map(([type, part]) =>
     `| ${type === "motherboard" ? "Motherboard" : `${type[0].toUpperCase()}${type.slice(1)}`} | ${part.name} | ${formatMoney(part.price)} |`,
@@ -383,6 +402,15 @@ copyButton.addEventListener("click", async () => {
     exportStatus.textContent = "Build summary copied.";
   } catch {
     exportStatus.textContent = "Copy was blocked by the browser. Download the JSON plan instead.";
+  }
+});
+
+copyValidationButton.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(buildValidationText());
+    exportStatus.textContent = "Validation report copied.";
+  } catch {
+    exportStatus.textContent = "Copy was blocked by the browser.";
   }
 });
 

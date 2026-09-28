@@ -490,6 +490,12 @@ textarea:focus {
   margin: -10px 0 18px;
 }
 
+.upgrade-breakdown { margin: -10px 0 18px; padding: 13px 15px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.018); }
+.upgrade-breakdown summary { cursor: pointer; font-size: .78rem; font-weight: 750; }
+.upgrade-breakdown ul { display: grid; gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: .74rem; }
+.upgrade-breakdown .is-pass { color: var(--acid); }
+.upgrade-breakdown .is-warning { color: var(--muted); }
+
 .export-actions button {
   padding: 8px 11px;
   border: 1px solid var(--line);

@@ -234,6 +234,15 @@ function render(constraints, { announce = false } = {}) {
   document.querySelector("#upgrade-readiness").textContent = `${recommendation.upgradeReadiness.label} · ${recommendation.upgradeReadiness.score}%`;
   document.querySelector("#cooler-noise").textContent = `${recommendation.acoustics.label} · ${recommendation.acoustics.decibels}dBA`;
   document.querySelector("#power-reserve").textContent = `${recommendation.powerReserve.watts}W · ${recommendation.powerReserve.percentage}%`;
+  const upgradeLabels = {
+    power: "At least 250W of PSU upgrade reserve",
+    memory: "64GB memory capacity already installed",
+    motherboard: "High-tier motherboard expansion platform",
+    clearance: "At least 70mm of extra GPU length clearance",
+  };
+  document.querySelector("#upgrade-breakdown-list").innerHTML = Object.entries(recommendation.upgradeReadiness.signals).map(([signal, pass]) =>
+    `<li class="${pass ? "is-pass" : "is-warning"}">${pass ? "✓" : "!"} ${upgradeLabels[signal]}</li>`,
+  ).join("");
   document.querySelector("#build-id").textContent = recommendation.buildId;
   document.querySelector("#search-stats").textContent = `${recommendation.searchStats.evaluated.toLocaleString()} combinations checked · ${recommendation.searchStats.compatible.toLocaleString()} compatible · ${recommendation.searchStats.affordable.toLocaleString()} within budget`;
   document.querySelector("#balance-score").textContent = `${recommendation.componentBalance.label} · ${recommendation.componentBalance.score}% balance`;

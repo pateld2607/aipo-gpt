@@ -13,6 +13,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Exact PSU wattage and percentage reserve for future upgrades
 - Automatic or explicit 450W, 550W, and 650W peak-power ceilings with goal validation
 - Upgrade-readiness scoring for power, memory, motherboard, and case headroom
+- Expandable upgrade-readiness breakdown showing each contributing signal
 - Upgrade-headroom priority that favors stronger expansion paths and parses future-proofing language
 - Visible cooler-noise classification for quiet-build decisions
 - Automatic or explicit 24dBA, 28dBA, and 32dBA cooler-noise ceilings with goal validation

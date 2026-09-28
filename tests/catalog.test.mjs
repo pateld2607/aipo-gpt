@@ -48,4 +48,8 @@ const missingGpuInterface = structuredClone(catalog);
 delete missingGpuInterface.gpu[0].interface;
 assert.throws(() => validateCatalog(missingGpuInterface), /invalid interface/);
 
+const missingCpuPowerLimit = structuredClone(catalog);
+delete missingCpuPowerLimit.motherboard[0].maxCpuWatts;
+assert.throws(() => validateCatalog(missingCpuPowerLimit), /invalid maxCpuWatts/);
+
 console.log("catalog tests passed");

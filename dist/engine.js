@@ -134,6 +134,7 @@ function technicalChecks(parts, platformWatts) {
     : parts.cooler.radiatorSize <= parts.case.maxRadiatorSize;
   return [
     { category: "compatibility", label: "CPU socket matches the motherboard", pass: parts.cpu.socket === parts.motherboard.socket },
+    { category: "compatibility", label: "Motherboard power delivery supports the CPU", pass: parts.cpu.watts <= parts.motherboard.maxCpuWatts },
     { category: "compatibility", label: "CPU and motherboard share a memory standard", pass: parts.cpu.memory === parts.motherboard.memory },
     { category: "compatibility", label: "RAM matches the motherboard", pass: parts.memory.memory === parts.motherboard.memory },
     { category: "compatibility", label: "RAM capacity stays within the motherboard limit", pass: parts.memory.capacity <= parts.motherboard.maxMemory },
@@ -195,7 +196,7 @@ function buildRationales(parts, constraints, platformWatts) {
   return {
     cpu: `${parts.cpu.cores} cores and ${parts.cpu.threads} threads provide tier ${parts.cpu.tier} compute at ${parts.cpu.watts}W package power.`,
     gpu: `Tier ${parts.gpu.tier} graphics with ${parts.gpu.vram}GB VRAM uses the supported ${parts.gpu.interface} interface for the ${constraints.resolution} target.`,
-    motherboard: `${parts.motherboard.socket} and ${parts.motherboard.memory} support match the selected processor and memory, with capacity support up to ${parts.motherboard.maxMemory}GB.`,
+    motherboard: `${parts.motherboard.socket} and ${parts.motherboard.memory} support match the selected parts; power delivery supports up to ${parts.motherboard.maxCpuWatts}W and memory up to ${parts.motherboard.maxMemory}GB.`,
     memory: `${parts.memory.capacity}GB of ${parts.memory.memory} uses ${parts.memory.modules} of ${parts.motherboard.memorySlots} motherboard slots.`,
     storage: `${parts.storage.capacity}TB of ${parts.storage.interface} storage balances working space with the total budget.`,
     cooler: `${coolerMargin}W of thermal margin remains above the CPU safety target; ${parts.cpu.socket} mounting is included and the cooler is ${coolerFit}.`,

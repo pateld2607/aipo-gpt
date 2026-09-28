@@ -2,9 +2,9 @@ const CATEGORY_RULES = {
   cpu: ["socket", "memory", "watts", "cores", "threads"],
   gpu: ["watts", "length", "slots", "interface", "vram", "powerConnector"],
   motherboard: ["socket", "maxCpuWatts", "memory", "memorySlots", "maxMemory", "storageInterfaces", "expansionInterfaces", "form"],
-  memory: ["memory", "capacity", "modules"],
+  memory: ["memory", "capacity", "modules", "height"],
   storage: ["capacity", "interface"],
-  cooler: ["capacity", "noise", "sockets", "kind"],
+  cooler: ["capacity", "noise", "sockets", "ramClearance", "kind"],
   case: ["forms", "psuForms", "maxPsuLength", "gpuClearance", "gpuSlots", "maxAirCoolerHeight", "maxRadiatorSize"],
   psu: ["capacity", "form", "length", "connectors"],
 };

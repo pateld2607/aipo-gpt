@@ -17,17 +17,17 @@ export const catalog = {
     { id: "b850", name: "B850 WiFi — ATX", price: 219, socket: "AM5", maxCpuWatts: 200, memory: "DDR5", memorySlots: 4, maxMemory: 192, storageInterfaces: ["PCIe 4.0 NVMe", "PCIe 5.0 NVMe"], expansionInterfaces: ["PCIe x16"], form: "ATX", tier: 4 },
   ],
   memory: [
-    { id: "32-ddr5", name: "32GB DDR5-6000 CL30", price: 104, memory: "DDR5", capacity: 32, modules: 2, tier: 2 },
-    { id: "64-ddr5", name: "64GB DDR5-6000 CL32", price: 189, memory: "DDR5", capacity: 64, modules: 2, tier: 4 },
+    { id: "32-ddr5", name: "32GB DDR5-6000 CL30", price: 104, memory: "DDR5", capacity: 32, modules: 2, height: 35, tier: 2 },
+    { id: "64-ddr5", name: "64GB DDR5-6000 CL32", price: 189, memory: "DDR5", capacity: 64, modules: 2, height: 43, tier: 4 },
   ],
   storage: [
     { id: "1tb-nvme", name: "1TB PCIe 4.0 NVMe SSD", price: 79, capacity: 1, interface: "PCIe 4.0 NVMe", tier: 2 },
     { id: "2tb-nvme", name: "2TB PCIe 4.0 NVMe SSD", price: 139, capacity: 2, interface: "PCIe 4.0 NVMe", tier: 4 },
   ],
   cooler: [
-    { id: "tower-120", name: "120mm dual-fan air cooler", price: 49, capacity: 150, noise: 27, sockets: ["AM5"], kind: "air", height: 155, tier: 2 },
-    { id: "tower-140", name: "140mm premium air cooler", price: 89, capacity: 220, noise: 23, sockets: ["AM5"], kind: "air", height: 160, tier: 4 },
-    { id: "aio-360", name: "360mm liquid cooler", price: 139, capacity: 300, noise: 30, sockets: ["AM5"], kind: "liquid", radiatorSize: 360, tier: 5 },
+    { id: "tower-120", name: "120mm dual-fan air cooler", price: 49, capacity: 150, noise: 27, sockets: ["AM5"], ramClearance: 45, kind: "air", height: 155, tier: 2 },
+    { id: "tower-140", name: "140mm premium air cooler", price: 89, capacity: 220, noise: 23, sockets: ["AM5"], ramClearance: 45, kind: "air", height: 160, tier: 4 },
+    { id: "aio-360", name: "360mm liquid cooler", price: 139, capacity: 300, noise: 30, sockets: ["AM5"], ramClearance: 100, kind: "liquid", radiatorSize: 360, tier: 5 },
   ],
   case: [
     { id: "air-mini", name: "Compact Airflow mATX Case", price: 79, forms: ["mATX"], psuForms: ["ATX", "SFX"], maxPsuLength: 180, gpuClearance: 330, gpuSlots: 3, maxAirCoolerHeight: 160, maxRadiatorSize: 240, tier: 2 },

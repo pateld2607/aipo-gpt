@@ -52,4 +52,8 @@ const missingCpuPowerLimit = structuredClone(catalog);
 delete missingCpuPowerLimit.motherboard[0].maxCpuWatts;
 assert.throws(() => validateCatalog(missingCpuPowerLimit), /invalid maxCpuWatts/);
 
+const missingRamHeight = structuredClone(catalog);
+delete missingRamHeight.memory[0].height;
+assert.throws(() => validateCatalog(missingRamHeight), /invalid height/);
+
 console.log("catalog tests passed");

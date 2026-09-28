@@ -62,6 +62,8 @@ for (const budget of [1200, 1800, 3000]) {
           assert.equal(result.budgetUsage.percentage, Math.round((result.total / constraints.budget) * 100));
           assert.equal(result.budgetUsage.remaining, constraints.budget - result.total);
           assert.ok(["Roomy", "On target", "Near limit", "Over budget"].includes(result.budgetUsage.label));
+          assert.ok(result.valueDensity.pointsPerThousand > 0);
+          assert.ok(["High value", "Balanced value", "Premium allocation"].includes(result.valueDensity.label));
           assert.equal(Object.keys(result.budgetAllocation).length, 8);
           assert.ok(Math.abs(Object.values(result.budgetAllocation).reduce((sum, item) => sum + item.percentage, 0) - 1) < 0.000001);
           assert.ok(result.searchStats.evaluated >= result.searchStats.compatible);

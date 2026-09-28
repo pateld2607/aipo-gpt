@@ -55,6 +55,8 @@ assert.match(app, /recommendation\.powerReserve\.percentage/);
 assert.match(html, /id="budget-progress" role="progressbar"/);
 assert.match(html, /id="budget-usage"/);
 assert.match(app, /recommendation\.budgetUsage\.percentage/);
+assert.match(html, /id="value-density"/);
+assert.match(app, /recommendation\.valueDensity\.pointsPerThousand/);
 assert.match(html, /id="goal"[^>]+required minlength="12"/);
 assert.match(html, /id="budget"[^>]+required/);
 assert.match(html, /id="budget-range"[^>]+type="range"/);

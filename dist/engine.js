@@ -244,6 +244,16 @@ function describeBudgetUsage(total, budget) {
   return { percentage, label, remaining: budget - total };
 }
 
+function assessValueDensity(parts, total) {
+  const weightedTierPoints = parts.cpu.tier * .35
+    + parts.gpu.tier * .5
+    + parts.memory.tier * .1
+    + parts.storage.tier * .05;
+  const pointsPerThousand = Math.round((weightedTierPoints / (total / 1000)) * 10) / 10;
+  const label = pointsPerThousand >= 3 ? "High value" : pointsPerThousand >= 2.4 ? "Balanced value" : "Premium allocation";
+  return { pointsPerThousand, label };
+}
+
 function buildFingerprint(parts, constraints, profile) {
   const input = JSON.stringify({
     parts: Object.values(parts).map((part) => part.id),
@@ -401,6 +411,7 @@ export function recommendBuild(constraints, profile = "balanced") {
     acoustics: describeAcoustics(selected.parts),
     powerReserve: describePowerReserve(selected.parts, selected.platformWatts),
     budgetUsage: describeBudgetUsage(selected.total, constraints.budget),
+    valueDensity: assessValueDensity(selected.parts, selected.total),
     budgetAllocation,
     buildId: buildFingerprint(selected.parts, constraints, profile),
     searchStats: {

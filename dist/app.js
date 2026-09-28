@@ -246,6 +246,7 @@ function render(constraints, { announce = false } = {}) {
   document.querySelector("#build-id").textContent = recommendation.buildId;
   document.querySelector("#search-stats").textContent = `${recommendation.searchStats.evaluated.toLocaleString()} combinations checked · ${recommendation.searchStats.compatible.toLocaleString()} compatible · ${recommendation.searchStats.affordable.toLocaleString()} within budget`;
   document.querySelector("#balance-score").textContent = `${recommendation.componentBalance.label} · ${recommendation.componentBalance.score}% balance`;
+  document.querySelector("#value-density").textContent = `${recommendation.valueDensity.label} · ${recommendation.valueDensity.pointsPerThousand} weighted tier points per $1k`;
   const budgetProgress = document.querySelector("#budget-progress");
   document.querySelector("#budget-usage").textContent = `${recommendation.budgetUsage.percentage}% · ${recommendation.budgetUsage.label}`;
   budgetProgress.setAttribute("aria-valuenow", String(Math.min(recommendation.budgetUsage.percentage, 100)));

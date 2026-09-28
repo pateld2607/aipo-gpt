@@ -417,10 +417,12 @@ textarea:focus {
 }
 
 .balance-score {
-  margin: 0 0 7px;
+  margin: 0 0 3px;
   color: var(--cyan);
   font: 700 .7rem/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
+
+.value-density { margin: 0 0 9px; color: var(--muted); font: 700 .7rem/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; }
 
 .budget-usage-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; margin: 0 0 18px; color: var(--muted); font-size: .72rem; }
 .budget-usage-row strong { color: #d5dfe3; font-size: .72rem; }

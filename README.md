@@ -10,6 +10,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - CPU socket and motherboard power-delivery support, cooler socket and RAM clearance, memory type, capacity, and slot count, storage and GPU interfaces, cooling performance and physical fit, motherboard and PSU form factors, PSU length, GPU length, thickness and power connector, PSU headroom, and workload-specific VRAM checks
 - Transparent cost and power estimates
 - Visual budget-utilization meter with an at-a-glance spending label
+- Transparent value-density index using weighted component tiers per $1,000
 - Exact PSU wattage and percentage reserve for future upgrades
 - Automatic or explicit 450W, 550W, and 650W peak-power ceilings with goal validation
 - Upgrade-readiness scoring for power, memory, motherboard, and case headroom

@@ -21,6 +21,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Explicit automatic, 6-core, 8-core, or 12-core CPU requirements, including natural-language parsing
 - Explicit automatic, 32GB, or 64GB system-memory targets, including natural-language parsing
 - Explicit automatic, 1TB, or 2TB storage targets, including natural-language parsing
+- Automatic, compact, or standard case-size preference with natural-language parsing and goal validation
 - Accessible validation for missing goals and out-of-range budgets
 - Synchronized number and range controls for quick, precise budget changes
 - One-click gaming, streaming, and workstation goal presets

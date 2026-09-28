@@ -5,7 +5,7 @@ const CATEGORY_RULES = {
   memory: ["memory", "capacity", "modules", "height"],
   storage: ["capacity", "interface"],
   cooler: ["capacity", "noise", "sockets", "ramClearance", "kind"],
-  case: ["forms", "psuForms", "maxPsuLength", "gpuClearance", "gpuSlots", "maxAirCoolerHeight", "maxRadiatorSize"],
+  case: ["size", "forms", "psuForms", "maxPsuLength", "gpuClearance", "gpuSlots", "maxAirCoolerHeight", "maxRadiatorSize"],
   psu: ["capacity", "form", "length", "connectors"],
 };
 

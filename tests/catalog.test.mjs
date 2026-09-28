@@ -56,4 +56,8 @@ const missingRamHeight = structuredClone(catalog);
 delete missingRamHeight.memory[0].height;
 assert.throws(() => validateCatalog(missingRamHeight), /invalid height/);
 
+const missingCaseSize = structuredClone(catalog);
+delete missingCaseSize.case[0].size;
+assert.throws(() => validateCatalog(missingCaseSize), /invalid size/);
+
 console.log("catalog tests passed");

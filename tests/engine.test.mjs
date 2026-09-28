@@ -15,6 +15,7 @@ assert.deepEqual(parsed, {
   vramTarget: "auto",
   coreTarget: "auto",
   powerTarget: "auto",
+  caseTarget: "auto",
 });
 
 const resolutionNotBudget = parseGoal(
@@ -38,6 +39,7 @@ assert.equal(parseGoal("A quiet gaming PC under 24dBA for $2k", fallback).noiseT
 assert.equal(parseGoal("A local AI PC with 16GB VRAM under $3k", fallback).vramTarget, "16");
 assert.equal(parseGoal("A 12-core workstation around $2.5k", fallback).coreTarget, "12");
 assert.equal(parseGoal("An efficient gaming PC below 450W for $1.8k", fallback).powerTarget, "450");
+assert.equal(parseGoal("A compact 1080p gaming PC under $1.5k", fallback).caseTarget, "compact");
 
 for (const budget of [1200, 1800, 3000]) {
   for (const useCase of ["gaming", "streaming", "workstation", "development", "ai", "efficiency"]) {
@@ -76,7 +78,7 @@ for (const budget of [1200, 1800, 3000]) {
           assert.ok(result.goalRecovery.total >= constraints.budget || result.goalRecovery.additionalBudget === 0);
           assert.match(result.goalRecovery.buildId, /^AIPO-[0-9A-F]{8}$/);
           assert.equal(result.compatibilityChecks.length, 19);
-          assert.equal(result.requirementChecks.length, 9);
+          assert.equal(result.requirementChecks.length, 10);
           assert.ok(result.compatibilityChecks.every((check) => check.pass));
           assert.ok(result.parts.gpu.vram >= 12);
           assert.ok(result.parts.cpu.cores >= 6);
@@ -136,6 +138,9 @@ assert.ok(highCoreBuild.parts.cpu.cores >= 12);
 
 const lowPowerBuild = recommendBuild({ ...comparisonConstraints, powerTarget: "450" });
 assert.ok(lowPowerBuild.platformWatts <= 450);
+
+const compactBuild = recommendBuild({ ...comparisonConstraints, caseTarget: "compact" });
+assert.equal(compactBuild.parts.case.size, "compact");
 
 const unconstrainedWorkstation = recommendBuild({
   budget: 3000,

@@ -43,6 +43,9 @@ export function parseGoal(goal, fallback) {
   const coreTarget = requestedCores ? requestedCores[1] : (fallback.coreTarget ?? "auto");
   const requestedPower = text.match(/(?:under|below|max(?:imum)?)\s*(450|550|650)\s*w(?:atts?)?\b/);
   const powerTarget = requestedPower ? requestedPower[1] : (fallback.powerTarget ?? "auto");
+  const caseTarget = /compact|small form factor|\bsff\b/.test(text)
+    ? "compact"
+    : /mid[ -]?tower|full[ -]?size/.test(text) ? "standard" : (fallback.caseTarget ?? "auto");
 
   return {
     budget: clamp(parsedBudget, 800, 5000),
@@ -55,6 +58,7 @@ export function parseGoal(goal, fallback) {
     vramTarget,
     coreTarget,
     powerTarget,
+    caseTarget,
   };
 }
 
@@ -107,7 +111,7 @@ function requirementsFor(constraints) {
   const power = constraints.powerTarget && constraints.powerTarget !== "auto"
     ? Number(constraints.powerTarget)
     : 650;
-  return { ...workload, memory, storage, noise, vram, cores, power };
+  return { ...workload, memory, storage, noise, vram, cores, power, caseSize: constraints.caseTarget ?? "auto" };
 }
 
 function targetsFor(constraints, profile) {
@@ -166,6 +170,7 @@ function goalChecks(parts, constraints, total) {
     { key: "storage", category: "goal", label: `${requirements.storage}TB storage target is met`, pass: parts.storage.capacity >= requirements.storage },
     { key: "noise", category: "goal", label: `${requirements.noise}dBA cooler-noise ceiling is met`, pass: parts.cooler.noise <= requirements.noise },
     { key: "power", category: "goal", label: `${requirements.power}W peak-power ceiling is met`, pass: parts.cpu.watts + parts.gpu.watts + 95 <= requirements.power },
+    { key: "case", category: "goal", label: requirements.caseSize === "auto" ? "Case-size preference is automatic" : `${requirements.caseSize} case preference is met`, pass: requirements.caseSize === "auto" || parts.case.size === requirements.caseSize },
     { key: "budget", category: "goal", label: "Estimated price stays within the stated budget", pass: total <= constraints.budget },
   ];
 }
@@ -180,6 +185,7 @@ function shortfallAdvice(requirementChecks) {
     storage: "Storage target missed: add capacity for applications, recordings, or project files.",
     noise: "Noise target missed: select a quieter cooler or relax the acoustic ceiling.",
     power: "Power target missed: select more efficient CPU or GPU tiers, or relax the peak-power ceiling.",
+    case: "Case-size target missed: choose components with shorter clearances or allow a standard-size enclosure.",
     budget: "Budget target missed: use the best-value profile or increase the spending limit.",
   };
 

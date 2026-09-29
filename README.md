@@ -30,6 +30,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Pointer-responsive lighting and ambient depth with reduced-motion and touch-safe fallbacks
 - Mobile workspace switcher that moves directly between configuration and recommendations
 - Animated recommendation refreshes with real completion feedback and accessible busy state
+- Keyboard-friendly component inspection cards with rationale and budget-share details
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile
 - Keyboard skip navigation, result focus management, and screen-reader build summaries

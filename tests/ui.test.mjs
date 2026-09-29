@@ -152,5 +152,10 @@ assert.match(html, /class="results-panel"[^>]+aria-busy="false"/);
 assert.match(app, /function signalResultUpdate/);
 assert.match(app, /resultsPanel\.setAttribute\("aria-busy", "true"\)/);
 assert.match(app, /optimizeLabel\.textContent = "Build ready"/);
+assert.match(html, /id="toggle-all-parts">Inspect all/);
+assert.match(app, /aria-controls="part-inspection-\$\{type\}"/);
+assert.match(app, /function syncPartsToggleLabel\(\)/);
+assert.match(app, /toggleAllPartsButton\.addEventListener\("click"/);
+assert.match(app, /budgetAllocation\[type\]\.percentage/);
 
 console.log("UI contract tests passed");

@@ -72,6 +72,8 @@ const workspaceViewButtons = [...document.querySelectorAll("[data-workspace-view
 const resultsPanel = document.querySelector(".results-panel");
 const optimizeButton = document.querySelector(".optimize-button");
 const optimizeLabel = document.querySelector("#optimize-label");
+const partsList = document.querySelector("#parts-list");
+const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
 let updateTimer = 0;
 let completionTimer = 0;
 let activeProfile = "balanced";
@@ -181,6 +183,32 @@ function signalResultUpdate({ complete = false } = {}) {
     }, prefersReducedMotion ? 0 : 1200);
   }
 }
+
+function syncPartsToggleLabel() {
+  const toggles = [...partsList.querySelectorAll(".part-row")];
+  const allExpanded = toggles.length > 0 && toggles.every((button) => button.getAttribute("aria-expanded") === "true");
+  toggleAllPartsButton.textContent = allExpanded ? "Collapse all" : "Inspect all";
+}
+
+partsList.addEventListener("click", (event) => {
+  const button = event.target.closest(".part-row");
+  if (!button) return;
+  const details = document.querySelector(`#${button.getAttribute("aria-controls")}`);
+  const expanded = button.getAttribute("aria-expanded") !== "true";
+  button.setAttribute("aria-expanded", String(expanded));
+  details.hidden = !expanded;
+  syncPartsToggleLabel();
+});
+
+toggleAllPartsButton.addEventListener("click", () => {
+  const toggles = [...partsList.querySelectorAll(".part-row")];
+  const expand = toggles.some((button) => button.getAttribute("aria-expanded") !== "true");
+  for (const button of toggles) {
+    button.setAttribute("aria-expanded", String(expand));
+    document.querySelector(`#${button.getAttribute("aria-controls")}`).hidden = !expand;
+  }
+  syncPartsToggleLabel();
+});
 
 function syncGoalToFields() {
   const parsed = parseGoal(fields.goal.value, currentConstraints());
@@ -353,16 +381,21 @@ function render(constraints, { announce = false } = {}) {
     document.querySelector("#results-heading").focus();
   }
 
-  document.querySelector("#parts-list").innerHTML = parts.map(([type, part]) => `
-    <div class="part-row">
-      <span class="part-type">${type === "motherboard" ? "board" : type}</span>
-      <span class="part-detail">
-        <span class="part-name">${part.name}</span>
-        <span class="part-reason">${recommendation.rationales[type]}</span>
-      </span>
-      <span class="part-price">${formatMoney(part.price)}</span>
-    </div>
+  partsList.innerHTML = parts.map(([type, part]) => `
+    <article class="part-card">
+      <button class="part-row" type="button" aria-expanded="false" aria-controls="part-inspection-${type}">
+        <span class="part-type">${type === "motherboard" ? "board" : type}</span>
+        <span class="part-detail"><span class="part-name">${part.name}</span></span>
+        <span class="part-price">${formatMoney(part.price)}</span>
+        <span class="part-toggle" aria-hidden="true">+</span>
+      </button>
+      <div class="part-inspection" id="part-inspection-${type}" hidden>
+        <p class="part-reason">${recommendation.rationales[type]}</p>
+        <span>${Math.round(recommendation.budgetAllocation[type].percentage * 100)}% of budget</span>
+      </div>
+    </article>
   `).join("");
+  syncPartsToggleLabel();
 
   document.querySelector("#allocation-list").innerHTML = Object.entries(recommendation.budgetAllocation).map(([type, allocation]) => `
     <div class="allocation-row">

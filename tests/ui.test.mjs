@@ -147,5 +147,10 @@ assert.equal((html.match(/data-workspace-view=/g) ?? []).length, 2);
 assert.match(html, /data-mobile-view="configure"/);
 assert.match(app, /function setWorkspaceView\(view/);
 assert.match(app, /setWorkspaceView\("results"\)/);
+assert.match(html, /id="optimize-label">Generate build/);
+assert.match(html, /class="results-panel"[^>]+aria-busy="false"/);
+assert.match(app, /function signalResultUpdate/);
+assert.match(app, /resultsPanel\.setAttribute\("aria-busy", "true"\)/);
+assert.match(app, /optimizeLabel\.textContent = "Build ready"/);
 
 console.log("UI contract tests passed");

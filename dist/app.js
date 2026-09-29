@@ -69,6 +69,11 @@ const advancedCount = document.querySelector("#advanced-count");
 const root = document.documentElement;
 const workspace = document.querySelector(".workspace");
 const workspaceViewButtons = [...document.querySelectorAll("[data-workspace-view]")];
+const resultsPanel = document.querySelector(".results-panel");
+const optimizeButton = document.querySelector(".optimize-button");
+const optimizeLabel = document.querySelector("#optimize-label");
+let updateTimer = 0;
+let completionTimer = 0;
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
@@ -109,8 +114,8 @@ function updateAdvancedCount() {
   advancedCount.textContent = activeCount === 0 ? "Automatic" : `${activeCount} set`;
 }
 
-const canTrackPointer = window.matchMedia("(pointer: fine)").matches
-  && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const canTrackPointer = window.matchMedia("(pointer: fine)").matches && !prefersReducedMotion;
 let pointerFrame = 0;
 
 if (canTrackPointer) {
@@ -153,6 +158,28 @@ function setWorkspaceView(view, { focus = false } = {}) {
 
 for (const button of workspaceViewButtons) {
   button.addEventListener("click", () => setWorkspaceView(button.dataset.workspaceView, { focus: true }));
+}
+
+function signalResultUpdate({ complete = false } = {}) {
+  resultsPanel.classList.remove("is-updating");
+  void resultsPanel.offsetWidth;
+  resultsPanel.classList.add("is-updating");
+  resultsPanel.setAttribute("aria-busy", "true");
+  window.clearTimeout(updateTimer);
+  updateTimer = window.setTimeout(() => {
+    resultsPanel.classList.remove("is-updating");
+    resultsPanel.setAttribute("aria-busy", "false");
+  }, prefersReducedMotion ? 0 : 560);
+
+  if (complete) {
+    optimizeButton.classList.add("is-complete");
+    optimizeLabel.textContent = "Build ready";
+    window.clearTimeout(completionTimer);
+    completionTimer = window.setTimeout(() => {
+      optimizeButton.classList.remove("is-complete");
+      optimizeLabel.textContent = "Generate build";
+    }, prefersReducedMotion ? 0 : 1200);
+  }
 }
 
 function syncGoalToFields() {
@@ -373,6 +400,7 @@ function render(constraints, { announce = false } = {}) {
   }
 
   document.querySelector("#parsed-goal").textContent = `constraints = ${JSON.stringify(constraints)}`;
+  signalResultUpdate({ complete: announce });
 }
 
 function buildShareText() {

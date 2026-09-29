@@ -197,7 +197,7 @@
 
           <div class="form-actions">
             <button class="optimize-button" type="submit">
-              <span>Generate build</span>
+              <span id="optimize-label">Generate build</span>
               <span aria-hidden="true">↗</span>
             </button>
             <button class="reset-button" type="button" id="reset-build">Reset defaults</button>
@@ -208,7 +208,7 @@
           <div class="parsed-goal" id="parsed-goal" aria-live="polite"></div>
         </form>
 
-        <section class="results-panel" aria-labelledby="results-heading">
+        <section class="results-panel" aria-labelledby="results-heading" aria-busy="false">
           <div class="panel-heading results-heading-row">
             <span class="step-number">02</span>
             <div>

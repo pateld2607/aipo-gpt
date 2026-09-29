@@ -392,6 +392,7 @@ textarea:focus {
 
 .optimize-button:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(184,255,98,.16); }
 .optimize-button:active { transform: translateY(0); }
+.optimize-button.is-complete { background: var(--cyan); box-shadow: 0 14px 36px rgba(94,231,238,.16); }
 
 .reset-button {
   padding: 0 15px;
@@ -424,6 +425,23 @@ textarea:focus {
 }
 
 .results-heading-row { position: relative; padding-right: 185px; }
+
+@keyframes result-enter {
+  from { opacity: .35; transform: translateY(8px); filter: saturate(.7); }
+  to { opacity: 1; transform: translateY(0); filter: saturate(1); }
+}
+
+.results-panel.is-updating .results-heading-row,
+.results-panel.is-updating .profile-switcher,
+.results-panel.is-updating .metrics,
+.results-panel.is-updating .parts-list,
+.results-panel.is-updating .explanation {
+  animation: result-enter .42s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.results-panel.is-updating .metrics { animation-delay: 40ms; }
+.results-panel.is-updating .parts-list { animation-delay: 80ms; }
+.results-panel.is-updating .explanation { animation-delay: 120ms; }
 
 .compatibility-score {
   position: absolute;

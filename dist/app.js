@@ -66,6 +66,7 @@ const comparisonBody = document.querySelector("#profile-comparison-body");
 const formError = document.querySelector("#form-error");
 const resultStatus = document.querySelector("#result-status");
 const advancedCount = document.querySelector("#advanced-count");
+const root = document.documentElement;
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
@@ -104,6 +105,35 @@ function updateAdvancedCount() {
   ];
   const activeCount = values.filter((value) => value !== "auto").length;
   advancedCount.textContent = activeCount === 0 ? "Automatic" : `${activeCount} set`;
+}
+
+const canTrackPointer = window.matchMedia("(pointer: fine)").matches
+  && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let pointerFrame = 0;
+
+if (canTrackPointer) {
+  document.addEventListener("pointermove", (event) => {
+    window.cancelAnimationFrame(pointerFrame);
+    pointerFrame = window.requestAnimationFrame(() => {
+      const x = event.clientX / window.innerWidth;
+      const y = event.clientY / window.innerHeight;
+      root.style.setProperty("--pointer-x", `${event.clientX}px`);
+      root.style.setProperty("--pointer-y", `${event.clientY}px`);
+      root.style.setProperty("--pointer-shift-x", `${(x - .5) * 24}px`);
+      root.style.setProperty("--pointer-shift-y", `${(y - .5) * 18}px`);
+      root.style.setProperty("--pointer-shift-inverse-x", `${(x - .5) * -18}px`);
+      root.style.setProperty("--pointer-shift-inverse-y", `${(y - .5) * -14}px`);
+    });
+  }, { passive: true });
+
+  document.addEventListener("pointerleave", () => {
+    root.style.setProperty("--pointer-x", "50vw");
+    root.style.setProperty("--pointer-y", "24vh");
+    root.style.setProperty("--pointer-shift-x", "0px");
+    root.style.setProperty("--pointer-shift-y", "0px");
+    root.style.setProperty("--pointer-shift-inverse-x", "0px");
+    root.style.setProperty("--pointer-shift-inverse-y", "0px");
+  });
 }
 
 function syncGoalToFields() {

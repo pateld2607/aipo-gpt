@@ -13,6 +13,12 @@
   --cyan: #5ee7ee;
   --danger: #ff846f;
   --radius: 22px;
+  --pointer-x: 50vw;
+  --pointer-y: 24vh;
+  --pointer-shift-x: 0px;
+  --pointer-shift-y: 0px;
+  --pointer-shift-inverse-x: 0px;
+  --pointer-shift-inverse-y: 0px;
 }
 
 * { box-sizing: border-box; }
@@ -29,6 +35,15 @@ body {
     linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
     #071019;
   background-size: 46px 46px;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  z-index: -2;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(460px circle at var(--pointer-x) var(--pointer-y), rgba(94,231,238,.09), transparent 68%);
 }
 
 button, input, select, textarea { font: inherit; }
@@ -75,6 +90,9 @@ button, input, select, textarea { font: inherit; }
 
 .ambient-one { top: -13rem; right: -8rem; background: var(--cyan); }
 .ambient-two { bottom: -18rem; left: -9rem; background: var(--acid); }
+
+.ambient-one { transform: translate(var(--pointer-shift-inverse-x), var(--pointer-shift-inverse-y)); }
+.ambient-two { transform: translate(var(--pointer-shift-x), var(--pointer-shift-y)); }
 
 .topbar,
 main,
@@ -162,6 +180,8 @@ h1 span { color: #8293a0; }
 }
 
 .workspace {
+  position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: minmax(320px, .88fr) minmax(410px, 1.12fr);
   border: 1px solid var(--line);
@@ -170,9 +190,28 @@ h1 span { color: #8293a0; }
   box-shadow: 0 34px 90px rgba(0,0,0,.28);
 }
 
+.workspace::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(520px circle at var(--pointer-x) var(--pointer-y), rgba(184,255,98,.045), transparent 72%);
+  mix-blend-mode: screen;
+}
+
 .control-panel,
 .results-panel {
+  position: relative;
+  z-index: 1;
   padding: clamp(24px, 4vw, 46px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+  body::before, .workspace::before { display: none; }
+  .ambient { transform: none; }
 }
 
 .control-panel {

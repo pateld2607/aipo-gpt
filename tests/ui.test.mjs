@@ -139,5 +139,9 @@ assert.match(html, /id="advanced-controls"/);
 assert.match(html, /id="advanced-count">Automatic/);
 assert.match(app, /function updateAdvancedCount\(\)/);
 assert.match(app, /activeCount === 0 \? "Automatic"/);
+assert.match(app, /matchMedia\("\(pointer: fine\)"\)/);
+assert.match(app, /matchMedia\("\(prefers-reduced-motion: reduce\)"\)/);
+assert.match(app, /requestAnimationFrame/);
+assert.match(app, /--pointer-shift-x/);
 
 console.log("UI contract tests passed");

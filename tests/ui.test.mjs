@@ -135,5 +135,9 @@ assert.match(app, /Build saved in this browser/);
 assert.match(app, /Saved build restored/);
 assert.match(app, /localStorage\.removeItem\(SAVED_BUILD_KEY\)/);
 assert.match(app, /Saved browser build cleared/);
+assert.match(html, /id="advanced-controls"/);
+assert.match(html, /id="advanced-count">Automatic/);
+assert.match(app, /function updateAdvancedCount\(\)/);
+assert.match(app, /activeCount === 0 \? "Automatic"/);
 
 console.log("UI contract tests passed");

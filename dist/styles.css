@@ -225,6 +225,32 @@ h1 span { color: #8293a0; }
 
 .field-wide { margin-bottom: 18px; }
 
+.advanced-controls {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255,255,255,.018);
+}
+
+.advanced-controls > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 15px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.advanced-controls > summary::-webkit-details-marker { display: none; }
+.advanced-controls > summary::after { content: "+"; color: var(--cyan); font-size: 1.15rem; }
+.advanced-controls[open] > summary::after { content: "−"; }
+.advanced-controls > summary > span:first-child { display: grid; gap: 3px; }
+.advanced-controls strong { color: #d8e2e7; font-size: .78rem; }
+.advanced-controls small { color: var(--muted); font-size: .68rem; line-height: 1.35; }
+.advanced-count { margin-left: auto; color: var(--acid); font: 700 .66rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.advanced-grid { padding: 0 15px 15px; }
+
 .preset-row {
   display: flex;
   flex-wrap: wrap;

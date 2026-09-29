@@ -65,6 +65,7 @@ const exportStatus = document.querySelector("#export-status");
 const comparisonBody = document.querySelector("#profile-comparison-body");
 const formError = document.querySelector("#form-error");
 const resultStatus = document.querySelector("#result-status");
+const advancedCount = document.querySelector("#advanced-count");
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
@@ -89,6 +90,20 @@ function currentConstraints() {
     powerTarget: fields.powerTarget.value,
     caseTarget: fields.caseTarget.value,
   };
+}
+
+function updateAdvancedCount() {
+  const values = [
+    fields.memoryTarget.value,
+    fields.storageTarget.value,
+    fields.noiseTarget.value,
+    fields.vramTarget.value,
+    fields.coreTarget.value,
+    fields.powerTarget.value,
+    fields.caseTarget.value,
+  ];
+  const activeCount = values.filter((value) => value !== "auto").length;
+  advancedCount.textContent = activeCount === 0 ? "Automatic" : `${activeCount} set`;
 }
 
 function syncGoalToFields() {
@@ -191,6 +206,7 @@ function readSavedBuild() {
 }
 
 function render(constraints, { announce = false } = {}) {
+  updateAdvancedCount();
   const recommendation = recommendBuild(constraints, activeProfile);
   latestRecommendation = recommendation;
   latestConstraints = constraints;
@@ -637,7 +653,10 @@ form.addEventListener("invalid", (event) => {
 
 form.addEventListener("input", () => {
   formError.textContent = "";
+  updateAdvancedCount();
 });
+
+form.addEventListener("change", updateAdvancedCount);
 
 fields.budgetRange.addEventListener("input", () => {
   fields.budget.value = fields.budgetRange.value;

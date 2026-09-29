@@ -28,6 +28,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Synchronized number and range controls for quick, precise budget changes
 - Progressive advanced constraints with a live count of manually pinned limits
 - Pointer-responsive lighting and ambient depth with reduced-motion and touch-safe fallbacks
+- Mobile workspace switcher that moves directly between configuration and recommendations
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile
 - Keyboard skip navigation, result focus management, and screen-reader build summaries

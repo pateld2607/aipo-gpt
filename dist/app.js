@@ -67,6 +67,8 @@ const formError = document.querySelector("#form-error");
 const resultStatus = document.querySelector("#result-status");
 const advancedCount = document.querySelector("#advanced-count");
 const root = document.documentElement;
+const workspace = document.querySelector(".workspace");
+const workspaceViewButtons = [...document.querySelectorAll("[data-workspace-view]")];
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
@@ -134,6 +136,23 @@ if (canTrackPointer) {
     root.style.setProperty("--pointer-shift-inverse-x", "0px");
     root.style.setProperty("--pointer-shift-inverse-y", "0px");
   });
+}
+
+function setWorkspaceView(view, { focus = false } = {}) {
+  workspace.dataset.mobileView = view;
+  for (const button of workspaceViewButtons) {
+    const isActive = button.dataset.workspaceView === view;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  }
+  if (focus && window.matchMedia("(max-width: 900px)").matches) {
+    const target = view === "results" ? document.querySelector("#results-heading") : fields.goal;
+    target.focus({ preventScroll: true });
+  }
+}
+
+for (const button of workspaceViewButtons) {
+  button.addEventListener("click", () => setWorkspaceView(button.dataset.workspaceView, { focus: true }));
 }
 
 function syncGoalToFields() {
@@ -670,6 +689,7 @@ resetButton.addEventListener("click", () => {
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   formError.textContent = "";
+  setWorkspaceView("results");
   render(syncGoalToFields(), { announce: true });
 });
 

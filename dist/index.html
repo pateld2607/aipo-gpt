@@ -45,7 +45,12 @@
         </p>
       </section>
 
-      <section class="workspace" aria-label="PC build optimizer">
+      <div class="workspace-view-switcher" role="group" aria-label="Optimizer view">
+        <button class="is-active" type="button" data-workspace-view="configure" aria-pressed="true">Configure</button>
+        <button type="button" data-workspace-view="results" aria-pressed="false">Recommendation</button>
+      </div>
+
+      <section class="workspace" aria-label="PC build optimizer" data-mobile-view="configure">
         <form class="control-panel" id="optimizer-form">
           <div class="panel-heading">
             <span class="step-number">01</span>

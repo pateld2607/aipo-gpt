@@ -143,5 +143,9 @@ assert.match(app, /matchMedia\("\(pointer: fine\)"\)/);
 assert.match(app, /matchMedia\("\(prefers-reduced-motion: reduce\)"\)/);
 assert.match(app, /requestAnimationFrame/);
 assert.match(app, /--pointer-shift-x/);
+assert.equal((html.match(/data-workspace-view=/g) ?? []).length, 2);
+assert.match(html, /data-mobile-view="configure"/);
+assert.match(app, /function setWorkspaceView\(view/);
+assert.match(app, /setWorkspaceView\("results"\)/);
 
 console.log("UI contract tests passed");

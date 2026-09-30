@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 
 const html = await readFile(new URL("../dist/index.html", import.meta.url), "utf8");
 const app = await readFile(new URL("../dist/app.js", import.meta.url), "utf8");
+const css = await readFile(new URL("../dist/styles.css", import.meta.url), "utf8");
 
 for (const profile of ["balanced", "performance", "value"]) {
   assert.match(html, new RegExp(`data-profile="${profile}"`));
@@ -189,5 +190,6 @@ assert.match(html, /id="build-metrics" tabindex="-1"/);
 assert.match(html, /id="component-stack" tabindex="-1"/);
 assert.match(html, /id="validation-details" tabindex="-1"/);
 assert.match(app, /target\.scrollIntoView/);
+assert.match(css, /\.command-list button\[hidden\] \{ display: none; \}/);
 
 console.log("UI contract tests passed");

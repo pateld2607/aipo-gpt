@@ -79,6 +79,7 @@ const constraintChips = document.querySelector("#constraint-chips");
 const actionToast = document.querySelector("#action-toast");
 const actionToastMessage = document.querySelector("#action-toast-message");
 const closeToastButton = document.querySelector("#close-toast");
+const motionToggle = document.querySelector("#motion-toggle");
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -124,11 +125,23 @@ function updateAdvancedCount() {
 }
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const canTrackPointer = window.matchMedia("(pointer: fine)").matches && !prefersReducedMotion;
+let motionEnabled = !prefersReducedMotion;
+try {
+  if (localStorage.getItem("aipo-gpt-motion") === "off") motionEnabled = false;
+} catch {
+  // Motion still follows the operating-system preference when storage is unavailable.
+}
+root.dataset.motion = motionEnabled ? "on" : "off";
+motionToggle.setAttribute("aria-pressed", String(motionEnabled));
+motionToggle.textContent = prefersReducedMotion ? "Motion reduced" : (motionEnabled ? "Motion on" : "Motion off");
+motionToggle.disabled = prefersReducedMotion;
+
+const canTrackPointer = window.matchMedia("(pointer: fine)").matches;
 let pointerFrame = 0;
 
 if (canTrackPointer) {
   document.addEventListener("pointermove", (event) => {
+    if (!motionEnabled) return;
     window.cancelAnimationFrame(pointerFrame);
     pointerFrame = window.requestAnimationFrame(() => {
       const x = event.clientX / window.innerWidth;
@@ -151,6 +164,26 @@ if (canTrackPointer) {
     root.style.setProperty("--pointer-shift-inverse-y", "0px");
   });
 }
+
+function resetPointerEffects() {
+  root.style.setProperty("--pointer-x", "50vw");
+  root.style.setProperty("--pointer-y", "24vh");
+  root.style.setProperty("--pointer-shift-x", "0px");
+  root.style.setProperty("--pointer-shift-y", "0px");
+  root.style.setProperty("--pointer-shift-inverse-x", "0px");
+  root.style.setProperty("--pointer-shift-inverse-y", "0px");
+}
+
+motionToggle.addEventListener("click", () => {
+  if (prefersReducedMotion) return;
+  motionEnabled = !motionEnabled;
+  root.dataset.motion = motionEnabled ? "on" : "off";
+  motionToggle.setAttribute("aria-pressed", String(motionEnabled));
+  motionToggle.textContent = motionEnabled ? "Motion on" : "Motion off";
+  if (!motionEnabled) resetPointerEffects();
+  try { localStorage.setItem("aipo-gpt-motion", motionEnabled ? "on" : "off"); } catch { /* preference remains session-only */ }
+  showToast(motionEnabled ? "Interface motion enabled." : "Interface motion paused.");
+});
 
 function setWorkspaceView(view, { focus = false } = {}) {
   workspace.dataset.mobileView = view;

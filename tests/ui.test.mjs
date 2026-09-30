@@ -169,5 +169,9 @@ assert.match(html, /id="action-toast" role="status" aria-live="polite"/);
 assert.match(html, /id="close-toast" aria-label="Dismiss notification"/);
 assert.match(app, /function showToast\(message\)/);
 assert.match(app, /new MutationObserver/);
+assert.match(html, /id="motion-toggle"[^>]+aria-pressed="true">Motion on/);
+assert.match(app, /localStorage\.getItem\("aipo-gpt-motion"\)/);
+assert.match(app, /function resetPointerEffects\(\)/);
+assert.match(app, /motionToggle\.addEventListener\("click"/);
 
 console.log("UI contract tests passed");

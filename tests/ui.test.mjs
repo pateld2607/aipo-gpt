@@ -161,5 +161,9 @@ assert.match(html, /id="constraint-chips" aria-label="Active build constraints"/
 assert.match(app, /function renderConstraintChips\(constraints\)/);
 assert.match(app, /data-edit-field=/);
 assert.match(app, /setWorkspaceView\("configure"\)/);
+assert.match(html, /id="results-freshness" role="status" aria-live="polite">Up to date/);
+assert.match(app, /function setResultStale\(stale\)/);
+assert.match(app, /Inputs changed · refresh needed/);
+assert.match(app, /optimizeLabel\.textContent = stale \? "Refresh build"/);
 
 console.log("UI contract tests passed");

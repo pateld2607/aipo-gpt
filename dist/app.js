@@ -72,11 +72,13 @@ const workspaceViewButtons = [...document.querySelectorAll("[data-workspace-view
 const resultsPanel = document.querySelector(".results-panel");
 const optimizeButton = document.querySelector(".optimize-button");
 const optimizeLabel = document.querySelector("#optimize-label");
+const resultsFreshness = document.querySelector("#results-freshness");
 const partsList = document.querySelector("#parts-list");
 const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
 const constraintChips = document.querySelector("#constraint-chips");
 let updateTimer = 0;
 let completionTimer = 0;
+let resultIsStale = false;
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
@@ -180,8 +182,18 @@ function signalResultUpdate({ complete = false } = {}) {
     window.clearTimeout(completionTimer);
     completionTimer = window.setTimeout(() => {
       optimizeButton.classList.remove("is-complete");
-      optimizeLabel.textContent = "Generate build";
+      optimizeLabel.textContent = resultIsStale ? "Refresh build" : "Generate build";
     }, prefersReducedMotion ? 0 : 1200);
+  }
+}
+
+function setResultStale(stale) {
+  resultIsStale = stale;
+  resultsPanel.classList.toggle("is-stale", stale);
+  resultsFreshness.classList.toggle("is-stale", stale);
+  resultsFreshness.textContent = stale ? "Inputs changed · refresh needed" : "Up to date";
+  if (!optimizeButton.classList.contains("is-complete")) {
+    optimizeLabel.textContent = stale ? "Refresh build" : "Generate build";
   }
 }
 
@@ -343,6 +355,7 @@ function readSavedBuild() {
 }
 
 function render(constraints, { announce = false } = {}) {
+  setResultStale(false);
   updateAdvancedCount();
   renderConstraintChips(constraints);
   const recommendation = recommendBuild(constraints, activeProfile);
@@ -799,6 +812,7 @@ form.addEventListener("invalid", (event) => {
 form.addEventListener("input", () => {
   formError.textContent = "";
   updateAdvancedCount();
+  setResultStale(true);
 });
 
 form.addEventListener("change", updateAdvancedCount);

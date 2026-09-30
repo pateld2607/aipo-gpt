@@ -32,6 +32,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Animated recommendation refreshes with real completion feedback and accessible busy state
 - Keyboard-friendly component inspection cards with rationale and budget-share details
 - Clickable active-constraint chips that jump back to the exact input
+- Live stale-result detection that clearly prompts users to refresh changed inputs
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile
 - Keyboard skip navigation, result focus management, and screen-reader build summaries

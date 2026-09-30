@@ -157,5 +157,9 @@ assert.match(app, /aria-controls="part-inspection-\$\{type\}"/);
 assert.match(app, /function syncPartsToggleLabel\(\)/);
 assert.match(app, /toggleAllPartsButton\.addEventListener\("click"/);
 assert.match(app, /budgetAllocation\[type\]\.percentage/);
+assert.match(html, /id="constraint-chips" aria-label="Active build constraints"/);
+assert.match(app, /function renderConstraintChips\(constraints\)/);
+assert.match(app, /data-edit-field=/);
+assert.match(app, /setWorkspaceView\("configure"\)/);
 
 console.log("UI contract tests passed");

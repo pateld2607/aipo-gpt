@@ -74,6 +74,7 @@ const optimizeButton = document.querySelector(".optimize-button");
 const optimizeLabel = document.querySelector("#optimize-label");
 const partsList = document.querySelector("#parts-list");
 const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
+const constraintChips = document.querySelector("#constraint-chips");
 let updateTimer = 0;
 let completionTimer = 0;
 let activeProfile = "balanced";
@@ -189,6 +190,38 @@ function syncPartsToggleLabel() {
   const allExpanded = toggles.length > 0 && toggles.every((button) => button.getAttribute("aria-expanded") === "true");
   toggleAllPartsButton.textContent = allExpanded ? "Collapse all" : "Inspect all";
 }
+
+function renderConstraintChips(constraints) {
+  const chips = [
+    ["budget", formatMoney(constraints.budget)],
+    ["use-case", fields.useCase.selectedOptions[0].textContent],
+    ["resolution", fields.resolution.selectedOptions[0].textContent],
+    ["priority", fields.priority.selectedOptions[0].textContent],
+  ];
+  for (const [key, field] of [
+    ["memoryTarget", fields.memoryTarget],
+    ["storageTarget", fields.storageTarget],
+    ["noiseTarget", fields.noiseTarget],
+    ["vramTarget", fields.vramTarget],
+    ["coreTarget", fields.coreTarget],
+    ["powerTarget", fields.powerTarget],
+    ["caseTarget", fields.caseTarget],
+  ]) {
+    if (constraints[key] !== "auto") chips.push([field.id, field.selectedOptions[0].textContent]);
+  }
+  constraintChips.innerHTML = chips.map(([fieldId, label]) =>
+    `<button type="button" data-edit-field="${fieldId}">${label}</button>`,
+  ).join("");
+}
+
+constraintChips.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-edit-field]");
+  if (!button) return;
+  const target = document.querySelector(`#${button.dataset.editField}`);
+  if (target.closest("#advanced-controls")) document.querySelector("#advanced-controls").open = true;
+  setWorkspaceView("configure");
+  target.focus();
+});
 
 partsList.addEventListener("click", (event) => {
   const button = event.target.closest(".part-row");
@@ -311,6 +344,7 @@ function readSavedBuild() {
 
 function render(constraints, { announce = false } = {}) {
   updateAdvancedCount();
+  renderConstraintChips(constraints);
   const recommendation = recommendBuild(constraints, activeProfile);
   latestRecommendation = recommendation;
   latestConstraints = constraints;

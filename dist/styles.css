@@ -495,6 +495,29 @@ textarea:focus {
   color: var(--acid);
 }
 
+.constraint-chips {
+  display: flex;
+  gap: 7px;
+  margin: -4px 0 18px;
+  padding-bottom: 3px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.constraint-chips button {
+  flex: 0 0 auto;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255,255,255,.025);
+  color: #cbd7dd;
+  font-size: .68rem;
+  cursor: pointer;
+}
+
+.constraint-chips button:hover,
+.constraint-chips button:focus-visible { border-color: rgba(94,231,238,.5); color: var(--cyan); }
+
 .search-stats {
   margin: -7px 0 5px;
   color: var(--muted);

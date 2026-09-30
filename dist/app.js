@@ -76,9 +76,13 @@ const resultsFreshness = document.querySelector("#results-freshness");
 const partsList = document.querySelector("#parts-list");
 const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
 const constraintChips = document.querySelector("#constraint-chips");
+const actionToast = document.querySelector("#action-toast");
+const actionToastMessage = document.querySelector("#action-toast-message");
+const closeToastButton = document.querySelector("#close-toast");
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
+let toastTimer = 0;
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
@@ -196,6 +200,27 @@ function setResultStale(stale) {
     optimizeLabel.textContent = stale ? "Refresh build" : "Generate build";
   }
 }
+
+function showToast(message) {
+  if (!message) return;
+  const isError = /blocked|unavailable|not a valid|no valid/i.test(message);
+  actionToastMessage.textContent = message;
+  actionToast.classList.toggle("is-error", isError);
+  actionToast.hidden = false;
+  window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => { actionToast.hidden = true; }, prefersReducedMotion ? 2200 : 3200);
+}
+
+new MutationObserver(() => showToast(exportStatus.textContent.trim())).observe(exportStatus, {
+  childList: true,
+  characterData: true,
+  subtree: true,
+});
+
+closeToastButton.addEventListener("click", () => {
+  window.clearTimeout(toastTimer);
+  actionToast.hidden = true;
+});
 
 function syncPartsToggleLabel() {
   const toggles = [...partsList.querySelectorAll(".part-row")];

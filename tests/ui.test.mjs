@@ -165,5 +165,9 @@ assert.match(html, /id="results-freshness" role="status" aria-live="polite">Up t
 assert.match(app, /function setResultStale\(stale\)/);
 assert.match(app, /Inputs changed · refresh needed/);
 assert.match(app, /optimizeLabel\.textContent = stale \? "Refresh build"/);
+assert.match(html, /id="action-toast" role="status" aria-live="polite"/);
+assert.match(html, /id="close-toast" aria-label="Dismiss notification"/);
+assert.match(app, /function showToast\(message\)/);
+assert.match(app, /new MutationObserver/);
 
 console.log("UI contract tests passed");

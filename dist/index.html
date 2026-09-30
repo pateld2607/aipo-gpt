@@ -240,6 +240,11 @@
             <button class="is-active" type="button" data-density="comfortable" aria-pressed="true">Comfortable</button>
             <button type="button" data-density="compact" aria-pressed="false">Compact</button>
           </div>
+          <nav class="result-jump-nav" aria-label="Recommendation sections">
+            <button type="button" data-result-target="build-metrics">Overview</button>
+            <button type="button" data-result-target="component-stack">Components</button>
+            <button type="button" data-result-target="validation-details">Validation</button>
+          </nav>
           <p class="search-stats" id="search-stats"></p>
           <p class="balance-score" id="balance-score"></p>
           <p class="value-density" id="value-density"></p>
@@ -269,7 +274,7 @@
             </div>
           </details>
 
-          <div class="metrics" aria-label="Build totals">
+          <div class="metrics" id="build-metrics" tabindex="-1" aria-label="Build totals">
             <div class="metric">
               <span>Estimated total</span>
               <strong id="total-price">$0</strong>
@@ -318,7 +323,7 @@
             <span class="build-id" id="build-id"></span>
           </div>
 
-          <div class="parts-heading">
+          <div class="parts-heading" id="component-stack" tabindex="-1">
             <span>Component stack</span>
             <button type="button" id="toggle-all-parts">Inspect all</button>
           </div>
@@ -334,7 +339,7 @@
             <div id="alternatives-list"></div>
           </details>
 
-          <details class="explanation" open>
+          <details class="explanation" id="validation-details" tabindex="-1" open>
             <summary>Why this build works</summary>
             <ul id="explanation-list"></ul>
           </details>

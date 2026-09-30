@@ -184,5 +184,10 @@ assert.match(app, /function openCommandDialog\(\)/);
 assert.match(app, /function runCommand\(command\)/);
 assert.match(app, /event\.metaKey \|\| event\.ctrlKey/);
 assert.match(app, /commandSearch\.addEventListener\("input"/);
+assert.equal((html.match(/data-result-target=/g) ?? []).length, 3);
+assert.match(html, /id="build-metrics" tabindex="-1"/);
+assert.match(html, /id="component-stack" tabindex="-1"/);
+assert.match(html, /id="validation-details" tabindex="-1"/);
+assert.match(app, /target\.scrollIntoView/);
 
 console.log("UI contract tests passed");

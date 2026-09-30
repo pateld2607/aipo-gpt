@@ -624,6 +624,14 @@ textarea:focus {
 .results-panel[data-density="compact"] .parts-list { gap: 3px; }
 .results-panel[data-density="compact"] .part-inspection { padding-bottom: 10px; }
 
+.result-jump-nav { display: flex; gap: 7px; margin: -7px 0 16px; }
+.result-jump-nav button { padding: 6px 9px; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--muted); font-size: .68rem; cursor: pointer; }
+.result-jump-nav button:hover,
+.result-jump-nav button:focus-visible { border-color: var(--cyan); color: var(--cyan); }
+#build-metrics:focus,
+#component-stack:focus,
+#validation-details:focus { outline: 2px solid var(--cyan); outline-offset: 5px; }
+
 .search-stats {
   margin: -7px 0 5px;
   color: var(--muted);
@@ -937,6 +945,8 @@ footer {
   .compatibility-score { left: 0; right: auto; }
   .results-freshness { top: 36px; left: auto; right: 0; }
   .profile-switcher { grid-template-columns: 1fr; }
+  .result-jump-nav { position: sticky; z-index: 5; top: 68px; padding: 7px; border: 1px solid var(--line); border-radius: 10px; background: rgba(8,18,28,.92); backdrop-filter: blur(14px); }
+  .result-jump-nav button { flex: 1; }
   .form-actions { grid-template-columns: 1fr; }
   .reset-button { padding: 12px 15px; }
   .part-row { grid-template-columns: 68px 1fr auto; }

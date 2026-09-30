@@ -87,6 +87,7 @@ const commandClose = document.querySelector("#command-close");
 const commandSearch = document.querySelector("#command-search");
 const commandButtons = [...document.querySelectorAll("[data-command]")];
 const commandEmpty = document.querySelector("#command-empty");
+const resultJumpButtons = [...document.querySelectorAll("[data-result-target]")];
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -165,6 +166,15 @@ commandSearch.addEventListener("input", () => {
 });
 for (const button of commandButtons) {
   button.addEventListener("click", () => runCommand(button.dataset.command));
+}
+
+for (const button of resultJumpButtons) {
+  button.addEventListener("click", () => {
+    const target = document.querySelector(`#${button.dataset.resultTarget}`);
+    if (target instanceof HTMLDetailsElement) target.open = true;
+    target.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
+    target.focus({ preventScroll: true });
+  });
 }
 
 const formatMoney = (value) => new Intl.NumberFormat("en-US", {

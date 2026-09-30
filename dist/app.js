@@ -81,6 +81,12 @@ const actionToastMessage = document.querySelector("#action-toast-message");
 const closeToastButton = document.querySelector("#close-toast");
 const motionToggle = document.querySelector("#motion-toggle");
 const densityButtons = [...document.querySelectorAll("[data-density]")];
+const commandDialog = document.querySelector("#command-dialog");
+const commandTrigger = document.querySelector("#command-trigger");
+const commandClose = document.querySelector("#command-close");
+const commandSearch = document.querySelector("#command-search");
+const commandButtons = [...document.querySelectorAll("[data-command]")];
+const commandEmpty = document.querySelector("#command-empty");
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -110,6 +116,55 @@ for (const button of densityButtons) {
     setResultDensity(button.dataset.density);
     showToast(`${button.textContent} result view selected.`);
   });
+}
+
+function openCommandDialog() {
+  commandSearch.value = "";
+  for (const button of commandButtons) button.hidden = false;
+  commandEmpty.hidden = true;
+  commandDialog.showModal();
+  commandSearch.focus();
+}
+
+function runCommand(command) {
+  commandDialog.close();
+  if (command === "edit-goal") {
+    setWorkspaceView("configure");
+    fields.goal.focus();
+  } else if (command === "show-results") {
+    setWorkspaceView("results");
+    document.querySelector("#results-heading").focus();
+  } else if (command === "profile-performance" || command === "profile-value") {
+    activeProfile = command === "profile-performance" ? "performance" : "value";
+    render(currentConstraints());
+    setWorkspaceView("results");
+  } else if (command === "copy-link") {
+    copyLinkButton.click();
+  } else if (command === "compact-view") {
+    setResultDensity("compact");
+    showToast("Compact result view selected.");
+  }
+}
+
+commandTrigger.addEventListener("click", openCommandDialog);
+commandClose.addEventListener("click", () => commandDialog.close());
+document.addEventListener("keydown", (event) => {
+  if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+    event.preventDefault();
+    if (commandDialog.open) commandDialog.close(); else openCommandDialog();
+  }
+});
+commandSearch.addEventListener("input", () => {
+  const query = commandSearch.value.trim().toLowerCase();
+  let visible = 0;
+  for (const button of commandButtons) {
+    button.hidden = !button.textContent.toLowerCase().includes(query);
+    if (!button.hidden) visible += 1;
+  }
+  commandEmpty.hidden = visible > 0;
+});
+for (const button of commandButtons) {
+  button.addEventListener("click", () => runCommand(button.dataset.command));
 }
 
 const formatMoney = (value) => new Intl.NumberFormat("en-US", {

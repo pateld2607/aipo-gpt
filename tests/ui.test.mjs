@@ -177,5 +177,12 @@ assert.equal((html.match(/data-density=/g) ?? []).length, 2);
 assert.match(app, /function setResultDensity\(density/);
 assert.match(app, /localStorage\.getItem\("aipo-gpt-density"\)/);
 assert.match(app, /resultsPanel\.dataset\.density = safeDensity/);
+assert.match(html, /id="command-trigger"[^>]+aria-haspopup="dialog"/);
+assert.match(html, /<dialog class="command-dialog" id="command-dialog"/);
+assert.equal((html.match(/data-command=/g) ?? []).length, 6);
+assert.match(app, /function openCommandDialog\(\)/);
+assert.match(app, /function runCommand\(command\)/);
+assert.match(app, /event\.metaKey \|\| event\.ctrlKey/);
+assert.match(app, /commandSearch\.addEventListener\("input"/);
 
 console.log("UI contract tests passed");

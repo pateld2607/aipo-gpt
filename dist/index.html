@@ -28,6 +28,7 @@
         <span>AIPO-GPT</span>
       </a>
       <div class="topbar-actions">
+        <button class="command-trigger" id="command-trigger" type="button" aria-haspopup="dialog" aria-controls="command-dialog">Quick actions <kbd>⌘K</kbd></button>
         <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="true">Motion on</button>
         <div class="engine-status" aria-label="Engine status">
           <span class="status-dot"></span>
@@ -367,5 +368,24 @@
       <span id="action-toast-message"></span>
       <button type="button" id="close-toast" aria-label="Dismiss notification">×</button>
     </div>
+    <dialog class="command-dialog" id="command-dialog" aria-labelledby="command-heading">
+      <div class="command-header">
+        <div><span>COMMAND CENTER</span><h2 id="command-heading">Quick actions</h2></div>
+        <button type="button" id="command-close" aria-label="Close quick actions">×</button>
+      </div>
+      <label class="command-search" for="command-search">
+        <span class="visually-hidden">Search quick actions</span>
+        <input id="command-search" type="search" placeholder="Type an action…" autocomplete="off" />
+      </label>
+      <div class="command-list" id="command-list">
+        <button type="button" data-command="edit-goal"><strong>Edit build goal</strong><span>Return to the main request</span></button>
+        <button type="button" data-command="show-results"><strong>Show recommendation</strong><span>Jump to the current build</span></button>
+        <button type="button" data-command="profile-performance"><strong>Use max performance</strong><span>Recalculate with the performance profile</span></button>
+        <button type="button" data-command="profile-value"><strong>Use best value</strong><span>Recalculate with the value profile</span></button>
+        <button type="button" data-command="copy-link"><strong>Copy share link</strong><span>Copy this configuration URL</span></button>
+        <button type="button" data-command="compact-view"><strong>Use compact view</strong><span>Tighten recommendation spacing</span></button>
+      </div>
+      <p class="command-empty" id="command-empty" hidden>No matching actions.</p>
+    </dialog>
   </body>
 </html>

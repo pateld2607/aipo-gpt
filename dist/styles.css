@@ -581,6 +581,19 @@ textarea:focus {
 .constraint-chips button:hover,
 .constraint-chips button:focus-visible { border-color: rgba(94,231,238,.5); color: var(--cyan); }
 
+.density-control { display: flex; align-items: center; gap: 6px; margin: -8px 0 15px; }
+.density-control > span { margin-right: 2px; color: var(--muted); font-size: .66rem; text-transform: uppercase; letter-spacing: .08em; }
+.density-control button { padding: 5px 8px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--muted); font-size: .66rem; cursor: pointer; }
+.density-control button:hover,
+.density-control button:focus-visible { color: var(--cyan); }
+.density-control button.is-active { border-color: var(--line); background: rgba(255,255,255,.035); color: #dce5e8; }
+
+.results-panel[data-density="compact"] .metric { padding-block: 10px; }
+.results-panel[data-density="compact"] .metrics { margin-bottom: 18px; }
+.results-panel[data-density="compact"] .part-row { padding-block: 8px; }
+.results-panel[data-density="compact"] .parts-list { gap: 3px; }
+.results-panel[data-density="compact"] .part-inspection { padding-bottom: 10px; }
+
 .search-stats {
   margin: -7px 0 5px;
   color: var(--muted);

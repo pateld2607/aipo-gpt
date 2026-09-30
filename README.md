@@ -35,6 +35,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Live stale-result detection that clearly prompts users to refresh changed inputs
 - Dismissible action toasts for copy, download, import, print, and local-save feedback
 - Persistent motion control that respects operating-system reduced-motion preferences
+- Persistent comfortable and compact result-density modes
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile
 - Keyboard skip navigation, result focus management, and screen-reader build summaries

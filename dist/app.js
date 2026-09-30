@@ -80,6 +80,7 @@ const actionToast = document.querySelector("#action-toast");
 const actionToastMessage = document.querySelector("#action-toast-message");
 const closeToastButton = document.querySelector("#close-toast");
 const motionToggle = document.querySelector("#motion-toggle");
+const densityButtons = [...document.querySelectorAll("[data-density]")];
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -87,6 +88,29 @@ let toastTimer = 0;
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
+
+function setResultDensity(density, { persist = true } = {}) {
+  const safeDensity = density === "compact" ? "compact" : "comfortable";
+  resultsPanel.dataset.density = safeDensity;
+  for (const button of densityButtons) {
+    const active = button.dataset.density === safeDensity;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  }
+  if (persist) {
+    try { localStorage.setItem("aipo-gpt-density", safeDensity); } catch { /* preference remains session-only */ }
+  }
+}
+
+let savedDensity = "comfortable";
+try { savedDensity = localStorage.getItem("aipo-gpt-density") ?? "comfortable"; } catch { /* use default */ }
+setResultDensity(savedDensity, { persist: false });
+for (const button of densityButtons) {
+  button.addEventListener("click", () => {
+    setResultDensity(button.dataset.density);
+    showToast(`${button.textContent} result view selected.`);
+  });
+}
 
 const formatMoney = (value) => new Intl.NumberFormat("en-US", {
   style: "currency",

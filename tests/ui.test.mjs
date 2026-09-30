@@ -173,5 +173,9 @@ assert.match(html, /id="motion-toggle"[^>]+aria-pressed="true">Motion on/);
 assert.match(app, /localStorage\.getItem\("aipo-gpt-motion"\)/);
 assert.match(app, /function resetPointerEffects\(\)/);
 assert.match(app, /motionToggle\.addEventListener\("click"/);
+assert.equal((html.match(/data-density=/g) ?? []).length, 2);
+assert.match(app, /function setResultDensity\(density/);
+assert.match(app, /localStorage\.getItem\("aipo-gpt-density"\)/);
+assert.match(app, /resultsPanel\.dataset\.density = safeDensity/);
 
 console.log("UI contract tests passed");

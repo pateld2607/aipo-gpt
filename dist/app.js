@@ -95,6 +95,7 @@ let toastTimer = 0;
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
+const metricFrames = new WeakMap();
 
 function setResultDensity(density, { persist = true } = {}) {
   const safeDensity = density === "compact" ? "compact" : "comfortable";
@@ -182,6 +183,26 @@ const formatMoney = (value) => new Intl.NumberFormat("en-US", {
   currency: "USD",
   maximumFractionDigits: 0,
 }).format(value);
+
+function animateMetric(element, nextValue, formatter) {
+  const previousValue = Number(element.dataset.metricValue ?? nextValue);
+  element.dataset.metricValue = String(nextValue);
+  const existingFrame = metricFrames.get(element);
+  if (existingFrame) window.cancelAnimationFrame(existingFrame);
+  if (prefersReducedMotion || !motionEnabled || previousValue === nextValue) {
+    element.textContent = formatter(nextValue);
+    return;
+  }
+  const startedAt = performance.now();
+  const duration = 420;
+  const tick = (now) => {
+    const progress = Math.min((now - startedAt) / duration, 1);
+    const eased = 1 - ((1 - progress) ** 3);
+    element.textContent = formatter(previousValue + ((nextValue - previousValue) * eased));
+    if (progress < 1) metricFrames.set(element, window.requestAnimationFrame(tick));
+  };
+  metricFrames.set(element, window.requestAnimationFrame(tick));
+}
 
 function currentConstraints() {
   return {
@@ -541,11 +562,11 @@ function render(constraints, { announce = false } = {}) {
   }).join("");
 
   document.querySelector("#recommendation-summary").textContent = recommendation.summary;
-  document.querySelector("#total-price").textContent = formatMoney(recommendation.total);
-  document.querySelector("#budget-headroom").textContent = recommendation.budgetHeadroom >= 0
-    ? formatMoney(recommendation.budgetHeadroom)
-    : `${formatMoney(Math.abs(recommendation.budgetHeadroom))} over`;
-  document.querySelector("#peak-power").textContent = `${recommendation.platformWatts}W`;
+  animateMetric(document.querySelector("#total-price"), recommendation.total, (value) => formatMoney(Math.round(value)));
+  animateMetric(document.querySelector("#budget-headroom"), recommendation.budgetHeadroom, (value) => value >= 0
+    ? formatMoney(Math.round(value))
+    : `${formatMoney(Math.round(Math.abs(value)))} over`);
+  animateMetric(document.querySelector("#peak-power"), recommendation.platformWatts, (value) => `${Math.round(value)}W`);
   document.querySelector("#upgrade-readiness").textContent = `${recommendation.upgradeReadiness.label} · ${recommendation.upgradeReadiness.score}%`;
   document.querySelector("#cooler-noise").textContent = `${recommendation.acoustics.label} · ${recommendation.acoustics.decibels}dBA`;
   document.querySelector("#power-reserve").textContent = `${recommendation.powerReserve.watts}W · ${recommendation.powerReserve.percentage}%`;

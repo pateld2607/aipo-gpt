@@ -191,5 +191,9 @@ assert.match(html, /id="component-stack" tabindex="-1"/);
 assert.match(html, /id="validation-details" tabindex="-1"/);
 assert.match(app, /target\.scrollIntoView/);
 assert.match(css, /\.command-list button\[hidden\] \{ display: none; \}/);
+assert.match(app, /function animateMetric\(element, nextValue, formatter\)/);
+assert.match(app, /dataset\.metricValue/);
+assert.match(app, /performance\.now\(\)/);
+assert.match(app, /animateMetric\(document\.querySelector\("#total-price"\)/);
 
 console.log("UI contract tests passed");

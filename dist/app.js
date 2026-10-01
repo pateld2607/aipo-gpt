@@ -88,6 +88,7 @@ const commandSearch = document.querySelector("#command-search");
 const commandButtons = [...document.querySelectorAll("[data-command]")];
 const commandEmpty = document.querySelector("#command-empty");
 const resultJumpButtons = [...document.querySelectorAll("[data-result-target]")];
+const metricCards = [...document.querySelectorAll(".metric")];
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -318,6 +319,23 @@ if (canTrackPointer) {
   });
 }
 
+if (canTrackPointer) {
+  for (const card of metricCards) {
+    card.addEventListener("pointermove", (event) => {
+      if (!motionEnabled) return;
+      const bounds = card.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / bounds.width;
+      const y = (event.clientY - bounds.top) / bounds.height;
+      card.style.setProperty("--metric-tilt-x", `${(0.5 - y) * 3}deg`);
+      card.style.setProperty("--metric-tilt-y", `${(x - 0.5) * 4}deg`);
+    }, { passive: true });
+    card.addEventListener("pointerleave", () => {
+      card.style.setProperty("--metric-tilt-x", "0deg");
+      card.style.setProperty("--metric-tilt-y", "0deg");
+    });
+  }
+}
+
 function resetPointerEffects() {
   root.style.setProperty("--pointer-x", "50vw");
   root.style.setProperty("--pointer-y", "24vh");
@@ -325,6 +343,10 @@ function resetPointerEffects() {
   root.style.setProperty("--pointer-shift-y", "0px");
   root.style.setProperty("--pointer-shift-inverse-x", "0px");
   root.style.setProperty("--pointer-shift-inverse-y", "0px");
+  for (const card of metricCards) {
+    card.style.setProperty("--metric-tilt-x", "0deg");
+    card.style.setProperty("--metric-tilt-y", "0deg");
+  }
 }
 
 motionToggle.addEventListener("click", () => {

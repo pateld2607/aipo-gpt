@@ -216,6 +216,7 @@ footer {
 html[data-motion="off"] body::before,
 html[data-motion="off"] .workspace::before { display: none; }
 html[data-motion="off"] .ambient { transform: none; }
+html[data-motion="off"] .metric { transform: none; }
 html[data-motion="off"] *,
 html[data-motion="off"] *::before,
 html[data-motion="off"] *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
@@ -695,7 +696,15 @@ textarea:focus {
   overflow: hidden;
 }
 
-.metric { padding: 16px; }
+.metric {
+  --metric-tilt-x: 0deg;
+  --metric-tilt-y: 0deg;
+  padding: 16px;
+  transform: perspective(560px) rotateX(var(--metric-tilt-x)) rotateY(var(--metric-tilt-y));
+  transform-style: preserve-3d;
+  transition: transform .16s ease-out, background .16s;
+}
+.metric:hover { background: rgba(94,231,238,.025); }
 .metric + .metric { border-left: 1px solid var(--line); }
 .metric:nth-child(4) { border-left: 0; }
 .metric:nth-child(n + 4) { border-top: 1px solid var(--line); }

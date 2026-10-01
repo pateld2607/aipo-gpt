@@ -207,5 +207,9 @@ assert.match(app, /commandDialog\.addEventListener\("keydown"/);
 assert.match(app, /commandButtons\.filter\(\(button\) => !button\.hidden\)/);
 assert.match(app, /visibleCommands\.at\(-1\)\.focus\(\)/);
 assert.match(app, /document\.activeElement === commandSearch/);
+assert.match(app, /querySelectorAll\("\.metric"\)/);
+assert.match(app, /getBoundingClientRect\(\)/);
+assert.match(app, /--metric-tilt-x/);
+assert.match(app, /--metric-tilt-y/);
 
 console.log("UI contract tests passed");

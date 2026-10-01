@@ -211,5 +211,10 @@ assert.match(app, /querySelectorAll\("\.metric"\)/);
 assert.match(app, /getBoundingClientRect\(\)/);
 assert.match(app, /--metric-tilt-x/);
 assert.match(app, /--metric-tilt-y/);
+assert.match(html, /Press <kbd>⌘<\/kbd>\/<kbd>Ctrl<\/kbd> \+ <kbd>Enter<\/kbd> to generate/);
+assert.match(app, /form\.addEventListener\("keydown"/);
+assert.match(app, /event\.key === "Enter"/);
+assert.match(app, /form\.reportValidity\(\)/);
+assert.match(app, /form\.requestSubmit\(\)/);
 
 console.log("UI contract tests passed");

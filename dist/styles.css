@@ -349,6 +349,8 @@ h1 span { color: #8293a0; }
 }
 
 .field-wide { margin-bottom: 18px; }
+.field-shortcut { color: var(--muted); font-size: .66rem; font-weight: 520; letter-spacing: 0; }
+.field-shortcut kbd { padding: 1px 4px; border: 1px solid var(--line); border-radius: 4px; color: #cbd6da; font: 700 .62rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
 
 .advanced-controls {
   margin-top: 18px;

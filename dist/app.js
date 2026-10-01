@@ -1037,6 +1037,13 @@ form.addEventListener("submit", (event) => {
   render(syncGoalToFields(), { announce: true });
 });
 
+form.addEventListener("keydown", (event) => {
+  if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+    event.preventDefault();
+    if (form.reportValidity()) form.requestSubmit();
+  }
+});
+
 form.addEventListener("invalid", (event) => {
   const messages = {
     goal: "Describe the PC you want in at least 12 characters.",

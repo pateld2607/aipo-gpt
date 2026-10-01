@@ -561,6 +561,7 @@ function render(constraints, { announce = false } = {}) {
     const isActive = button.dataset.profile === activeProfile;
     button.classList.toggle("is-active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
+    button.tabIndex = isActive ? 0 : -1;
   }
 
   const profileLabels = {
@@ -1021,6 +1022,18 @@ for (const button of profileButtons) {
   button.addEventListener("click", () => {
     activeProfile = button.dataset.profile;
     render(currentConstraints());
+  });
+  button.addEventListener("keydown", (event) => {
+    const currentIndex = profileButtons.indexOf(button);
+    let nextIndex = currentIndex;
+    if (["ArrowRight", "ArrowDown"].includes(event.key)) nextIndex = (currentIndex + 1) % profileButtons.length;
+    else if (["ArrowLeft", "ArrowUp"].includes(event.key)) nextIndex = (currentIndex - 1 + profileButtons.length) % profileButtons.length;
+    else if (event.key === "Home") nextIndex = 0;
+    else if (event.key === "End") nextIndex = profileButtons.length - 1;
+    else return;
+    event.preventDefault();
+    profileButtons[nextIndex].focus();
+    profileButtons[nextIndex].click();
   });
 }
 

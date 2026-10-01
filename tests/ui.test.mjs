@@ -199,5 +199,9 @@ assert.match(html, /id="result-deltas"[^>]+aria-live="polite" hidden/);
 assert.match(app, /function renderRecommendationDeltas\(previous, current\)/);
 assert.match(app, /current\.upgradeReadiness\.score - previous\.upgradeReadiness\.score/);
 assert.match(app, /renderRecommendationDeltas\(previousRecommendation, recommendation\)/);
+assert.match(app, /button\.tabIndex = isActive \? 0 : -1/);
+assert.match(app, /\["ArrowRight", "ArrowDown"\]\.includes\(event\.key\)/);
+assert.match(app, /event\.key === "Home"/);
+assert.match(app, /profileButtons\[nextIndex\]\.click\(\)/);
 
 console.log("UI contract tests passed");

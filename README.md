@@ -40,6 +40,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Sticky result-section navigation for overview, components, and validation
 - Smooth numeric transitions for price, headroom, and peak-power changes
 - Recommendation delta chips for cost, power, upgrade readiness, and goals met
+- Arrow-key, Home, and End navigation across recommendation profiles
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile
 - Keyboard skip navigation, result focus management, and screen-reader build summaries

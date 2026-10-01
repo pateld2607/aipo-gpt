@@ -204,6 +204,27 @@ function animateMetric(element, nextValue, formatter) {
   metricFrames.set(element, window.requestAnimationFrame(tick));
 }
 
+function renderRecommendationDeltas(previous, current) {
+  const panel = document.querySelector("#result-deltas");
+  if (!previous || previous.buildId === current.buildId) {
+    panel.hidden = true;
+    panel.innerHTML = "";
+    return;
+  }
+  const previousGoals = previous.requirementChecks.filter((check) => check.pass).length;
+  const currentGoals = current.requirementChecks.filter((check) => check.pass).length;
+  const deltas = [
+    { label: "Cost", value: current.total - previous.total, format: (value) => `${value > 0 ? "+" : "−"}${formatMoney(Math.abs(value))}`, better: (value) => value < 0 },
+    { label: "Power", value: current.platformWatts - previous.platformWatts, format: (value) => `${value > 0 ? "+" : "−"}${Math.abs(value)}W`, better: (value) => value < 0 },
+    { label: "Upgrade", value: current.upgradeReadiness.score - previous.upgradeReadiness.score, format: (value) => `${value > 0 ? "+" : ""}${value}pts`, better: (value) => value > 0 },
+    { label: "Goals", value: currentGoals - previousGoals, format: (value) => `${value > 0 ? "+" : ""}${value}`, better: (value) => value > 0 },
+  ].filter((delta) => delta.value !== 0);
+  panel.hidden = deltas.length === 0;
+  panel.innerHTML = deltas.map((delta) =>
+    `<span class="${delta.better(delta.value) ? "is-better" : "is-tradeoff"}">${delta.label} ${delta.format(delta.value)}</span>`,
+  ).join("");
+}
+
 function currentConstraints() {
   return {
     budget: Number(fields.budget.value),
@@ -527,12 +548,14 @@ function render(constraints, { announce = false } = {}) {
   updateAdvancedCount();
   renderConstraintChips(constraints);
   const recommendation = recommendBuild(constraints, activeProfile);
+  const previousRecommendation = latestRecommendation;
   latestRecommendation = recommendation;
   latestConstraints = constraints;
   updateShareUrl(constraints);
   const parts = Object.entries(recommendation.parts);
   const compatible = recommendation.compatibilityChecks.filter((check) => check.pass).length;
   const goalsMet = recommendation.requirementChecks.filter((check) => check.pass).length;
+  renderRecommendationDeltas(previousRecommendation, recommendation);
 
   for (const button of profileButtons) {
     const isActive = button.dataset.profile === activeProfile;

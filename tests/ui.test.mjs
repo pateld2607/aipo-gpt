@@ -195,5 +195,9 @@ assert.match(app, /function animateMetric\(element, nextValue, formatter\)/);
 assert.match(app, /dataset\.metricValue/);
 assert.match(app, /performance\.now\(\)/);
 assert.match(app, /animateMetric\(document\.querySelector\("#total-price"\)/);
+assert.match(html, /id="result-deltas"[^>]+aria-live="polite" hidden/);
+assert.match(app, /function renderRecommendationDeltas\(previous, current\)/);
+assert.match(app, /current\.upgradeReadiness\.score - previous\.upgradeReadiness\.score/);
+assert.match(app, /renderRecommendationDeltas\(previousRecommendation, recommendation\)/);
 
 console.log("UI contract tests passed");

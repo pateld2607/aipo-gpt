@@ -702,6 +702,17 @@ textarea:focus {
 .metric span { display: block; margin-bottom: 7px; color: var(--muted); font-size: .68rem; }
 .metric strong { font-size: 1.05rem; }
 
+.result-deltas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: -14px 0 22px;
+}
+.result-deltas[hidden] { display: none; }
+.result-deltas span { padding: 6px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font: 700 .66rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.result-deltas .is-better { border-color: rgba(184,255,98,.24); color: var(--acid); }
+.result-deltas .is-tradeoff { border-color: rgba(255,211,106,.22); color: #ffd36a; }
+
 @media (min-width: 901px) {
   .metric { padding-inline: 12px; }
   .metric strong { font-size: .92rem; }

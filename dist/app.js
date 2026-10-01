@@ -165,6 +165,28 @@ commandSearch.addEventListener("input", () => {
   }
   commandEmpty.hidden = visible > 0;
 });
+commandDialog.addEventListener("keydown", (event) => {
+  const visibleCommands = commandButtons.filter((button) => !button.hidden);
+  if (visibleCommands.length === 0) return;
+  const currentIndex = visibleCommands.indexOf(document.activeElement);
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+    visibleCommands[(currentIndex + 1) % visibleCommands.length].focus();
+  } else if (event.key === "ArrowUp") {
+    event.preventDefault();
+    const nextIndex = currentIndex <= 0 ? visibleCommands.length - 1 : currentIndex - 1;
+    visibleCommands[nextIndex].focus();
+  } else if (event.key === "Home" && currentIndex >= 0) {
+    event.preventDefault();
+    visibleCommands[0].focus();
+  } else if (event.key === "End" && currentIndex >= 0) {
+    event.preventDefault();
+    visibleCommands.at(-1).focus();
+  } else if (event.key === "Enter" && document.activeElement === commandSearch) {
+    event.preventDefault();
+    visibleCommands[0].click();
+  }
+});
 for (const button of commandButtons) {
   button.addEventListener("click", () => runCommand(button.dataset.command));
 }

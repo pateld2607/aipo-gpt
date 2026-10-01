@@ -203,5 +203,9 @@ assert.match(app, /button\.tabIndex = isActive \? 0 : -1/);
 assert.match(app, /\["ArrowRight", "ArrowDown"\]\.includes\(event\.key\)/);
 assert.match(app, /event\.key === "Home"/);
 assert.match(app, /profileButtons\[nextIndex\]\.click\(\)/);
+assert.match(app, /commandDialog\.addEventListener\("keydown"/);
+assert.match(app, /commandButtons\.filter\(\(button\) => !button\.hidden\)/);
+assert.match(app, /visibleCommands\.at\(-1\)\.focus\(\)/);
+assert.match(app, /document\.activeElement === commandSearch/);
 
 console.log("UI contract tests passed");

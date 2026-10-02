@@ -529,7 +529,22 @@ constraintChips.addEventListener("click", (event) => {
   target.focus();
 });
 
-partsList.addEventListener("click", (event) => {
+partsList.addEventListener("click", async (event) => {
+  const copyPartButton = event.target.closest("[data-copy-part]");
+  if (copyPartButton) {
+    const type = copyPartButton.dataset.copyPart;
+    const part = latestRecommendation?.parts[type];
+    if (!part) return;
+    const label = type === "motherboard" ? "Motherboard" : type.toUpperCase();
+    const text = `${label}: ${part.name} — ${formatMoney(part.price)}\n${latestRecommendation.rationales[type]}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast(`${label} details copied.`);
+    } catch {
+      showToast("Copy unavailable. Select the component text manually.");
+    }
+    return;
+  }
   const button = event.target.closest(".part-row");
   if (!button) return;
   const details = document.querySelector(`#${button.getAttribute("aria-controls")}`);
@@ -735,7 +750,10 @@ function render(constraints, { announce = false } = {}) {
       </button>
       <div class="part-inspection" id="part-inspection-${type}" hidden>
         <p class="part-reason">${recommendation.rationales[type]}</p>
-        <span>${Math.round(recommendation.budgetAllocation[type].percentage * 100)}% of budget</span>
+        <div class="part-inspection-actions">
+          <span>${Math.round(recommendation.budgetAllocation[type].percentage * 100)}% of budget</span>
+          <button type="button" data-copy-part="${type}">Copy component</button>
+        </div>
       </div>
     </article>
   `).join("");

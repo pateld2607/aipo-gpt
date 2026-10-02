@@ -229,5 +229,9 @@ assert.match(html, /id="clear-baseline" hidden>Clear baseline/);
 assert.match(app, /baselineRecommendation = latestRecommendation/);
 assert.match(app, /baselineRecommendation \?\? previousRecommendation/);
 assert.match(app, /Comparison baseline pinned/);
+assert.match(app, /data-copy-part="\$\{type\}"/);
+assert.match(app, /event\.target\.closest\("\[data-copy-part\]"\)/);
+assert.match(app, /navigator\.clipboard\.writeText\(text\)/);
+assert.match(app, /details copied/);
 
 console.log("UI contract tests passed");

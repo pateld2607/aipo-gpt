@@ -47,6 +47,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Distraction-free focus mode with toolbar, keyboard, and Escape controls
 - Persistent high-contrast mode for stronger text, panel, and border definition
 - Pinnable build baselines for comparing later recommendations against a chosen system
+- One-click copy actions for individual component choices and their rationale
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile
 - Keyboard skip navigation, result focus management, and screen-reader build summaries

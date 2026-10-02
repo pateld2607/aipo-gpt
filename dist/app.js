@@ -80,6 +80,7 @@ const actionToast = document.querySelector("#action-toast");
 const actionToastMessage = document.querySelector("#action-toast-message");
 const closeToastButton = document.querySelector("#close-toast");
 const motionToggle = document.querySelector("#motion-toggle");
+const focusToggle = document.querySelector("#focus-toggle");
 const densityButtons = [...document.querySelectorAll("[data-density]")];
 const commandDialog = document.querySelector("#command-dialog");
 const commandTrigger = document.querySelector("#command-trigger");
@@ -146,8 +147,19 @@ function runCommand(command) {
   } else if (command === "compact-view") {
     setResultDensity("compact");
     showToast("Compact result view selected.");
+  } else if (command === "focus-mode") {
+    setFocusMode(root.dataset.focus !== "on");
   }
 }
+
+function setFocusMode(enabled) {
+  root.dataset.focus = enabled ? "on" : "off";
+  focusToggle.setAttribute("aria-pressed", String(enabled));
+  focusToggle.textContent = enabled ? "Exit focus" : "Focus mode";
+  showToast(enabled ? "Focus mode enabled. Press Escape to exit." : "Focus mode closed.");
+}
+
+focusToggle.addEventListener("click", () => setFocusMode(root.dataset.focus !== "on"));
 
 commandTrigger.addEventListener("click", openCommandDialog);
 commandClose.addEventListener("click", () => commandDialog.close());
@@ -155,6 +167,11 @@ document.addEventListener("keydown", (event) => {
   if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
     event.preventDefault();
     if (commandDialog.open) commandDialog.close(); else openCommandDialog();
+  } else if (event.key === "Escape" && root.dataset.focus === "on" && !commandDialog.open) {
+    setFocusMode(false);
+  } else if (event.key.toLowerCase() === "f" && !event.metaKey && !event.ctrlKey && !event.altKey
+    && !event.target.closest("input, textarea, select, [contenteditable]")) {
+    setFocusMode(root.dataset.focus !== "on");
   }
 });
 commandSearch.addEventListener("input", () => {

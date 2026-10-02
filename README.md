@@ -44,6 +44,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Arrow-key navigation and Enter execution inside the quick-action command center
 - Subtle pointer-responsive depth on result metrics with motion-safe fallbacks
 - Command-Enter and Control-Enter shortcuts for immediate build generation
+- Distraction-free focus mode with toolbar, keyboard, and Escape controls
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile
 - Keyboard skip navigation, result focus management, and screen-reader build summaries

@@ -29,6 +29,7 @@
       </a>
       <div class="topbar-actions">
         <button class="command-trigger" id="command-trigger" type="button" aria-haspopup="dialog" aria-controls="command-dialog">Quick actions <kbd>⌘K</kbd></button>
+        <button class="focus-toggle" id="focus-toggle" type="button" aria-pressed="false">Focus mode</button>
         <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="true">Motion on</button>
         <div class="engine-status" aria-label="Engine status">
           <span class="status-dot"></span>
@@ -391,6 +392,7 @@
         <button type="button" data-command="profile-value"><strong>Use best value</strong><span>Recalculate with the value profile</span></button>
         <button type="button" data-command="copy-link"><strong>Copy share link</strong><span>Copy this configuration URL</span></button>
         <button type="button" data-command="compact-view"><strong>Use compact view</strong><span>Tighten recommendation spacing</span></button>
+        <button type="button" data-command="focus-mode"><strong>Toggle focus mode</strong><span>Hide the surrounding page and center the optimizer</span></button>
       </div>
       <p class="command-empty" id="command-empty" hidden>No matching actions.</p>
     </dialog>

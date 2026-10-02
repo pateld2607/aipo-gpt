@@ -304,6 +304,11 @@
             </div>
           </div>
           <div class="result-deltas" id="result-deltas" aria-label="Changes from previous recommendation" aria-live="polite" hidden></div>
+          <div class="baseline-controls" aria-label="Build comparison baseline">
+            <button type="button" id="pin-baseline">Pin current build</button>
+            <button type="button" id="clear-baseline" hidden>Clear baseline</button>
+            <span id="baseline-status" aria-live="polite">Comparing each new result with the previous build.</span>
+          </div>
 
           <details class="upgrade-breakdown">
             <summary>Upgrade-readiness breakdown</summary>

@@ -749,6 +749,11 @@ textarea:focus {
 .result-deltas span { padding: 6px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font: 700 .66rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .result-deltas .is-better { border-color: rgba(184,255,98,.24); color: var(--acid); }
 .result-deltas .is-tradeoff { border-color: rgba(255,211,106,.22); color: #ffd36a; }
+.baseline-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin: -12px 0 20px; }
+.baseline-controls button { padding: 6px 9px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.025); color: #cbd7dd; font-size: .67rem; cursor: pointer; }
+.baseline-controls button:hover,
+.baseline-controls button:focus-visible { border-color: rgba(94,231,238,.5); color: var(--cyan); }
+.baseline-controls span { color: var(--muted); font-size: .66rem; }
 
 @media (min-width: 901px) {
   .metric { padding-inline: 12px; }

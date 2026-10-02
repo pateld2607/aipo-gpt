@@ -91,6 +91,9 @@ const commandButtons = [...document.querySelectorAll("[data-command]")];
 const commandEmpty = document.querySelector("#command-empty");
 const resultJumpButtons = [...document.querySelectorAll("[data-result-target]")];
 const metricCards = [...document.querySelectorAll(".metric")];
+const pinBaselineButton = document.querySelector("#pin-baseline");
+const clearBaselineButton = document.querySelector("#clear-baseline");
+const baselineStatus = document.querySelector("#baseline-status");
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -98,6 +101,7 @@ let toastTimer = 0;
 let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
+let baselineRecommendation;
 const metricFrames = new WeakMap();
 
 function setResultDensity(density, { persist = true } = {}) {
@@ -285,6 +289,25 @@ function renderRecommendationDeltas(previous, current) {
     `<span class="${delta.better(delta.value) ? "is-better" : "is-tradeoff"}">${delta.label} ${delta.format(delta.value)}</span>`,
   ).join("");
 }
+
+pinBaselineButton.addEventListener("click", () => {
+  if (!latestRecommendation) return;
+  baselineRecommendation = latestRecommendation;
+  pinBaselineButton.textContent = "Update baseline";
+  clearBaselineButton.hidden = false;
+  baselineStatus.textContent = `Pinned ${baselineRecommendation.buildId}. Future results compare with this build.`;
+  renderRecommendationDeltas(baselineRecommendation, latestRecommendation);
+  showToast("Comparison baseline pinned.");
+});
+
+clearBaselineButton.addEventListener("click", () => {
+  baselineRecommendation = undefined;
+  pinBaselineButton.textContent = "Pin current build";
+  clearBaselineButton.hidden = true;
+  baselineStatus.textContent = "Comparing each new result with the previous build.";
+  document.querySelector("#result-deltas").hidden = true;
+  showToast("Comparison baseline cleared.");
+});
 
 function currentConstraints() {
   return {
@@ -637,7 +660,7 @@ function render(constraints, { announce = false } = {}) {
   const parts = Object.entries(recommendation.parts);
   const compatible = recommendation.compatibilityChecks.filter((check) => check.pass).length;
   const goalsMet = recommendation.requirementChecks.filter((check) => check.pass).length;
-  renderRecommendationDeltas(previousRecommendation, recommendation);
+  renderRecommendationDeltas(baselineRecommendation ?? previousRecommendation, recommendation);
 
   for (const button of profileButtons) {
     const isActive = button.dataset.profile === activeProfile;

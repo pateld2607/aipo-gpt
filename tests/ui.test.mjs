@@ -198,7 +198,7 @@ assert.match(app, /animateMetric\(document\.querySelector\("#total-price"\)/);
 assert.match(html, /id="result-deltas"[^>]+aria-live="polite" hidden/);
 assert.match(app, /function renderRecommendationDeltas\(previous, current\)/);
 assert.match(app, /current\.upgradeReadiness\.score - previous\.upgradeReadiness\.score/);
-assert.match(app, /renderRecommendationDeltas\(previousRecommendation, recommendation\)/);
+assert.match(app, /renderRecommendationDeltas\(baselineRecommendation \?\? previousRecommendation, recommendation\)/);
 assert.match(app, /button\.tabIndex = isActive \? 0 : -1/);
 assert.match(app, /\["ArrowRight", "ArrowDown"\]\.includes\(event\.key\)/);
 assert.match(app, /event\.key === "Home"/);
@@ -224,5 +224,10 @@ assert.match(html, /id="contrast-toggle"[^>]+aria-pressed="false">High contrast/
 assert.match(app, /function setContrastMode\(enabled/);
 assert.match(app, /localStorage\.getItem\("aipo-gpt-contrast"\)/);
 assert.match(css, /html\[data-contrast="high"\]/);
+assert.match(html, /id="pin-baseline">Pin current build/);
+assert.match(html, /id="clear-baseline" hidden>Clear baseline/);
+assert.match(app, /baselineRecommendation = latestRecommendation/);
+assert.match(app, /baselineRecommendation \?\? previousRecommendation/);
+assert.match(app, /Comparison baseline pinned/);
 
 console.log("UI contract tests passed");

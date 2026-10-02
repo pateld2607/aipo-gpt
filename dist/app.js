@@ -95,6 +95,9 @@ const metricCards = [...document.querySelectorAll(".metric")];
 const pinBaselineButton = document.querySelector("#pin-baseline");
 const clearBaselineButton = document.querySelector("#clear-baseline");
 const baselineStatus = document.querySelector("#baseline-status");
+const metricGuideDialog = document.querySelector("#metric-guide-dialog");
+const metricGuideTrigger = document.querySelector("#metric-guide-trigger");
+const metricGuideClose = document.querySelector("#metric-guide-close");
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -158,6 +161,8 @@ function runCommand(command) {
     setFocusMode(root.dataset.focus !== "on");
   } else if (command === "contrast-mode") {
     setContrastMode(root.dataset.contrast !== "high");
+  } else if (command === "metric-guide") {
+    metricGuideDialog.showModal();
   }
 }
 
@@ -235,6 +240,12 @@ commandDialog.addEventListener("keydown", (event) => {
 for (const button of commandButtons) {
   button.addEventListener("click", () => runCommand(button.dataset.command));
 }
+
+metricGuideTrigger.addEventListener("click", () => metricGuideDialog.showModal());
+metricGuideClose.addEventListener("click", () => metricGuideDialog.close());
+metricGuideDialog.addEventListener("click", (event) => {
+  if (event.target === metricGuideDialog) metricGuideDialog.close();
+});
 
 for (const button of resultJumpButtons) {
   button.addEventListener("click", () => {

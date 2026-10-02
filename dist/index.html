@@ -244,6 +244,7 @@
             <span>View</span>
             <button class="is-active" type="button" data-density="comfortable" aria-pressed="true">Comfortable</button>
             <button type="button" data-density="compact" aria-pressed="false">Compact</button>
+            <button type="button" id="metric-guide-trigger" aria-haspopup="dialog" aria-controls="metric-guide-dialog">Metric guide</button>
           </div>
           <nav class="result-jump-nav" aria-label="Recommendation sections">
             <button type="button" data-result-target="build-metrics">Overview</button>
@@ -402,8 +403,23 @@
         <button type="button" data-command="compact-view"><strong>Use compact view</strong><span>Tighten recommendation spacing</span></button>
         <button type="button" data-command="focus-mode"><strong>Toggle focus mode</strong><span>Hide the surrounding page and center the optimizer</span></button>
         <button type="button" data-command="contrast-mode"><strong>Toggle high contrast</strong><span>Strengthen text, panels, and borders</span></button>
+        <button type="button" data-command="metric-guide"><strong>Open metric guide</strong><span>Understand the recommendation scores</span></button>
       </div>
       <p class="command-empty" id="command-empty" hidden>No matching actions.</p>
+    </dialog>
+    <dialog class="metric-guide-dialog" id="metric-guide-dialog" aria-labelledby="metric-guide-heading">
+      <div class="command-header">
+        <div><span>DECISION GUIDE</span><h2 id="metric-guide-heading">How to read the build</h2></div>
+        <button type="button" id="metric-guide-close" aria-label="Close metric guide">×</button>
+      </div>
+      <dl>
+        <div><dt>Headroom</dt><dd>Money left after the estimated component total.</dd></div>
+        <div><dt>Peak draw</dt><dd>Estimated maximum combined system power under sustained load.</dd></div>
+        <div><dt>Upgrade room</dt><dd>A composite score for power, memory, expansion, and case clearance.</dd></div>
+        <div><dt>Cooler noise</dt><dd>Estimated acoustic output of the selected CPU cooler.</dd></div>
+        <div><dt>PSU reserve</dt><dd>Power-supply capacity remaining above estimated peak draw.</dd></div>
+        <div><dt>Value density</dt><dd>Weighted component-tier points delivered per $1,000.</dd></div>
+      </dl>
     </dialog>
   </body>
 </html>

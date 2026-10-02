@@ -481,7 +481,7 @@ textarea:focus {
 
 .form-actions {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   align-items: stretch;
   gap: 10px;
   margin-top: 20px;
@@ -506,7 +506,8 @@ textarea:focus {
 .optimize-button:active { transform: translateY(0); }
 .optimize-button.is-complete { background: var(--cyan); box-shadow: 0 14px 36px rgba(94,231,238,.16); }
 
-.reset-button {
+.reset-button,
+.revert-button {
   padding: 0 15px;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -518,7 +519,10 @@ textarea:focus {
 }
 
 .reset-button:hover,
-.reset-button:focus-visible { border-color: rgba(94,231,238,.45); color: var(--cyan); }
+.reset-button:focus-visible,
+.revert-button:hover,
+.revert-button:focus-visible { border-color: rgba(94,231,238,.45); color: var(--cyan); }
+.revert-button:disabled { opacity: .42; cursor: not-allowed; }
 
 .form-error {
   min-height: 1.2rem;
@@ -1010,7 +1014,8 @@ footer {
   .result-jump-nav { position: sticky; z-index: 5; top: 68px; padding: 7px; border: 1px solid var(--line); border-radius: 10px; background: rgba(8,18,28,.92); backdrop-filter: blur(14px); }
   .result-jump-nav button { flex: 1; }
   .form-actions { grid-template-columns: 1fr; }
-  .reset-button { padding: 12px 15px; }
+  .reset-button,
+  .revert-button { padding: 12px 15px; }
   .part-row { grid-template-columns: 68px 1fr auto; }
   .part-price { display: none; }
   .part-inspection { grid-template-columns: 1fr; padding-left: 14px; }

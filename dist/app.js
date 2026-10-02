@@ -58,6 +58,7 @@ const downloadMarkdownButton = document.querySelector("#download-markdown");
 const downloadCsvButton = document.querySelector("#download-csv");
 const printButton = document.querySelector("#print-build");
 const resetButton = document.querySelector("#reset-build");
+const revertInputsButton = document.querySelector("#revert-inputs");
 const saveLocalButton = document.querySelector("#save-local");
 const loadLocalButton = document.querySelector("#load-local");
 const clearLocalButton = document.querySelector("#clear-local");
@@ -102,6 +103,7 @@ let activeProfile = "balanced";
 let latestRecommendation;
 let latestConstraints;
 let baselineRecommendation;
+let latestFormState;
 const metricFrames = new WeakMap();
 
 function setResultDensity(density, { persist = true } = {}) {
@@ -465,6 +467,7 @@ function setResultStale(stale) {
   resultsPanel.classList.toggle("is-stale", stale);
   resultsFreshness.classList.toggle("is-stale", stale);
   resultsFreshness.textContent = stale ? "Inputs changed · refresh needed" : "Up to date";
+  revertInputsButton.disabled = !stale || !latestFormState;
   if (!optimizeButton.classList.contains("is-complete")) {
     optimizeLabel.textContent = stale ? "Refresh build" : "Generate build";
   }
@@ -671,6 +674,7 @@ function render(constraints, { announce = false } = {}) {
   const previousRecommendation = latestRecommendation;
   latestRecommendation = recommendation;
   latestConstraints = constraints;
+  latestFormState = { goal: fields.goal.value, profile: activeProfile, ...constraints };
   updateShareUrl(constraints);
   const parts = Object.entries(recommendation.parts);
   const compatible = recommendation.compatibilityChecks.filter((check) => check.pass).length;
@@ -1107,6 +1111,27 @@ resetButton.addEventListener("click", () => {
   });
   resultStatus.textContent = "Optimizer defaults restored.";
   fields.goal.focus();
+});
+
+revertInputsButton.addEventListener("click", () => {
+  if (!latestFormState) return;
+  fields.goal.value = latestFormState.goal;
+  fields.budget.value = latestFormState.budget;
+  fields.budgetRange.value = latestFormState.budget;
+  fields.useCase.value = latestFormState.useCase;
+  fields.resolution.value = latestFormState.resolution;
+  fields.priority.value = latestFormState.priority;
+  fields.memoryTarget.value = latestFormState.memoryTarget;
+  fields.storageTarget.value = latestFormState.storageTarget;
+  fields.noiseTarget.value = latestFormState.noiseTarget;
+  fields.vramTarget.value = latestFormState.vramTarget;
+  fields.coreTarget.value = latestFormState.coreTarget;
+  fields.powerTarget.value = latestFormState.powerTarget;
+  fields.caseTarget.value = latestFormState.caseTarget;
+  activeProfile = latestFormState.profile;
+  updateAdvancedCount();
+  setResultStale(false);
+  showToast("Inputs restored to the visible recommendation.");
 });
 
 form.addEventListener("submit", (event) => {

@@ -233,5 +233,9 @@ assert.match(app, /data-copy-part="\$\{type\}"/);
 assert.match(app, /event\.target\.closest\("\[data-copy-part\]"\)/);
 assert.match(app, /navigator\.clipboard\.writeText\(text\)/);
 assert.match(app, /details copied/);
+assert.match(html, /id="revert-inputs" disabled>Revert inputs/);
+assert.match(app, /latestFormState = \{ goal: fields\.goal\.value/);
+assert.match(app, /revertInputsButton\.addEventListener\("click"/);
+assert.match(app, /Inputs restored to the visible recommendation/);
 
 console.log("UI contract tests passed");

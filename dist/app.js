@@ -81,6 +81,7 @@ const actionToastMessage = document.querySelector("#action-toast-message");
 const closeToastButton = document.querySelector("#close-toast");
 const motionToggle = document.querySelector("#motion-toggle");
 const focusToggle = document.querySelector("#focus-toggle");
+const contrastToggle = document.querySelector("#contrast-toggle");
 const densityButtons = [...document.querySelectorAll("[data-density]")];
 const commandDialog = document.querySelector("#command-dialog");
 const commandTrigger = document.querySelector("#command-trigger");
@@ -149,6 +150,8 @@ function runCommand(command) {
     showToast("Compact result view selected.");
   } else if (command === "focus-mode") {
     setFocusMode(root.dataset.focus !== "on");
+  } else if (command === "contrast-mode") {
+    setContrastMode(root.dataset.contrast !== "high");
   }
 }
 
@@ -160,6 +163,24 @@ function setFocusMode(enabled) {
 }
 
 focusToggle.addEventListener("click", () => setFocusMode(root.dataset.focus !== "on"));
+
+function setContrastMode(enabled, { persist = true } = {}) {
+  root.dataset.contrast = enabled ? "high" : "standard";
+  contrastToggle.setAttribute("aria-pressed", String(enabled));
+  contrastToggle.textContent = enabled ? "Standard contrast" : "High contrast";
+  if (persist) {
+    try { localStorage.setItem("aipo-gpt-contrast", enabled ? "high" : "standard"); } catch { /* preference remains session-only */ }
+  }
+}
+
+let savedContrast = "standard";
+try { savedContrast = localStorage.getItem("aipo-gpt-contrast") ?? "standard"; } catch { /* use default */ }
+setContrastMode(savedContrast === "high", { persist: false });
+contrastToggle.addEventListener("click", () => {
+  const enabled = root.dataset.contrast !== "high";
+  setContrastMode(enabled);
+  showToast(enabled ? "High contrast enabled." : "Standard contrast enabled.");
+});
 
 commandTrigger.addEventListener("click", openCommandDialog);
 commandClose.addEventListener("click", () => commandDialog.close());

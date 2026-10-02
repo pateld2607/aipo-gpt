@@ -180,7 +180,7 @@ assert.match(app, /localStorage\.getItem\("aipo-gpt-density"\)/);
 assert.match(app, /resultsPanel\.dataset\.density = safeDensity/);
 assert.match(html, /id="command-trigger"[^>]+aria-haspopup="dialog"/);
 assert.match(html, /<dialog class="command-dialog" id="command-dialog"/);
-assert.equal((html.match(/data-command=/g) ?? []).length, 7);
+assert.equal((html.match(/data-command=/g) ?? []).length, 8);
 assert.match(app, /function openCommandDialog\(\)/);
 assert.match(app, /function runCommand\(command\)/);
 assert.match(app, /event\.metaKey \|\| event\.ctrlKey/);
@@ -220,5 +220,9 @@ assert.match(html, /id="focus-toggle"[^>]+aria-pressed="false">Focus mode/);
 assert.match(app, /function setFocusMode\(enabled\)/);
 assert.match(app, /event\.key === "Escape" && root\.dataset\.focus === "on"/);
 assert.match(app, /command === "focus-mode"/);
+assert.match(html, /id="contrast-toggle"[^>]+aria-pressed="false">High contrast/);
+assert.match(app, /function setContrastMode\(enabled/);
+assert.match(app, /localStorage\.getItem\("aipo-gpt-contrast"\)/);
+assert.match(css, /html\[data-contrast="high"\]/);
 
 console.log("UI contract tests passed");

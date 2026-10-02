@@ -49,6 +49,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Pinnable build baselines for comparing later recommendations against a chosen system
 - One-click copy actions for individual component choices and their rationale
 - Reversible form edits that restore the exact inputs behind the visible recommendation
+- Touch swipe navigation between configuration and recommendation views on mobile
 - One-click gaming, streaming, and workstation goal presets
 - Shareable URLs that restore the selected constraints and recommendation profile
 - Keyboard skip navigation, result focus management, and screen-reader build summaries

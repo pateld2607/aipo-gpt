@@ -436,6 +436,23 @@ function setWorkspaceView(view, { focus = false } = {}) {
   }
 }
 
+let swipeStart;
+workspace.addEventListener("pointerdown", (event) => {
+  if (event.pointerType !== "touch" || !window.matchMedia("(max-width: 900px)").matches) return;
+  swipeStart = { x: event.clientX, y: event.clientY };
+}, { passive: true });
+workspace.addEventListener("pointerup", (event) => {
+  if (!swipeStart || event.pointerType !== "touch") return;
+  const horizontal = event.clientX - swipeStart.x;
+  const vertical = Math.abs(event.clientY - swipeStart.y);
+  swipeStart = undefined;
+  if (Math.abs(horizontal) < 80 || vertical > 55) return;
+  const view = horizontal < 0 ? "results" : "configure";
+  setWorkspaceView(view);
+  resultStatus.textContent = view === "results" ? "Recommendation view selected." : "Configuration view selected.";
+});
+workspace.addEventListener("pointercancel", () => { swipeStart = undefined; });
+
 for (const button of workspaceViewButtons) {
   button.addEventListener("click", () => setWorkspaceView(button.dataset.workspaceView, { focus: true }));
 }

@@ -237,5 +237,10 @@ assert.match(html, /id="revert-inputs" disabled>Revert inputs/);
 assert.match(app, /latestFormState = \{ goal: fields\.goal\.value/);
 assert.match(app, /revertInputsButton\.addEventListener\("click"/);
 assert.match(app, /Inputs restored to the visible recommendation/);
+assert.match(html, /Swipe left or right to move between setup and results/);
+assert.match(app, /workspace\.addEventListener\("pointerdown"/);
+assert.match(app, /event\.pointerType !== "touch"/);
+assert.match(app, /Math\.abs\(horizontal\) < 80/);
+assert.match(app, /horizontal < 0 \? "results" : "configure"/);
 
 console.log("UI contract tests passed");

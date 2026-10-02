@@ -243,6 +243,8 @@ html[data-motion="off"] body::before,
 html[data-motion="off"] .workspace::before { display: none; }
 html[data-motion="off"] .ambient { transform: none; }
 html[data-motion="off"] .metric { transform: none; }
+
+.workspace-swipe-hint { display: none; }
 html[data-motion="off"] *,
 html[data-motion="off"] *::before,
 html[data-motion="off"] *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
@@ -951,6 +953,7 @@ footer {
 }
 
 @media (max-width: 900px) {
+  .workspace-swipe-hint { display: block; margin: -4px auto 10px; color: var(--muted); text-align: center; font-size: .66rem; }
   .intro, .workspace, .method { grid-template-columns: 1fr; }
   .intro { align-items: start; }
   .control-panel { border-right: 0; border-bottom: 1px solid var(--line); }

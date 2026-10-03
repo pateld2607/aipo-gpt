@@ -840,6 +840,10 @@ textarea:focus {
   text-transform: none;
   cursor: pointer;
 }
+.parts-tools { display: flex; align-items: center; gap: 8px; }
+.parts-tools input { width: 160px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: rgba(4,12,19,.55); color: var(--ink); font: 500 .68rem/1.2 Inter, sans-serif; letter-spacing: 0; text-transform: none; }
+.parts-tools input:focus { border-color: rgba(94,231,238,.55); outline: none; }
+.part-filter-status { min-height: 1em; margin: -2px 0 8px; color: var(--muted); font-size: .68rem; }
 
 .part-card {
   overflow: hidden;
@@ -1035,6 +1039,9 @@ footer {
   .reset-button,
   .revert-button { padding: 12px 15px; }
   .part-row { grid-template-columns: 68px 1fr auto; }
+  .parts-heading { align-items: start; }
+  .parts-tools { align-items: end; flex-direction: column; }
+  .parts-tools input { width: 145px; }
   .part-price { display: none; }
   .part-inspection { grid-template-columns: 1fr; padding-left: 14px; }
   .part-inspection-actions { justify-items: start; }

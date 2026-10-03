@@ -33,6 +33,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Mobile workspace switcher that moves directly between configuration and recommendations
 - Animated recommendation refreshes with real completion feedback and accessible busy state
 - Keyboard-friendly component inspection cards with rationale and budget-share details
+- Live component filtering with accessible match counts for dense recommendations
 - Clickable active-constraint chips that jump back to the exact input
 - Live stale-result detection that clearly prompts users to refresh changed inputs
 - Dismissible action toasts for copy, download, import, print, and local-save feedback

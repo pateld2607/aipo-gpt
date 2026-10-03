@@ -79,6 +79,8 @@ const optimizeLabel = document.querySelector("#optimize-label");
 const resultsFreshness = document.querySelector("#results-freshness");
 const partsList = document.querySelector("#parts-list");
 const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
+const partFilter = document.querySelector("#part-filter");
+const partFilterStatus = document.querySelector("#part-filter-status");
 const constraintChips = document.querySelector("#constraint-chips");
 const actionToast = document.querySelector("#action-toast");
 const actionToastMessage = document.querySelector("#action-toast-message");
@@ -564,6 +566,22 @@ function syncPartsToggleLabel() {
   toggleAllPartsButton.textContent = allExpanded ? "Collapse all" : "Inspect all";
 }
 
+function filterParts() {
+  const query = partFilter.value.trim().toLowerCase();
+  const cards = [...partsList.querySelectorAll(".part-card")];
+  let visible = 0;
+  for (const card of cards) {
+    const match = !query || card.textContent.toLowerCase().includes(query);
+    card.hidden = !match;
+    if (match) visible += 1;
+  }
+  partFilterStatus.textContent = query
+    ? `${visible} of ${cards.length} components match “${partFilter.value.trim()}”.`
+    : `${cards.length} components selected.`;
+}
+
+partFilter.addEventListener("input", filterParts);
+
 function renderConstraintChips(constraints) {
   const chips = [
     ["budget", formatMoney(constraints.budget)],
@@ -825,6 +843,7 @@ function render(constraints, { announce = false } = {}) {
       </div>
     </article>
   `).join("");
+  filterParts();
   syncPartsToggleLabel();
 
   document.querySelector("#allocation-list").innerHTML = Object.entries(recommendation.budgetAllocation).map(([type, allocation]) => `

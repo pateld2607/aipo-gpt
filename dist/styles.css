@@ -775,6 +775,17 @@ textarea:focus {
 .baseline-controls button:hover,
 .baseline-controls button:focus-visible { border-color: rgba(94,231,238,.5); color: var(--cyan); }
 .baseline-controls span { color: var(--muted); font-size: .66rem; }
+.recent-builds { margin: -9px 0 18px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.018); }
+.recent-builds summary { padding: 10px 12px; color: #cbd7dd; font-size: .74rem; font-weight: 740; cursor: pointer; }
+.recent-builds summary span { float: right; color: var(--cyan); }
+#recent-build-list { display: grid; gap: 6px; padding: 0 10px 10px; }
+#recent-build-list p { margin: 0; padding: 8px; color: var(--muted); font-size: .7rem; }
+#recent-build-list button { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px; background: rgba(4,12,19,.42); color: inherit; text-align: left; cursor: pointer; }
+#recent-build-list button:hover,
+#recent-build-list button:focus-visible { border-color: rgba(94,231,238,.45); }
+#recent-build-list strong { font-size: .72rem; }
+#recent-build-list span { color: var(--muted); font-size: .67rem; }
+#recent-build-list code { grid-column: 1 / -1; color: var(--muted); font-size: .62rem; }
 
 @media (min-width: 901px) {
   .metric { padding-inline: 12px; }

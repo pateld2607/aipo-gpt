@@ -269,5 +269,11 @@ assert.match(html, /<dialog class="metric-guide-dialog" id="metric-guide-dialog"
 assert.match(html, /<dt>PSU reserve<\/dt>/);
 assert.match(app, /command === "metric-guide"/);
 assert.match(app, /metricGuideDialog\.showModal\(\)/);
+assert.match(html, /<summary>Recent builds <span id="recent-build-count">0<\/span><\/summary>/);
+assert.match(html, /id="recent-build-list"/);
+assert.match(app, /sessionStorage\.getItem\(RECENT_BUILDS_KEY\)/);
+assert.match(app, /function recordRecentBuild\(recommendation, constraints\)/);
+assert.match(app, /data-recent-build="\$\{index\}"/);
+assert.match(app, /Restored \$\{entry\.profileLabel\.toLowerCase\(\)\} build/);
 
 console.log("UI contract tests passed");

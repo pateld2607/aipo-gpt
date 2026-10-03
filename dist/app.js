@@ -16,6 +16,7 @@ const DEFAULT_STATE = Object.freeze({
   profile: "balanced",
 });
 const SAVED_BUILD_KEY = "aipo-gpt-saved-build-v1";
+const RECENT_BUILDS_KEY = "aipo-gpt-recent-builds-v1";
 const ALLOWED_OPTIONS = {
   useCase: new Set(["gaming", "streaming", "workstation", "development", "ai", "efficiency"]),
   resolution: new Set(["1080p", "1440p", "4k", "productivity"]),
@@ -105,6 +106,8 @@ const metricGuideTrigger = document.querySelector("#metric-guide-trigger");
 const metricGuideClose = document.querySelector("#metric-guide-close");
 const validationFilterButtons = [...document.querySelectorAll("[data-validation-filter]")];
 const validationFilterStatus = document.querySelector("#validation-filter-status");
+const recentBuildList = document.querySelector("#recent-build-list");
+const recentBuildCount = document.querySelector("#recent-build-count");
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -115,6 +118,11 @@ let latestConstraints;
 let baselineRecommendation;
 let latestFormState;
 let activeValidationFilter = "all";
+let recentBuilds = [];
+try {
+  const storedRecentBuilds = JSON.parse(sessionStorage.getItem(RECENT_BUILDS_KEY) ?? "[]");
+  if (Array.isArray(storedRecentBuilds)) recentBuilds = storedRecentBuilds.slice(0, 5);
+} catch { /* recent builds remain session-only in memory */ }
 const metricFrames = new WeakMap();
 
 function setResultDensity(density, { persist = true } = {}) {
@@ -371,6 +379,43 @@ clearBaselineButton.addEventListener("click", () => {
   baselineStatus.textContent = "Comparing each new result with the previous build.";
   document.querySelector("#result-deltas").hidden = true;
   showToast("Comparison baseline cleared.");
+});
+
+function renderRecentBuilds() {
+  recentBuildCount.textContent = String(recentBuilds.length);
+  recentBuildList.innerHTML = recentBuilds.length === 0
+    ? "<p>No builds in this session yet.</p>"
+    : recentBuilds.map((entry, index) => `
+      <button type="button" data-recent-build="${index}">
+        <strong>${entry.profileLabel} · ${formatMoney(entry.total)}</strong>
+        <span>${entry.resolution} / ${entry.useCase}</span>
+        <code>${entry.buildId}</code>
+      </button>
+    `).join("");
+}
+
+function recordRecentBuild(recommendation, constraints) {
+  const signature = JSON.stringify({ constraints, profile: activeProfile, goal: fields.goal.value });
+  const profileLabel = { balanced: "Balanced", performance: "Max performance", value: "Best value" }[activeProfile];
+  recentBuilds = [{ signature, profile: activeProfile, profileLabel, goal: fields.goal.value, constraints, total: recommendation.total, buildId: recommendation.buildId, resolution: constraints.resolution, useCase: constraints.useCase },
+    ...recentBuilds.filter((entry) => entry.signature !== signature)].slice(0, 5);
+  try { sessionStorage.setItem(RECENT_BUILDS_KEY, JSON.stringify(recentBuilds)); } catch { /* keep in memory */ }
+  renderRecentBuilds();
+}
+
+recentBuildList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-recent-build]");
+  if (!button) return;
+  const entry = recentBuilds[Number(button.dataset.recentBuild)];
+  if (!entry) return;
+  fields.goal.value = entry.goal;
+  for (const [key, value] of Object.entries(entry.constraints)) fields[key].value = value;
+  fields.budgetRange.value = entry.constraints.budget;
+  activeProfile = entry.profile;
+  updateGoalFeedback();
+  render(entry.constraints, { announce: true });
+  setWorkspaceView("results");
+  showToast(`Restored ${entry.profileLabel.toLowerCase()} build.`);
 });
 
 function currentConstraints() {
@@ -909,6 +954,7 @@ function render(constraints, { announce = false } = {}) {
   }
 
   document.querySelector("#parsed-goal").textContent = `constraints = ${JSON.stringify(constraints)}`;
+  recordRecentBuild(recommendation, constraints);
   signalResultUpdate({ complete: announce });
 }
 

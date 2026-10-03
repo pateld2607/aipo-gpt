@@ -263,6 +263,7 @@ html[data-motion="off"] .ambient { transform: none; }
 html[data-motion="off"] .metric { transform: none; }
 
 .workspace-swipe-hint { display: none; }
+.mobile-action-bar { display: none; }
 html[data-motion="off"] *,
 html[data-motion="off"] *::before,
 html[data-motion="off"] *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
@@ -999,6 +1000,9 @@ footer {
 }
 
 @media (max-width: 900px) {
+  body { padding-bottom: 78px; }
+  .mobile-action-bar { position: fixed; z-index: 18; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); left: 12px; display: block; padding: 6px; border: 1px solid var(--line); border-radius: 15px; background: rgba(7,16,25,.9); box-shadow: 0 18px 50px rgba(0,0,0,.38); backdrop-filter: blur(18px); }
+  .mobile-action-bar button { width: 100%; min-height: 46px; border: 0; border-radius: 10px; background: var(--acid); color: #0b1608; font-weight: 840; cursor: pointer; }
   .workspace-swipe-hint { display: block; margin: -4px auto 10px; color: var(--muted); text-align: center; font-size: .66rem; }
   .intro, .workspace, .method { grid-template-columns: 1fr; }
   .intro { align-items: start; }

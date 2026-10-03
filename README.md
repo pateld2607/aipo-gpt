@@ -31,6 +31,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Progressive advanced constraints with a live count of manually pinned limits
 - Pointer-responsive lighting and ambient depth with reduced-motion and touch-safe fallbacks
 - Mobile workspace switcher that moves directly between configuration and recommendations
+- Mobile bottom action bar for generating recommendations or returning to inputs
 - Animated recommendation refreshes with real completion feedback and accessible busy state
 - Keyboard-friendly component inspection cards with rationale and budget-share details
 - Live component filtering with accessible match counts for dense recommendations

@@ -74,6 +74,7 @@ const goalCount = document.querySelector("#goal-count");
 const root = document.documentElement;
 const workspace = document.querySelector(".workspace");
 const workspaceViewButtons = [...document.querySelectorAll("[data-workspace-view]")];
+const mobilePrimaryAction = document.querySelector("#mobile-primary-action");
 const resultsPanel = document.querySelector(".results-panel");
 const optimizeButton = document.querySelector(".optimize-button");
 const optimizeLabel = document.querySelector("#optimize-label");
@@ -557,6 +558,8 @@ motionToggle.addEventListener("click", () => {
 
 function setWorkspaceView(view, { focus = false } = {}) {
   workspace.dataset.mobileView = view;
+  mobilePrimaryAction.dataset.action = view === "configure" ? "generate" : "edit";
+  mobilePrimaryAction.textContent = view === "configure" ? "Generate recommendation" : "Edit build inputs";
   for (const button of workspaceViewButtons) {
     const isActive = button.dataset.workspaceView === view;
     button.classList.toggle("is-active", isActive);
@@ -567,6 +570,15 @@ function setWorkspaceView(view, { focus = false } = {}) {
     target.focus({ preventScroll: true });
   }
 }
+
+mobilePrimaryAction.addEventListener("click", () => {
+  if (mobilePrimaryAction.dataset.action === "generate") {
+    if (form.reportValidity()) form.requestSubmit();
+  } else {
+    setWorkspaceView("configure");
+    fields.goal.focus();
+  }
+});
 
 let swipeStart;
 workspace.addEventListener("pointerdown", (event) => {

@@ -40,6 +40,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Persistent comfortable and compact result-density modes
 - Searchable quick-action command center with Command-K and Control-K shortcuts
 - Sticky result-section navigation for overview, components, and validation
+- Scroll-aware result navigation that highlights the section currently in view
 - Smooth numeric transitions for price, headroom, and peak-power changes
 - Recommendation delta chips for cost, power, upgrade readiness, and goals met
 - Arrow-key, Home, and End navigation across recommendation profiles

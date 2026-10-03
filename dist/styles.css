@@ -678,6 +678,7 @@ textarea:focus {
 .result-jump-nav button { padding: 6px 9px; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--muted); font-size: .68rem; cursor: pointer; }
 .result-jump-nav button:hover,
 .result-jump-nav button:focus-visible { border-color: var(--cyan); color: var(--cyan); }
+.result-jump-nav button.is-active { border-color: var(--acid); color: var(--acid); }
 #build-metrics:focus,
 #component-stack:focus,
 #validation-details:focus { outline: 2px solid var(--cyan); outline-offset: 5px; }

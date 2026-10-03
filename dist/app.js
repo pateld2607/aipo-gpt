@@ -259,6 +259,26 @@ for (const button of resultJumpButtons) {
   });
 }
 
+function setActiveResultSection(sectionId) {
+  for (const button of resultJumpButtons) {
+    const active = button.dataset.resultTarget === sectionId;
+    button.classList.toggle("is-active", active);
+    if (active) button.setAttribute("aria-current", "location");
+    else button.removeAttribute("aria-current");
+  }
+}
+
+const resultSectionObserver = new IntersectionObserver((entries) => {
+  const visible = entries
+    .filter((entry) => entry.isIntersecting)
+    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+  if (visible) setActiveResultSection(visible.target.id);
+}, { rootMargin: "-18% 0px -62%", threshold: [0, .25, .6] });
+for (const button of resultJumpButtons) {
+  resultSectionObserver.observe(document.querySelector(`#${button.dataset.resultTarget}`));
+}
+setActiveResultSection("build-metrics");
+
 const formatMoney = (value) => new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",

@@ -363,6 +363,12 @@
 
           <details class="explanation" id="validation-details" tabindex="-1" open>
             <summary>Why this build works</summary>
+            <div class="validation-filters" role="group" aria-label="Validation result filter">
+              <button class="is-active" type="button" data-validation-filter="all" aria-pressed="true">All</button>
+              <button type="button" data-validation-filter="issues" aria-pressed="false">Issues</button>
+              <button type="button" data-validation-filter="passed" aria-pressed="false">Passed</button>
+              <span id="validation-filter-status" role="status" aria-live="polite"></span>
+            </div>
             <ul id="explanation-list"></ul>
           </details>
           <aside class="shortfall-panel" id="shortfall-panel" hidden aria-labelledby="shortfall-heading">

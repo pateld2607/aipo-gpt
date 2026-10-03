@@ -103,6 +103,8 @@ const baselineStatus = document.querySelector("#baseline-status");
 const metricGuideDialog = document.querySelector("#metric-guide-dialog");
 const metricGuideTrigger = document.querySelector("#metric-guide-trigger");
 const metricGuideClose = document.querySelector("#metric-guide-close");
+const validationFilterButtons = [...document.querySelectorAll("[data-validation-filter]")];
+const validationFilterStatus = document.querySelector("#validation-filter-status");
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -112,6 +114,7 @@ let latestRecommendation;
 let latestConstraints;
 let baselineRecommendation;
 let latestFormState;
+let activeValidationFilter = "all";
 const metricFrames = new WeakMap();
 
 function setResultDensity(density, { persist = true } = {}) {
@@ -251,6 +254,29 @@ metricGuideClose.addEventListener("click", () => metricGuideDialog.close());
 metricGuideDialog.addEventListener("click", (event) => {
   if (event.target === metricGuideDialog) metricGuideDialog.close();
 });
+
+function applyValidationFilter(filter = activeValidationFilter) {
+  activeValidationFilter = filter;
+  const rows = [...document.querySelectorAll("#explanation-list li")];
+  let visible = 0;
+  for (const row of rows) {
+    const show = filter === "all"
+      || (filter === "issues" && row.classList.contains("is-warning"))
+      || (filter === "passed" && row.classList.contains("is-pass"));
+    row.hidden = !show;
+    if (show) visible += 1;
+  }
+  for (const button of validationFilterButtons) {
+    const active = button.dataset.validationFilter === filter;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  }
+  validationFilterStatus.textContent = `${visible} of ${rows.length} checks shown`;
+}
+
+for (const button of validationFilterButtons) {
+  button.addEventListener("click", () => applyValidationFilter(button.dataset.validationFilter));
+}
 
 for (const button of resultJumpButtons) {
   button.addEventListener("click", () => {
@@ -867,6 +893,7 @@ function render(constraints, { announce = false } = {}) {
   document.querySelector("#explanation-list").innerHTML = recommendation.checks.map((check) => `
     <li class="${check.pass ? "is-pass" : "is-warning"}">${check.pass ? "✓" : "!"} ${check.label}</li>
   `).join("");
+  applyValidationFilter();
 
   const warningPanel = document.querySelector("#shortfall-panel");
   warningPanel.hidden = recommendation.shortfalls.length === 0;

@@ -48,6 +48,7 @@ const fields = {
 };
 const profileButtons = [...document.querySelectorAll("[data-profile]")];
 const presetButtons = [...document.querySelectorAll("[data-preset]")];
+const budgetAdjustButtons = [...document.querySelectorAll("[data-budget-adjust]")];
 const copyButton = document.querySelector("#copy-build");
 const copyValidationButton = document.querySelector("#copy-validation");
 const copyLinkButton = document.querySelector("#copy-link");
@@ -1200,6 +1201,17 @@ fields.budget.addEventListener("input", () => {
   const budget = Number(fields.budget.value);
   if (Number.isFinite(budget) && budget >= 800 && budget <= 5000) fields.budgetRange.value = budget;
 });
+
+for (const button of budgetAdjustButtons) {
+  button.addEventListener("click", () => {
+    const current = Number(fields.budget.value) || DEFAULT_STATE.budget;
+    const next = Math.min(5000, Math.max(800, current + Number(button.dataset.budgetAdjust)));
+    fields.budget.value = next;
+    fields.budgetRange.value = next;
+    fields.budget.dispatchEvent(new Event("input", { bubbles: true }));
+    fields.budget.focus();
+  });
+}
 
 for (const button of profileButtons) {
   button.addEventListener("click", () => {

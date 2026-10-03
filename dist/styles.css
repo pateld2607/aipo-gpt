@@ -487,6 +487,11 @@ textarea:focus {
   cursor: pointer;
 }
 
+.budget-nudges { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+.budget-nudges button { padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.02); color: var(--muted); font-size: .68rem; cursor: pointer; }
+.budget-nudges button:hover,
+.budget-nudges button:focus-visible { border-color: rgba(94,231,238,.45); color: var(--cyan); }
+
 .form-actions {
   display: grid;
   grid-template-columns: 1fr auto auto;

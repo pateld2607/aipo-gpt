@@ -26,6 +26,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Automatic, compact, or standard case-size preference with natural-language parsing and goal validation
 - Accessible validation for missing goals and out-of-range budgets
 - Synchronized number and range controls for quick, precise budget changes
+- One-click $100 budget adjustments with safe minimum and maximum limits
 - Progressive advanced constraints with a live count of manually pinned limits
 - Pointer-responsive lighting and ambient depth with reduced-motion and touch-safe fallbacks
 - Mobile workspace switcher that moves directly between configuration and recommendations

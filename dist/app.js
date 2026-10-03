@@ -104,6 +104,9 @@ const baselineStatus = document.querySelector("#baseline-status");
 const metricGuideDialog = document.querySelector("#metric-guide-dialog");
 const metricGuideTrigger = document.querySelector("#metric-guide-trigger");
 const metricGuideClose = document.querySelector("#metric-guide-close");
+const shortcutDialog = document.querySelector("#shortcut-dialog");
+const shortcutTrigger = document.querySelector("#shortcut-trigger");
+const shortcutClose = document.querySelector("#shortcut-close");
 const validationFilterButtons = [...document.querySelectorAll("[data-validation-filter]")];
 const validationFilterStatus = document.querySelector("#validation-filter-status");
 const recentBuildList = document.querySelector("#recent-build-list");
@@ -179,6 +182,8 @@ function runCommand(command) {
     setContrastMode(root.dataset.contrast !== "high");
   } else if (command === "metric-guide") {
     metricGuideDialog.showModal();
+  } else if (command === "shortcut-guide") {
+    shortcutDialog.showModal();
   }
 }
 
@@ -220,6 +225,8 @@ document.addEventListener("keydown", (event) => {
   } else if (event.key.toLowerCase() === "f" && !event.metaKey && !event.ctrlKey && !event.altKey
     && !event.target.closest("input, textarea, select, [contenteditable]")) {
     setFocusMode(root.dataset.focus !== "on");
+  } else if (event.key === "?" && !event.target.closest("input, textarea, select, [contenteditable]")) {
+    shortcutDialog.showModal();
   }
 });
 commandSearch.addEventListener("input", () => {
@@ -261,6 +268,11 @@ metricGuideTrigger.addEventListener("click", () => metricGuideDialog.showModal()
 metricGuideClose.addEventListener("click", () => metricGuideDialog.close());
 metricGuideDialog.addEventListener("click", (event) => {
   if (event.target === metricGuideDialog) metricGuideDialog.close();
+});
+shortcutTrigger.addEventListener("click", () => shortcutDialog.showModal());
+shortcutClose.addEventListener("click", () => shortcutDialog.close());
+shortcutDialog.addEventListener("click", (event) => {
+  if (event.target === shortcutDialog) shortcutDialog.close();
 });
 
 function applyValidationFilter(filter = activeValidationFilter) {

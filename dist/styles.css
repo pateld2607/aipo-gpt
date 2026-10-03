@@ -131,7 +131,8 @@ footer {
 }
 
 .command-dialog,
-.metric-guide-dialog {
+.metric-guide-dialog,
+.shortcut-dialog {
   width: min(560px, calc(100vw - 28px));
   max-height: min(680px, calc(100vh - 40px));
   padding: 0;
@@ -143,7 +144,8 @@ footer {
   box-shadow: 0 30px 100px rgba(0,0,0,.58);
 }
 .command-dialog::backdrop,
-.metric-guide-dialog::backdrop { background: rgba(1, 6, 10, .72); backdrop-filter: blur(7px); }
+.metric-guide-dialog::backdrop,
+.shortcut-dialog::backdrop { background: rgba(1, 6, 10, .72); backdrop-filter: blur(7px); }
 .command-header { display: flex; justify-content: space-between; align-items: start; gap: 18px; padding: 20px 20px 14px; }
 .command-header span { color: var(--acid); font: 700 .65rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .12em; }
 .command-header h2 { margin: 5px 0 0; font-size: 1.15rem; }
@@ -161,6 +163,11 @@ footer {
 .metric-guide-dialog dl div { display: grid; grid-template-columns: 120px 1fr; gap: 18px; padding: 12px 0; border-top: 1px solid var(--line); }
 .metric-guide-dialog dt { color: var(--cyan); font-size: .76rem; font-weight: 800; }
 .metric-guide-dialog dd { margin: 0; color: var(--muted); font-size: .74rem; line-height: 1.5; }
+.shortcut-dialog dl { display: grid; gap: 0; margin: 0; padding: 0 20px 20px; }
+.shortcut-dialog dl div { display: grid; grid-template-columns: 150px 1fr; align-items: center; gap: 18px; padding: 11px 0; border-top: 1px solid var(--line); }
+.shortcut-dialog dt { display: flex; align-items: center; gap: 5px; }
+.shortcut-dialog dd { margin: 0; color: var(--muted); font-size: .74rem; }
+.shortcut-dialog kbd { padding: 3px 6px; border: 1px solid var(--line); border-radius: 6px; color: var(--cyan); font: 700 .66rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
 
 .topbar {
   min-height: 82px;
@@ -200,6 +207,7 @@ footer {
 
 .topbar-actions { display: flex; align-items: center; gap: 16px; }
 .command-trigger,
+.shortcut-trigger,
 .focus-toggle,
 .contrast-toggle,
 .motion-toggle {
@@ -213,9 +221,13 @@ footer {
   cursor: pointer;
 }
 .command-trigger { display: inline-flex; align-items: center; gap: 8px; }
+.shortcut-trigger { display: inline-flex; align-items: center; gap: 7px; }
 .command-trigger kbd { padding: 2px 5px; border: 1px solid var(--line); border-radius: 5px; color: #cad4d9; font: 700 .62rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.shortcut-trigger kbd { color: var(--cyan); font: 800 .7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .command-trigger:hover,
 .command-trigger:focus-visible,
+.shortcut-trigger:hover,
+.shortcut-trigger:focus-visible,
 .focus-toggle:hover,
 .focus-toggle:focus-visible,
 .contrast-toggle:hover,
@@ -1035,6 +1047,7 @@ footer {
   .engine-status { font-size: 0; }
   .topbar-actions { gap: 9px; }
   .command-trigger { font-size: 0; gap: 0; }
+  .shortcut-trigger { width: 34px; height: 34px; justify-content: center; padding: 0; font-size: 0; }
   .command-trigger kbd { font-size: .62rem; }
   .focus-toggle,
   .contrast-toggle { font-size: 0; width: 34px; height: 34px; padding: 0; }

@@ -29,6 +29,7 @@
       </a>
       <div class="topbar-actions">
         <button class="command-trigger" id="command-trigger" type="button" aria-haspopup="dialog" aria-controls="command-dialog">Quick actions <kbd>⌘K</kbd></button>
+        <button class="shortcut-trigger" id="shortcut-trigger" type="button" aria-haspopup="dialog" aria-controls="shortcut-dialog">Shortcuts <kbd>?</kbd></button>
         <button class="focus-toggle" id="focus-toggle" type="button" aria-pressed="false">Focus mode</button>
         <button class="contrast-toggle" id="contrast-toggle" type="button" aria-pressed="false">High contrast</button>
         <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="true">Motion on</button>
@@ -424,6 +425,7 @@
         <button type="button" data-command="focus-mode"><strong>Toggle focus mode</strong><span>Hide the surrounding page and center the optimizer</span></button>
         <button type="button" data-command="contrast-mode"><strong>Toggle high contrast</strong><span>Strengthen text, panels, and borders</span></button>
         <button type="button" data-command="metric-guide"><strong>Open metric guide</strong><span>Understand the recommendation scores</span></button>
+        <button type="button" data-command="shortcut-guide"><strong>Show keyboard shortcuts</strong><span>See every fast navigation key</span></button>
       </div>
       <p class="command-empty" id="command-empty" hidden>No matching actions.</p>
     </dialog>
@@ -439,6 +441,20 @@
         <div><dt>Cooler noise</dt><dd>Estimated acoustic output of the selected CPU cooler.</dd></div>
         <div><dt>PSU reserve</dt><dd>Power-supply capacity remaining above estimated peak draw.</dd></div>
         <div><dt>Value density</dt><dd>Weighted component-tier points delivered per $1,000.</dd></div>
+      </dl>
+    </dialog>
+    <dialog class="shortcut-dialog" id="shortcut-dialog" aria-labelledby="shortcut-heading">
+      <div class="command-header">
+        <div><span>KEYBOARD MAP</span><h2 id="shortcut-heading">Move faster</h2></div>
+        <button type="button" id="shortcut-close" aria-label="Close keyboard shortcuts">×</button>
+      </div>
+      <dl>
+        <div><dt><kbd>⌘/Ctrl</kbd> <kbd>K</kbd></dt><dd>Open quick actions</dd></div>
+        <div><dt><kbd>⌘/Ctrl</kbd> <kbd>Enter</kbd></dt><dd>Generate or refresh a build</dd></div>
+        <div><dt><kbd>F</kbd></dt><dd>Toggle focus mode outside form fields</dd></div>
+        <div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Change recommendation profile when its tabs are focused</dd></div>
+        <div><dt><kbd>?</kbd></dt><dd>Open this keyboard map</dd></div>
+        <div><dt><kbd>Esc</kbd></dt><dd>Close dialogs or focus mode</dd></div>
       </dl>
     </dialog>
   </body>

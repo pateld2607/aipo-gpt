@@ -40,6 +40,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Persistent motion control that respects operating-system reduced-motion preferences
 - Persistent comfortable and compact result-density modes
 - Searchable quick-action command center with Command-K and Control-K shortcuts
+- Discoverable keyboard shortcut map with a global question-mark shortcut
 - Sticky result-section navigation for overview, components, and validation
 - Scroll-aware result navigation that highlights the section currently in view
 - Smooth numeric transitions for price, headroom, and peak-power changes

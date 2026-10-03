@@ -68,6 +68,8 @@ const comparisonBody = document.querySelector("#profile-comparison-body");
 const formError = document.querySelector("#form-error");
 const resultStatus = document.querySelector("#result-status");
 const advancedCount = document.querySelector("#advanced-count");
+const goalGuidance = document.querySelector("#goal-guidance");
+const goalCount = document.querySelector("#goal-count");
 const root = document.documentElement;
 const workspace = document.querySelector(".workspace");
 const workspaceViewButtons = [...document.querySelectorAll("[data-workspace-view]")];
@@ -338,6 +340,19 @@ function currentConstraints() {
     caseTarget: fields.caseTarget.value,
   };
 }
+
+function updateGoalFeedback() {
+  const length = fields.goal.value.trim().length;
+  const remaining = Math.max(0, 12 - length);
+  goalCount.textContent = `${length} character${length === 1 ? "" : "s"}`;
+  goalGuidance.textContent = remaining > 0
+    ? `Add ${remaining} more character${remaining === 1 ? "" : "s"} to generate.`
+    : "Ready to parse workload and priorities.";
+  goalGuidance.classList.toggle("is-incomplete", remaining > 0);
+}
+
+fields.goal.addEventListener("input", updateGoalFeedback);
+updateGoalFeedback();
 
 function updateAdvancedCount() {
   const values = [

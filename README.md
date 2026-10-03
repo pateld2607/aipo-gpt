@@ -25,6 +25,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Explicit automatic, 1TB, or 2TB storage targets, including natural-language parsing
 - Automatic, compact, or standard case-size preference with natural-language parsing and goal validation
 - Accessible validation for missing goals and out-of-range budgets
+- Live goal-length guidance that explains when a request is ready to generate
 - Synchronized number and range controls for quick, precise budget changes
 - One-click $100 budget adjustments with safe minimum and maximum limits
 - Progressive advanced constraints with a live count of manually pinned limits

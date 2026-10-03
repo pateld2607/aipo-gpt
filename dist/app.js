@@ -606,6 +606,9 @@ function signalResultUpdate({ complete = false } = {}) {
   void resultsPanel.offsetWidth;
   resultsPanel.classList.add("is-updating");
   resultsPanel.setAttribute("aria-busy", "true");
+  resultsPanel.querySelector(".results-loading-indicator strong").textContent = complete
+    ? "Generating recommendation"
+    : "Recalculating build";
   window.clearTimeout(updateTimer);
   updateTimer = window.setTimeout(() => {
     resultsPanel.classList.remove("is-updating");

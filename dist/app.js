@@ -83,6 +83,7 @@ const optimizeLabel = document.querySelector("#optimize-label");
 const resultsFreshness = document.querySelector("#results-freshness");
 const partsList = document.querySelector("#parts-list");
 const allocationList = document.querySelector("#allocation-list");
+const alternativesList = document.querySelector("#alternatives-list");
 const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
 const partFilter = document.querySelector("#part-filter");
 const partFilterStatus = document.querySelector("#part-filter-status");
@@ -797,6 +798,28 @@ allocationList.addEventListener("click", (event) => {
   syncPartsToggleLabel();
 });
 
+alternativesList.addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-copy-alternative]");
+  if (!button || !latestRecommendation) return;
+  const option = latestRecommendation.alternatives[Number(button.dataset.copyAlternative)];
+  if (!option) return;
+  const text = [
+    `AIPO-GPT runner-up · ${option.buildId}`,
+    `CPU: ${option.cpu}`,
+    `GPU: ${option.gpu}`,
+    `Total: ${formatMoney(option.total)}`,
+    `Headroom: ${formatMoney(option.headroom)}`,
+    `Peak draw: ${option.platformWatts}W`,
+    `Goals: ${option.goalsMet}/${option.goalCount}`,
+  ].join("\n");
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast("Runner-up configuration copied.");
+  } catch {
+    showToast("Copy unavailable. Select the runner-up details manually.");
+  }
+});
+
 function syncGoalToFields() {
   const parsed = parseGoal(fields.goal.value, currentConstraints());
   fields.budget.value = parsed.budget;
@@ -1005,11 +1028,11 @@ function render(constraints, { announce = false } = {}) {
 
   const alternativesPanel = document.querySelector("#alternatives-panel");
   alternativesPanel.hidden = recommendation.alternatives.length === 0;
-  document.querySelector("#alternatives-list").innerHTML = recommendation.alternatives.map((alternative) => `
+  alternativesList.innerHTML = recommendation.alternatives.map((alternative, index) => `
     <article class="alternative-row">
       <div><strong>${alternative.cpu}</strong><span>${alternative.gpu}</span></div>
       <div><strong>${formatMoney(alternative.total)}</strong><span>${formatMoney(alternative.headroom)} headroom</span><span>${alternative.platformWatts}W peak · ${alternative.goalsMet}/${alternative.goalCount} goals</span></div>
-      <code>${alternative.buildId}</code>
+      <footer><code>${alternative.buildId}</code><button type="button" data-copy-alternative="${index}">Copy option</button></footer>
     </article>
   `).join("");
 

@@ -961,7 +961,11 @@ textarea:focus {
 .alternative-row div:nth-child(2) { text-align: right; }
 .alternative-row strong { font-size: .76rem; }
 .alternative-row span { color: var(--muted); font-size: .68rem; }
-.alternative-row code { grid-column: 1 / -1; color: var(--muted); font-size: .66rem; }
+.alternative-row code { color: var(--muted); font-size: .66rem; }
+.alternative-row footer { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; padding: 7px 0 0; border-top: 1px solid var(--line); }
+.alternative-row button { padding: 5px 8px; border: 1px solid var(--line); border-radius: 7px; background: transparent; color: var(--cyan); font-size: .65rem; cursor: pointer; }
+.alternative-row button:hover,
+.alternative-row button:focus-visible { border-color: rgba(184,255,98,.4); color: var(--acid); }
 
 .explanation {
   margin-top: 24px;

@@ -72,6 +72,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Stable build IDs for comparing, exporting, and reproducing recommendations
 - Search transparency showing evaluated, compatible, and affordable candidate counts
 - Three distinct runner-up configurations with price, headroom, peak power, and goal coverage
+- Copyable runner-up configuration cards for sharing a specific alternative
 - Workload-aware CPU-to-GPU component balance scoring
 - Print-ready build sheets that remove controls and expand recommendation details
 - Portable Markdown build sheets with components, prices, and validation results

@@ -937,6 +937,9 @@ textarea:focus {
 .allocation summary { cursor: pointer; font-size: .82rem; font-weight: 750; }
 #allocation-list { display: grid; gap: 10px; margin-top: 16px; }
 .allocation-row { display: grid; grid-template-columns: 76px 1fr 34px; align-items: center; gap: 10px; }
+.allocation-row { width: 100%; padding: 6px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.allocation-row:hover,
+.allocation-row:focus-visible { border-color: rgba(94,231,238,.35); background: rgba(94,231,238,.035); outline: none; }
 .allocation-row > span { color: var(--muted); font-size: .7rem; text-transform: uppercase; }
 .allocation-row strong { color: #d5dfe3; font: 700 .7rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-align: right; }
 .allocation-track { height: 7px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.06); }

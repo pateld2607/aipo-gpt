@@ -82,6 +82,7 @@ const optimizeButton = document.querySelector(".optimize-button");
 const optimizeLabel = document.querySelector("#optimize-label");
 const resultsFreshness = document.querySelector("#results-freshness");
 const partsList = document.querySelector("#parts-list");
+const allocationList = document.querySelector("#allocation-list");
 const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
 const partFilter = document.querySelector("#part-filter");
 const partFilterStatus = document.querySelector("#part-filter-status");
@@ -781,6 +782,21 @@ toggleAllPartsButton.addEventListener("click", () => {
   syncPartsToggleLabel();
 });
 
+allocationList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-inspect-part]");
+  if (!button) return;
+  partFilter.value = "";
+  filterParts();
+  const type = button.dataset.inspectPart;
+  const partButton = partsList.querySelector(`[aria-controls="part-inspection-${type}"]`);
+  const inspection = document.querySelector(`#part-inspection-${type}`);
+  partButton.setAttribute("aria-expanded", "true");
+  inspection.hidden = false;
+  partButton.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });
+  partButton.focus({ preventScroll: true });
+  syncPartsToggleLabel();
+});
+
 function syncGoalToFields() {
   const parsed = parseGoal(fields.goal.value, currentConstraints());
   fields.budget.value = parsed.budget;
@@ -979,12 +995,12 @@ function render(constraints, { announce = false } = {}) {
   filterParts();
   syncPartsToggleLabel();
 
-  document.querySelector("#allocation-list").innerHTML = Object.entries(recommendation.budgetAllocation).map(([type, allocation]) => `
-    <div class="allocation-row">
+  allocationList.innerHTML = Object.entries(recommendation.budgetAllocation).map(([type, allocation]) => `
+    <button class="allocation-row" type="button" data-inspect-part="${type}" aria-label="Inspect ${type} allocation">
       <span>${type === "motherboard" ? "board" : type}</span>
-      <div class="allocation-track" aria-hidden="true"><span style="width: ${(allocation.percentage * 100).toFixed(1)}%"></span></div>
+      <span class="allocation-track" aria-hidden="true"><span style="width: ${(allocation.percentage * 100).toFixed(1)}%"></span></span>
       <strong>${Math.round(allocation.percentage * 100)}%</strong>
-    </div>
+    </button>
   `).join("");
 
   const alternativesPanel = document.querySelector("#alternatives-panel");

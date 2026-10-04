@@ -67,6 +67,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Interactive validation filters for all checks, issues only, or passed checks
 - Runtime catalog validation for duplicate IDs, missing specifications, and invalid prices
 - Per-component budget allocation with a visual percentage breakdown
+- Clickable budget-allocation rows that reveal and focus the corresponding component rationale
 - Actionable guidance when a budget cannot meet every workload target
 - Stable build IDs for comparing, exporting, and reproducing recommendations
 - Search transparency showing evaluated, compatible, and affordable candidate counts

@@ -189,6 +189,8 @@ function runCommand(command) {
     metricGuideDialog.showModal();
   } else if (command === "shortcut-guide") {
     shortcutDialog.showModal();
+  } else if (command === "filter-components") {
+    focusPartFilter();
   }
 }
 
@@ -232,6 +234,9 @@ document.addEventListener("keydown", (event) => {
     setFocusMode(root.dataset.focus !== "on");
   } else if (event.key === "?" && !event.target.closest("input, textarea, select, [contenteditable]")) {
     shortcutDialog.showModal();
+  } else if (event.key === "/" && !event.target.closest("input, textarea, select, [contenteditable]")) {
+    event.preventDefault();
+    focusPartFilter();
   }
 });
 commandSearch.addEventListener("input", () => {
@@ -714,7 +719,20 @@ function filterParts() {
     : `${cards.length} components selected.`;
 }
 
+function focusPartFilter() {
+  setWorkspaceView("results");
+  partFilter.focus();
+  partFilter.select();
+}
+
 partFilter.addEventListener("input", filterParts);
+partFilter.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape" || !partFilter.value) return;
+  event.preventDefault();
+  partFilter.value = "";
+  filterParts();
+  showToast("Component filter cleared.");
+});
 
 function renderConstraintChips(constraints) {
   const chips = [

@@ -355,7 +355,7 @@
             <span>Component stack</span>
             <div class="parts-tools">
               <label class="visually-hidden" for="part-filter">Filter components</label>
-              <input id="part-filter" type="search" placeholder="Filter components…" autocomplete="off" />
+              <input id="part-filter" type="search" placeholder="Filter components…" autocomplete="off" aria-keyshortcuts="/" />
               <button type="button" id="toggle-all-parts">Inspect all</button>
             </div>
           </div>
@@ -435,6 +435,7 @@
         <button type="button" data-command="contrast-mode"><strong>Toggle high contrast</strong><span>Strengthen text, panels, and borders</span></button>
         <button type="button" data-command="metric-guide"><strong>Open metric guide</strong><span>Understand the recommendation scores</span></button>
         <button type="button" data-command="shortcut-guide"><strong>Show keyboard shortcuts</strong><span>See every fast navigation key</span></button>
+        <button type="button" data-command="filter-components"><strong>Filter components</strong><span>Search the current component stack</span></button>
       </div>
       <p class="command-empty" id="command-empty" hidden>No matching actions.</p>
     </dialog>
@@ -463,6 +464,7 @@
         <div><dt><kbd>F</kbd></dt><dd>Toggle focus mode outside form fields</dd></div>
         <div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Change recommendation profile when its tabs are focused</dd></div>
         <div><dt><kbd>?</kbd></dt><dd>Open this keyboard map</dd></div>
+        <div><dt><kbd>/</kbd></dt><dd>Focus component filtering</dd></div>
         <div><dt><kbd>Esc</kbd></dt><dd>Close dialogs or focus mode</dd></div>
       </dl>
     </dialog>

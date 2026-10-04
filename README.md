@@ -38,6 +38,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Visible generation progress with motion-safe scanning feedback during recalculation
 - Keyboard-friendly component inspection cards with rationale and budget-share details
 - Live component filtering with accessible match counts for dense recommendations
+- Slash-key and command-center shortcuts for immediate component filtering, with Escape to clear
 - Clickable active-constraint chips that jump back to the exact input
 - Live stale-result detection that clearly prompts users to refresh changed inputs
 - Precise changed-input chips that restore individual fields without discarding other edits

@@ -30,6 +30,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Synchronized number and range controls for quick, precise budget changes
 - One-click $100 budget adjustments with safe minimum and maximum limits
 - Progressive advanced constraints with a live count of manually pinned limits
+- Sticky, independently scrollable desktop controls that stay available beside long recommendations
 - Pointer-responsive lighting and ambient depth with reduced-motion and touch-safe fallbacks
 - Mobile workspace switcher that moves directly between configuration and recommendations
 - Mobile bottom action bar for generating recommendations or returning to inputs

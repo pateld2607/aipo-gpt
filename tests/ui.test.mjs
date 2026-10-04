@@ -288,6 +288,9 @@ assert.match(html, /id="mobile-primary-action" data-action="generate">Generate r
 assert.match(app, /mobilePrimaryAction\.dataset\.action = view === "configure" \? "generate" : "edit"/);
 assert.match(app, /mobilePrimaryAction\.addEventListener\("click"/);
 assert.match(css, /\.mobile-action-bar \{ position: fixed/);
+assert.match(css, /@media \(min-width: 1100px\)/);
+assert.match(css, /\.control-panel \{ position: sticky; top: 0;/);
+assert.match(css, /overscroll-behavior: contain/);
 assert.match(html, /id="metric-guide-trigger"[^>]+aria-haspopup="dialog"/);
 assert.match(html, /<dialog class="metric-guide-dialog" id="metric-guide-dialog"/);
 assert.match(html, /<dt>PSU reserve<\/dt>/);

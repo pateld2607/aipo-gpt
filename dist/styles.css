@@ -521,6 +521,13 @@ textarea:focus {
   gap: 10px;
   margin-top: 20px;
 }
+.changed-fields { display: grid; gap: 8px; margin-top: 16px; padding: 11px; border: 1px solid rgba(255,211,106,.24); border-radius: 11px; background: rgba(255,211,106,.04); }
+.changed-fields[hidden] { display: none; }
+.changed-fields > span { color: #ffd36a; font-size: .68rem; font-weight: 740; }
+#changed-fields-list { display: flex; flex-wrap: wrap; gap: 6px; }
+#changed-fields-list button { padding: 6px 8px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.025); color: #d6dee2; font-size: .66rem; cursor: pointer; }
+#changed-fields-list button:hover,
+#changed-fields-list button:focus-visible { border-color: var(--cyan); color: var(--cyan); }
 
 .optimize-button {
   width: 100%;

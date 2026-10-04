@@ -71,6 +71,8 @@ const resultStatus = document.querySelector("#result-status");
 const advancedCount = document.querySelector("#advanced-count");
 const goalGuidance = document.querySelector("#goal-guidance");
 const goalCount = document.querySelector("#goal-count");
+const changedFields = document.querySelector("#changed-fields");
+const changedFieldsList = document.querySelector("#changed-fields-list");
 const root = document.documentElement;
 const workspace = document.querySelector(".workspace");
 const workspaceViewButtons = [...document.querySelectorAll("[data-workspace-view]")];
@@ -456,6 +458,38 @@ function updateGoalFeedback() {
     : "Ready to parse workload and priorities.";
   goalGuidance.classList.toggle("is-incomplete", remaining > 0);
 }
+
+const fieldLabels = {
+  goal: "Goal text", budget: "Budget", useCase: "Workload", resolution: "Target", priority: "Priority",
+  memoryTarget: "Memory", storageTarget: "Storage", noiseTarget: "Noise", vramTarget: "VRAM",
+  coreTarget: "CPU cores", powerTarget: "Power", caseTarget: "Case size",
+};
+
+function renderChangedFields() {
+  if (!latestFormState) {
+    changedFields.hidden = true;
+    return 0;
+  }
+  const current = { goal: fields.goal.value, ...currentConstraints() };
+  const changed = Object.keys(fieldLabels).filter((key) => String(current[key]) !== String(latestFormState[key]));
+  changedFields.hidden = changed.length === 0;
+  changedFieldsList.innerHTML = changed.map((key) =>
+    `<button type="button" data-restore-field="${key}">${fieldLabels[key]} · restore</button>`,
+  ).join("");
+  return changed.length;
+}
+
+changedFieldsList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-restore-field]");
+  if (!button || !latestFormState) return;
+  const key = button.dataset.restoreField;
+  fields[key].value = latestFormState[key];
+  if (key === "budget") fields.budgetRange.value = latestFormState.budget;
+  if (key === "goal") updateGoalFeedback();
+  updateAdvancedCount();
+  setResultStale(renderChangedFields() > 0);
+  showToast(`${fieldLabels[key]} restored.`);
+});
 
 fields.goal.addEventListener("input", updateGoalFeedback);
 updateGoalFeedback();
@@ -855,6 +889,7 @@ function render(constraints, { announce = false } = {}) {
   latestRecommendation = recommendation;
   latestConstraints = constraints;
   latestFormState = { goal: fields.goal.value, profile: activeProfile, ...constraints };
+  renderChangedFields();
   updateShareUrl(constraints);
   const parts = Object.entries(recommendation.parts);
   const compatible = recommendation.compatibilityChecks.filter((check) => check.pass).length;
@@ -1314,6 +1349,7 @@ revertInputsButton.addEventListener("click", () => {
   activeProfile = latestFormState.profile;
   updateAdvancedCount();
   setResultStale(false);
+  renderChangedFields();
   showToast("Inputs restored to the visible recommendation.");
 });
 
@@ -1342,7 +1378,7 @@ form.addEventListener("invalid", (event) => {
 form.addEventListener("input", () => {
   formError.textContent = "";
   updateAdvancedCount();
-  setResultStale(true);
+  setResultStale(renderChangedFields() > 0);
 });
 
 form.addEventListener("change", updateAdvancedCount);

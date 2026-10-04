@@ -38,6 +38,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Live component filtering with accessible match counts for dense recommendations
 - Clickable active-constraint chips that jump back to the exact input
 - Live stale-result detection that clearly prompts users to refresh changed inputs
+- Precise changed-input chips that restore individual fields without discarding other edits
 - Dismissible action toasts for copy, download, import, print, and local-save feedback
 - Persistent motion control that respects operating-system reduced-motion preferences
 - Persistent comfortable and compact result-density modes

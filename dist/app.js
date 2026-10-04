@@ -953,12 +953,12 @@ function render(constraints, { announce = false } = {}) {
     return `
       <tr class="${profile === activeProfile ? "is-active" : ""}">
         <th scope="row"><button type="button" data-compare-profile="${profile}">${label}</button></th>
-        <td>${formatMoney(option.total)}</td>
-        <td>${option.parts.cpu.name}</td>
-        <td>${option.parts.gpu.name}</td>
-        <td>${option.platformWatts}W</td>
-        <td>${option.upgradeReadiness.score}%</td>
-        <td>${goalsMet}/${option.requirementChecks.length}</td>
+        <td data-label="Total">${formatMoney(option.total)}</td>
+        <td data-label="CPU">${option.parts.cpu.name}</td>
+        <td data-label="GPU">${option.parts.gpu.name}</td>
+        <td data-label="Peak draw">${option.platformWatts}W</td>
+        <td data-label="Upgrade">${option.upgradeReadiness.score}%</td>
+        <td data-label="Goals">${goalsMet}/${option.requirementChecks.length}</td>
       </tr>
     `;
   }).join("");

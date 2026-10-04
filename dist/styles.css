@@ -1087,6 +1087,16 @@ footer {
   .compatibility-score { left: 0; right: auto; }
   .results-freshness { top: 36px; left: auto; right: 0; }
   .profile-switcher { grid-template-columns: 1fr; }
+  .profile-comparison .comparison-scroll { overflow: visible; }
+  .profile-comparison table { min-width: 0; }
+  .profile-comparison thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+  .profile-comparison tbody { display: grid; gap: 8px; padding: 8px; }
+  .profile-comparison tbody tr { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(4,12,19,.42); }
+  .profile-comparison tbody th { grid-column: 1 / -1; }
+  .profile-comparison tbody th,
+  .profile-comparison tbody td { display: grid; grid-template-columns: auto 1fr; gap: 8px; padding: 9px; border: 0; }
+  .profile-comparison tbody td { text-align: right; }
+  .profile-comparison tbody td::before { content: attr(data-label); color: var(--muted); text-align: left; font-weight: 650; }
   .result-jump-nav { position: sticky; z-index: 5; top: 68px; padding: 7px; border: 1px solid var(--line); border-radius: 10px; background: rgba(8,18,28,.92); backdrop-filter: blur(14px); }
   .result-jump-nav button { flex: 1; }
   .form-actions { grid-template-columns: 1fr; }

@@ -905,6 +905,11 @@ textarea:focus {
 .parts-tools input { width: 160px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: rgba(4,12,19,.55); color: var(--ink); font: 500 .68rem/1.2 Inter, sans-serif; letter-spacing: 0; text-transform: none; }
 .parts-tools input:focus { border-color: rgba(94,231,238,.55); outline: none; }
 .part-filter-status { min-height: 1em; margin: -2px 0 8px; color: var(--muted); font-size: .68rem; }
+.part-filter-empty { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 10px; padding: 12px; border: 1px dashed rgba(94,231,238,.25); border-radius: 10px; color: var(--muted); font-size: .72rem; }
+.part-filter-empty[hidden] { display: none; }
+.part-filter-empty button { border: 0; background: transparent; color: var(--cyan); font-size: .7rem; font-weight: 700; cursor: pointer; }
+.part-filter-empty button:hover,
+.part-filter-empty button:focus-visible { color: var(--acid); }
 
 .part-card {
   overflow: hidden;

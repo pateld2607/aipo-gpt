@@ -87,6 +87,8 @@ const alternativesList = document.querySelector("#alternatives-list");
 const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
 const partFilter = document.querySelector("#part-filter");
 const partFilterStatus = document.querySelector("#part-filter-status");
+const partFilterEmpty = document.querySelector("#part-filter-empty");
+const clearPartFilterButton = document.querySelector("#clear-part-filter");
 const constraintChips = document.querySelector("#constraint-chips");
 const actionToast = document.querySelector("#action-toast");
 const actionToastMessage = document.querySelector("#action-toast-message");
@@ -754,6 +756,7 @@ function filterParts() {
   partFilterStatus.textContent = query
     ? `${visible} of ${cards.length} components match “${partFilter.value.trim()}”.`
     : `${cards.length} components selected.`;
+  partFilterEmpty.hidden = !query || visible > 0;
 }
 
 function focusPartFilter() {
@@ -763,6 +766,12 @@ function focusPartFilter() {
 }
 
 partFilter.addEventListener("input", filterParts);
+clearPartFilterButton.addEventListener("click", () => {
+  partFilter.value = "";
+  filterParts();
+  partFilter.focus();
+  showToast("All components are visible.");
+});
 partFilter.addEventListener("keydown", (event) => {
   if (event.key !== "Escape" || !partFilter.value) return;
   event.preventDefault();

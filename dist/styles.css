@@ -815,14 +815,21 @@ textarea:focus {
 .recent-builds { margin: -9px 0 18px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.018); }
 .recent-builds summary { padding: 10px 12px; color: #cbd7dd; font-size: .74rem; font-weight: 740; cursor: pointer; }
 .recent-builds summary span { float: right; color: var(--cyan); }
+.recent-build-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 10px 8px; color: var(--muted); font-size: .63rem; }
+.recent-build-actions button { border: 0; background: transparent; color: var(--cyan); font-size: .64rem; cursor: pointer; }
+.recent-build-actions button:disabled { opacity: .4; cursor: not-allowed; }
 #recent-build-list { display: grid; gap: 6px; padding: 0 10px 10px; }
 #recent-build-list p { margin: 0; padding: 8px; color: var(--muted); font-size: .7rem; }
-#recent-build-list button { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px; background: rgba(4,12,19,.42); color: inherit; text-align: left; cursor: pointer; }
-#recent-build-list button:hover,
-#recent-build-list button:focus-visible { border-color: rgba(94,231,238,.45); }
+.recent-build-entry { display: grid; grid-template-columns: 1fr auto; gap: 5px; }
+#recent-build-list .recent-build-main { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px; background: rgba(4,12,19,.42); color: inherit; text-align: left; cursor: pointer; }
+#recent-build-list .recent-build-main:hover,
+#recent-build-list .recent-build-main:focus-visible { border-color: rgba(94,231,238,.45); }
+#recent-build-list .recent-build-remove { width: 32px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; }
+#recent-build-list .recent-build-remove:hover,
+#recent-build-list .recent-build-remove:focus-visible { border-color: rgba(255,110,120,.3); color: #ff9aa3; }
 #recent-build-list strong { font-size: .72rem; }
 #recent-build-list span { color: var(--muted); font-size: .67rem; }
-#recent-build-list code { grid-column: 1 / -1; color: var(--muted); font-size: .62rem; }
+#recent-build-list .recent-build-main code { grid-column: 1 / -1; color: var(--muted); font-size: .62rem; }
 
 @media (min-width: 901px) {
   .metric { padding-inline: 12px; }

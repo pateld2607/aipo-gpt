@@ -116,6 +116,7 @@ const validationFilterButtons = [...document.querySelectorAll("[data-validation-
 const validationFilterStatus = document.querySelector("#validation-filter-status");
 const recentBuildList = document.querySelector("#recent-build-list");
 const recentBuildCount = document.querySelector("#recent-build-count");
+const clearRecentBuildsButton = document.querySelector("#clear-recent-builds");
 const resetAdvancedButton = document.querySelector("#reset-advanced");
 const advancedResetStatus = document.querySelector("#advanced-reset-status");
 let updateTimer = 0;
@@ -407,15 +408,24 @@ clearBaselineButton.addEventListener("click", () => {
 
 function renderRecentBuilds() {
   recentBuildCount.textContent = String(recentBuilds.length);
+  clearRecentBuildsButton.disabled = recentBuilds.length === 0;
   recentBuildList.innerHTML = recentBuilds.length === 0
     ? "<p>No builds in this session yet.</p>"
     : recentBuilds.map((entry, index) => `
-      <button type="button" data-recent-build="${index}">
-        <strong>${entry.profileLabel} · ${formatMoney(entry.total)}</strong>
-        <span>${entry.resolution} / ${entry.useCase}</span>
-        <code>${entry.buildId}</code>
-      </button>
+      <div class="recent-build-entry">
+        <button class="recent-build-main" type="button" data-recent-build="${index}">
+          <strong>${entry.profileLabel} · ${formatMoney(entry.total)}</strong>
+          <span>${entry.resolution} / ${entry.useCase}</span>
+          <code>${entry.buildId}</code>
+        </button>
+        <button class="recent-build-remove" type="button" data-remove-recent-build="${index}" aria-label="Remove ${entry.buildId} from recent builds">×</button>
+      </div>
     `).join("");
+}
+
+function saveRecentBuilds() {
+  try { sessionStorage.setItem(RECENT_BUILDS_KEY, JSON.stringify(recentBuilds)); } catch { /* keep in memory */ }
+  renderRecentBuilds();
 }
 
 function recordRecentBuild(recommendation, constraints) {
@@ -423,11 +433,17 @@ function recordRecentBuild(recommendation, constraints) {
   const profileLabel = { balanced: "Balanced", performance: "Max performance", value: "Best value" }[activeProfile];
   recentBuilds = [{ signature, profile: activeProfile, profileLabel, goal: fields.goal.value, constraints, total: recommendation.total, buildId: recommendation.buildId, resolution: constraints.resolution, useCase: constraints.useCase },
     ...recentBuilds.filter((entry) => entry.signature !== signature)].slice(0, 5);
-  try { sessionStorage.setItem(RECENT_BUILDS_KEY, JSON.stringify(recentBuilds)); } catch { /* keep in memory */ }
-  renderRecentBuilds();
+  saveRecentBuilds();
 }
 
 recentBuildList.addEventListener("click", (event) => {
+  const removeButton = event.target.closest("[data-remove-recent-build]");
+  if (removeButton) {
+    const [removed] = recentBuilds.splice(Number(removeButton.dataset.removeRecentBuild), 1);
+    saveRecentBuilds();
+    if (removed) showToast(`${removed.buildId} removed from recent builds.`);
+    return;
+  }
   const button = event.target.closest("[data-recent-build]");
   if (!button) return;
   const entry = recentBuilds[Number(button.dataset.recentBuild)];
@@ -440,6 +456,12 @@ recentBuildList.addEventListener("click", (event) => {
   render(entry.constraints, { announce: true });
   setWorkspaceView("results");
   showToast(`Restored ${entry.profileLabel.toLowerCase()} build.`);
+});
+
+clearRecentBuildsButton.addEventListener("click", () => {
+  recentBuilds = [];
+  saveRecentBuilds();
+  showToast("Recent build history cleared.");
 });
 
 function currentConstraints() {

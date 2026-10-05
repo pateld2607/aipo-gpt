@@ -440,6 +440,16 @@ h1 span { color: #8293a0; }
 .advanced-actions button:focus-visible { border-color: rgba(94,231,238,.5); }
 .advanced-actions button:disabled { opacity: .42; cursor: not-allowed; }
 
+.configuration-readiness { display: grid; gap: 10px; margin: 18px 0 0; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(4,12,19,.38); }
+.configuration-readiness > div:first-child { display: flex; align-items: center; gap: 8px; color: #d8e2e7; font-size: .72rem; }
+.readiness-items { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.readiness-items button { display: grid; gap: 4px; padding: 8px; border: 1px solid transparent; border-radius: 8px; background: rgba(255,255,255,.025); color: inherit; text-align: left; cursor: pointer; }
+.readiness-items button:hover,
+.readiness-items button:focus-visible { border-color: rgba(94,231,238,.4); }
+.readiness-items span { color: var(--muted); font-size: .61rem; }
+.readiness-items strong { color: var(--acid); font-size: .67rem; }
+.readiness-items button.is-warning strong { color: #ffd36a; }
+
 .preset-row {
   display: flex;
   flex-wrap: wrap;

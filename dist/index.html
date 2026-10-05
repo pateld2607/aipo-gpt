@@ -218,6 +218,18 @@
             <div id="changed-fields-list" aria-label="Changed inputs"></div>
           </div>
 
+          <aside class="configuration-readiness" aria-labelledby="readiness-heading">
+            <div>
+              <span class="step-number">CHECK</span>
+              <strong id="readiness-heading">Configuration readiness</strong>
+            </div>
+            <div class="readiness-items" id="readiness-items" aria-live="polite">
+              <button type="button" data-readiness-target="goal"><span>Goal</span><strong id="readiness-goal">Ready</strong></button>
+              <button type="button" data-readiness-target="budget"><span>Budget</span><strong id="readiness-budget">Ready</strong></button>
+              <button type="button" data-readiness-target="advanced"><span>Part targets</span><strong id="readiness-advanced">Automatic</strong></button>
+            </div>
+          </aside>
+
           <div class="form-actions">
             <button class="optimize-button" type="submit">
               <span id="optimize-label">Generate build</span>

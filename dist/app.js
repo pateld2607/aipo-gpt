@@ -121,6 +121,10 @@ const recentBuildCount = document.querySelector("#recent-build-count");
 const clearRecentBuildsButton = document.querySelector("#clear-recent-builds");
 const resetAdvancedButton = document.querySelector("#reset-advanced");
 const advancedResetStatus = document.querySelector("#advanced-reset-status");
+const readinessItems = document.querySelector("#readiness-items");
+const readinessGoal = document.querySelector("#readiness-goal");
+const readinessBudget = document.querySelector("#readiness-budget");
+const readinessAdvanced = document.querySelector("#readiness-advanced");
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -550,9 +554,35 @@ resetAdvancedButton.addEventListener("click", () => {
     field.value = "auto";
   }
   updateAdvancedCount();
+  updateConfigReadiness();
   setResultStale(renderChangedFields() > 0);
   showToast("Advanced constraints reset to automatic.");
 });
+
+function updateConfigReadiness() {
+  const goalReady = fields.goal.value.trim().length >= 12;
+  const budget = Number(fields.budget.value);
+  const budgetReady = Number.isFinite(budget) && budget >= 800 && budget <= 5000;
+  const manualTargets = [fields.memoryTarget, fields.storageTarget, fields.noiseTarget, fields.vramTarget, fields.coreTarget, fields.powerTarget, fields.caseTarget]
+    .filter((field) => field.value !== "auto").length;
+  readinessGoal.textContent = goalReady ? "Ready" : "Needs detail";
+  readinessBudget.textContent = budgetReady ? formatMoney(budget) : "$800–$5,000";
+  readinessAdvanced.textContent = manualTargets === 0 ? "Automatic" : `${manualTargets} manual`;
+  readinessGoal.closest("button").classList.toggle("is-warning", !goalReady);
+  readinessBudget.closest("button").classList.toggle("is-warning", !budgetReady);
+}
+
+readinessItems.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-readiness-target]");
+  if (!button) return;
+  if (button.dataset.readinessTarget === "goal") fields.goal.focus();
+  if (button.dataset.readinessTarget === "budget") fields.budget.focus();
+  if (button.dataset.readinessTarget === "advanced") {
+    document.querySelector("#advanced-controls").open = true;
+    fields.memoryTarget.focus();
+  }
+});
+updateConfigReadiness();
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let motionEnabled = !prefersReducedMotion;
@@ -1496,10 +1526,14 @@ form.addEventListener("invalid", (event) => {
 form.addEventListener("input", () => {
   formError.textContent = "";
   updateAdvancedCount();
+  updateConfigReadiness();
   setResultStale(renderChangedFields() > 0);
 });
 
-form.addEventListener("change", updateAdvancedCount);
+form.addEventListener("change", () => {
+  updateAdvancedCount();
+  updateConfigReadiness();
+});
 
 fields.budgetRange.addEventListener("input", () => {
   fields.budget.value = fields.budgetRange.value;

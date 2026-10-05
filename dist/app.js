@@ -116,6 +116,8 @@ const validationFilterButtons = [...document.querySelectorAll("[data-validation-
 const validationFilterStatus = document.querySelector("#validation-filter-status");
 const recentBuildList = document.querySelector("#recent-build-list");
 const recentBuildCount = document.querySelector("#recent-build-count");
+const resetAdvancedButton = document.querySelector("#reset-advanced");
+const advancedResetStatus = document.querySelector("#advanced-reset-status");
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -513,7 +515,20 @@ function updateAdvancedCount() {
   ];
   const activeCount = values.filter((value) => value !== "auto").length;
   advancedCount.textContent = activeCount === 0 ? "Automatic" : `${activeCount} set`;
+  advancedResetStatus.textContent = activeCount === 0
+    ? "Using automatic part targets."
+    : `${activeCount} manual target${activeCount === 1 ? "" : "s"} active.`;
+  resetAdvancedButton.disabled = activeCount === 0;
 }
+
+resetAdvancedButton.addEventListener("click", () => {
+  for (const field of [fields.memoryTarget, fields.storageTarget, fields.noiseTarget, fields.vramTarget, fields.coreTarget, fields.powerTarget, fields.caseTarget]) {
+    field.value = "auto";
+  }
+  updateAdvancedCount();
+  setResultStale(renderChangedFields() > 0);
+  showToast("Advanced constraints reset to automatic.");
+});
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let motionEnabled = !prefersReducedMotion;

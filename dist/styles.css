@@ -433,6 +433,12 @@ h1 span { color: #8293a0; }
 .advanced-controls small { color: var(--muted); font-size: .68rem; line-height: 1.35; }
 .advanced-count { margin-left: auto; color: var(--acid); font: 700 .66rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .advanced-grid { padding: 0 15px 15px; }
+.advanced-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 15px 15px; }
+.advanced-actions span { color: var(--muted); font-size: .66rem; }
+.advanced-actions button { flex: 0 0 auto; padding: 6px 9px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--cyan); font-size: .67rem; cursor: pointer; }
+.advanced-actions button:hover,
+.advanced-actions button:focus-visible { border-color: rgba(94,231,238,.5); }
+.advanced-actions button:disabled { opacity: .42; cursor: not-allowed; }
 
 .preset-row {
   display: flex;

@@ -769,6 +769,9 @@ textarea:focus {
 }
 .profile-comparison tbody button:hover,
 .profile-comparison tbody button:focus-visible { color: var(--acid); }
+.profile-insights { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.profile-insights small { padding: 3px 5px; border: 1px solid rgba(94,231,238,.2); border-radius: 999px; color: var(--muted); font-size: .56rem; font-weight: 650; white-space: nowrap; }
+.profile-comparison tbody tr.is-active .profile-insights small { border-color: rgba(184,255,98,.22); color: #c4daab; }
 
 .metrics {
   display: grid;

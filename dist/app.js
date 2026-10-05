@@ -980,12 +980,27 @@ function render(constraints, { announce = false } = {}) {
     performance: "Max performance",
     value: "Best value",
   };
-  comparisonBody.innerHTML = Object.entries(profileLabels).map(([profile, label]) => {
-    const option = profile === activeProfile ? recommendation : recommendBuild(constraints, profile);
+  const profileOptions = Object.entries(profileLabels).map(([profile, label]) => ({
+    profile,
+    label,
+    option: profile === activeProfile ? recommendation : recommendBuild(constraints, profile),
+  }));
+  const lowestTotal = Math.min(...profileOptions.map(({ option }) => option.total));
+  const lowestPower = Math.min(...profileOptions.map(({ option }) => option.platformWatts));
+  const highestUpgrade = Math.max(...profileOptions.map(({ option }) => option.upgradeReadiness.score));
+  comparisonBody.innerHTML = profileOptions.map(({ profile, label, option }) => {
     const goalsMet = option.requirementChecks.filter((check) => check.pass).length;
+    const insights = [
+      option.total === lowestTotal ? "Lowest cost" : "",
+      option.platformWatts === lowestPower ? "Lowest power" : "",
+      option.upgradeReadiness.score === highestUpgrade ? "Most upgrade room" : "",
+    ].filter(Boolean);
     return `
       <tr class="${profile === activeProfile ? "is-active" : ""}">
-        <th scope="row"><button type="button" data-compare-profile="${profile}">${label}</button></th>
+        <th scope="row">
+          <button type="button" data-compare-profile="${profile}">${label}</button>
+          <span class="profile-insights">${insights.map((insight) => `<small>${insight}</small>`).join("")}</span>
+        </th>
         <td data-label="Total">${formatMoney(option.total)}</td>
         <td data-label="CPU">${option.parts.cpu.name}</td>
         <td data-label="GPU">${option.parts.gpu.name}</td>

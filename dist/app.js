@@ -118,6 +118,7 @@ const shortcutDialog = document.querySelector("#shortcut-dialog");
 const shortcutTrigger = document.querySelector("#shortcut-trigger");
 const shortcutClose = document.querySelector("#shortcut-close");
 const validationFilterButtons = [...document.querySelectorAll("[data-validation-filter]")];
+const validationScopeButtons = [...document.querySelectorAll("[data-validation-scope]")];
 const validationFilterStatus = document.querySelector("#validation-filter-status");
 const compatibilityScoreButton = document.querySelector("#compatibility-score");
 const recentBuildList = document.querySelector("#recent-build-list");
@@ -139,6 +140,7 @@ let latestConstraints;
 let baselineRecommendation;
 let latestFormState;
 let activeValidationFilter = "all";
+let activeValidationScope = "all";
 let recentBuilds = [];
 try {
   const storedRecentBuilds = JSON.parse(sessionStorage.getItem(RECENT_BUILDS_KEY) ?? "[]");
@@ -298,14 +300,17 @@ shortcutDialog.addEventListener("click", (event) => {
   if (event.target === shortcutDialog) shortcutDialog.close();
 });
 
-function applyValidationFilter(filter = activeValidationFilter) {
+function applyValidationFilter(filter = activeValidationFilter, scope = activeValidationScope) {
   activeValidationFilter = filter;
+  activeValidationScope = scope;
   const rows = [...document.querySelectorAll("#explanation-list li")];
   let visible = 0;
   for (const row of rows) {
-    const show = filter === "all"
+    const matchesStatus = filter === "all"
       || (filter === "issues" && row.classList.contains("is-warning"))
       || (filter === "passed" && row.classList.contains("is-pass"));
+    const matchesScope = scope === "all" || row.dataset.validationScope === scope;
+    const show = matchesStatus && matchesScope;
     row.hidden = !show;
     if (show) visible += 1;
   }
@@ -314,11 +319,19 @@ function applyValidationFilter(filter = activeValidationFilter) {
     button.classList.toggle("is-active", active);
     button.setAttribute("aria-pressed", String(active));
   }
+  for (const button of validationScopeButtons) {
+    const active = button.dataset.validationScope === scope;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  }
   validationFilterStatus.textContent = `${visible} of ${rows.length} checks shown`;
 }
 
 for (const button of validationFilterButtons) {
   button.addEventListener("click", () => applyValidationFilter(button.dataset.validationFilter));
+}
+for (const button of validationScopeButtons) {
+  button.addEventListener("click", () => applyValidationFilter(activeValidationFilter, button.dataset.validationScope));
 }
 
 for (const button of resultJumpButtons) {
@@ -1190,8 +1203,8 @@ function render(constraints, { announce = false } = {}) {
     </article>
   `).join("");
 
-  document.querySelector("#explanation-list").innerHTML = recommendation.checks.map((check) => `
-    <li class="${check.pass ? "is-pass" : "is-warning"}">${check.pass ? "✓" : "!"} ${check.label}</li>
+  document.querySelector("#explanation-list").innerHTML = recommendation.checks.map((check, index) => `
+    <li class="${check.pass ? "is-pass" : "is-warning"}" data-validation-scope="${index < recommendation.compatibilityChecks.length ? "compatibility" : "goals"}">${check.pass ? "✓" : "!"} ${check.label}</li>
   `).join("");
   applyValidationFilter();
 

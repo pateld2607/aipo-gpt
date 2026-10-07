@@ -781,6 +781,13 @@ textarea:focus {
   font-weight: 740;
   cursor: pointer;
 }
+.profile-impact { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding: 0 10px 10px; }
+.profile-impact button { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 9px; border: 1px solid var(--line); border-radius: 9px; background: rgba(255,255,255,.02); color: inherit; text-align: left; cursor: pointer; }
+.profile-impact button:hover,
+.profile-impact button:focus-visible { border-color: rgba(94,231,238,.45); background: rgba(94,231,238,.035); }
+.profile-impact span { color: #d7e1e5; font-size: .69rem; font-weight: 720; }
+.profile-impact strong { color: var(--cyan); font: 700 .67rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.profile-impact small { grid-column: 1 / -1; color: var(--muted); font-size: .62rem; }
 
 .comparison-scroll { overflow-x: auto; border-top: 1px solid var(--line); }
 .profile-comparison table { width: 100%; min-width: 660px; border-collapse: collapse; }
@@ -1151,6 +1158,7 @@ footer {
   .profile-comparison table { min-width: 0; }
   .profile-comparison thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
   .profile-comparison tbody { display: grid; gap: 8px; padding: 8px; }
+  .profile-impact { grid-template-columns: 1fr; }
   .profile-comparison tbody tr { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(4,12,19,.42); }
   .profile-comparison tbody th { grid-column: 1 / -1; }
   .profile-comparison tbody th,

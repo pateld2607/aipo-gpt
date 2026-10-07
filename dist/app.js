@@ -67,6 +67,7 @@ const loadLocalButton = document.querySelector("#load-local");
 const clearLocalButton = document.querySelector("#clear-local");
 const exportStatus = document.querySelector("#export-status");
 const comparisonBody = document.querySelector("#profile-comparison-body");
+const profileImpact = document.querySelector("#profile-impact");
 const formError = document.querySelector("#form-error");
 const resultStatus = document.querySelector("#result-status");
 const advancedCount = document.querySelector("#advanced-count");
@@ -1077,6 +1078,18 @@ function render(constraints, { announce = false } = {}) {
   const lowestTotal = Math.min(...profileOptions.map(({ option }) => option.total));
   const lowestPower = Math.min(...profileOptions.map(({ option }) => option.platformWatts));
   const highestUpgrade = Math.max(...profileOptions.map(({ option }) => option.upgradeReadiness.score));
+  profileImpact.innerHTML = profileOptions.filter(({ profile }) => profile !== activeProfile).map(({ profile, label, option }) => {
+    const changedParts = Object.keys(option.parts).filter((type) => option.parts[type].id !== recommendation.parts[type].id);
+    const costDelta = option.total - recommendation.total;
+    const powerDelta = option.platformWatts - recommendation.platformWatts;
+    return `
+      <button type="button" data-impact-profile="${profile}">
+        <span>${label}</span>
+        <strong>${costDelta === 0 ? "Same cost" : `${costDelta > 0 ? "+" : "−"}${formatMoney(Math.abs(costDelta))}`}</strong>
+        <small>${changedParts.length} part${changedParts.length === 1 ? "" : "s"} change · ${powerDelta > 0 ? "+" : ""}${powerDelta}W</small>
+      </button>
+    `;
+  }).join("");
   comparisonBody.innerHTML = profileOptions.map(({ profile, label, option }) => {
     const goalsMet = option.requirementChecks.filter((check) => check.pass).length;
     const insights = [
@@ -1640,6 +1653,14 @@ comparisonBody.addEventListener("click", (event) => {
   if (!button) return;
   activeProfile = button.dataset.compareProfile;
   render(currentConstraints());
+});
+
+profileImpact.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-impact-profile]");
+  if (!button) return;
+  activeProfile = button.dataset.impactProfile;
+  render(currentConstraints());
+  showToast(`${button.querySelector("span").textContent} profile applied.`);
 });
 
 const hasSavedBuild = Boolean(readSavedBuild());

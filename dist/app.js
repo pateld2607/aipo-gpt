@@ -54,6 +54,7 @@ const budgetPresetButtons = [...document.querySelectorAll("[data-budget-preset]"
 const copyButton = document.querySelector("#copy-build");
 const copyValidationButton = document.querySelector("#copy-validation");
 const copyLinkButton = document.querySelector("#copy-link");
+const shareBuildButton = document.querySelector("#share-build");
 const downloadButton = document.querySelector("#download-build");
 const importInput = document.querySelector("#import-build");
 const importButton = document.querySelector("#import-trigger");
@@ -1336,6 +1337,25 @@ copyLinkButton.addEventListener("click", async () => {
     exportStatus.textContent = "Shareable build link copied.";
   } catch {
     exportStatus.textContent = "Copy was blocked by the browser.";
+  }
+});
+
+shareBuildButton.addEventListener("click", async () => {
+  const shareData = {
+    title: `AIPO-GPT ${activeProfile} build`,
+    text: `${latestRecommendation.summary} Estimated total: ${formatMoney(latestRecommendation.total)}.`,
+    url: window.location.href,
+  };
+  try {
+    if (typeof navigator.share === "function") {
+      await navigator.share(shareData);
+      exportStatus.textContent = "Build shared.";
+    } else {
+      await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
+      exportStatus.textContent = "Sharing is unavailable here, so the build link was copied.";
+    }
+  } catch (error) {
+    if (error?.name !== "AbortError") exportStatus.textContent = "Sharing was blocked by the browser.";
   }
 });
 

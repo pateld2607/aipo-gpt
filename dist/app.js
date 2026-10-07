@@ -117,6 +117,7 @@ const shortcutTrigger = document.querySelector("#shortcut-trigger");
 const shortcutClose = document.querySelector("#shortcut-close");
 const validationFilterButtons = [...document.querySelectorAll("[data-validation-filter]")];
 const validationFilterStatus = document.querySelector("#validation-filter-status");
+const compatibilityScoreButton = document.querySelector("#compatibility-score");
 const recentBuildList = document.querySelector("#recent-build-list");
 const recentBuildCount = document.querySelector("#recent-build-count");
 const clearRecentBuildsButton = document.querySelector("#clear-recent-builds");
@@ -326,6 +327,13 @@ for (const button of resultJumpButtons) {
     target.focus({ preventScroll: true });
   });
 }
+
+compatibilityScoreButton.addEventListener("click", () => {
+  const validation = document.querySelector("#validation-details");
+  validation.open = true;
+  validation.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
+  validation.focus({ preventScroll: true });
+});
 
 function setActiveResultSection(sectionId) {
   for (const button of resultJumpButtons) {
@@ -1102,8 +1110,12 @@ function render(constraints, { announce = false } = {}) {
   budgetProgress.querySelector("span").style.width = `${Math.min(recommendation.budgetUsage.percentage, 100)}%`;
 
   const score = document.querySelector("#compatibility-score");
-  score.textContent = `${compatible}/${recommendation.compatibilityChecks.length} safe · ${goalsMet}/${recommendation.requirementChecks.length} goals`;
-  score.style.color = compatible === recommendation.compatibilityChecks.length ? "var(--acid)" : "var(--danger)";
+  const totalChecks = recommendation.compatibilityChecks.length + recommendation.requirementChecks.length;
+  const fitPercentage = Math.round(((compatible + goalsMet) / totalChecks) * 100);
+  document.querySelector("#fit-score").textContent = String(fitPercentage);
+  document.querySelector("#compatibility-score-copy").textContent = `${compatible}/${recommendation.compatibilityChecks.length} safe · ${goalsMet}/${recommendation.requirementChecks.length} goals`;
+  score.style.setProperty("--fit-score", `${fitPercentage * 3.6}deg`);
+  score.dataset.state = fitPercentage === 100 ? "complete" : "attention";
   if (announce) {
     resultStatus.textContent = `Build ready. ${compatible} compatibility checks passed, ${goalsMet} goals met, estimated total ${formatMoney(recommendation.total)}.`;
     document.querySelector("#results-heading").focus();

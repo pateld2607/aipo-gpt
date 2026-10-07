@@ -909,6 +909,22 @@ partsList.addEventListener("click", async (event) => {
   syncPartsToggleLabel();
 });
 
+partsList.addEventListener("keydown", (event) => {
+  const button = event.target.closest(".part-row");
+  if (!button || !["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+  const rows = [...partsList.querySelectorAll(".part-card:not([hidden]) .part-row")];
+  const currentIndex = rows.indexOf(button);
+  if (currentIndex < 0) return;
+  let nextIndex = currentIndex;
+  if (event.key === "ArrowDown") nextIndex = (currentIndex + 1) % rows.length;
+  if (event.key === "ArrowUp") nextIndex = (currentIndex - 1 + rows.length) % rows.length;
+  if (event.key === "Home") nextIndex = 0;
+  if (event.key === "End") nextIndex = rows.length - 1;
+  event.preventDefault();
+  rows[nextIndex].focus();
+  rows[nextIndex].scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "nearest" });
+});
+
 toggleAllPartsButton.addEventListener("click", () => {
   const toggles = [...partsList.querySelectorAll(".part-row")];
   const expand = toggles.some((button) => button.getAttribute("aria-expanded") !== "true");
@@ -1168,7 +1184,7 @@ function render(constraints, { announce = false } = {}) {
 
   partsList.innerHTML = parts.map(([type, part], index) => `
     <article class="part-card" data-price="${part.price}" data-build-order="${index}">
-      <button class="part-row" type="button" aria-expanded="false" aria-controls="part-inspection-${type}">
+      <button class="part-row" type="button" aria-expanded="false" aria-controls="part-inspection-${type}" aria-keyshortcuts="ArrowUp ArrowDown Home End">
         <span class="part-type">${type === "motherboard" ? "board" : type}</span>
         <span class="part-detail"><span class="part-name">${part.name}</span></span>
         <span class="part-price">${formatMoney(part.price)}</span>

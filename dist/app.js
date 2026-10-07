@@ -50,6 +50,7 @@ const fields = {
 const profileButtons = [...document.querySelectorAll("[data-profile]")];
 const presetButtons = [...document.querySelectorAll("[data-preset]")];
 const budgetAdjustButtons = [...document.querySelectorAll("[data-budget-adjust]")];
+const budgetPresetButtons = [...document.querySelectorAll("[data-budget-preset]")];
 const copyButton = document.querySelector("#copy-build");
 const copyValidationButton = document.querySelector("#copy-validation");
 const copyLinkButton = document.querySelector("#copy-link");
@@ -1015,6 +1016,7 @@ function readSavedBuild() {
 
 function render(constraints, { announce = false } = {}) {
   setResultStale(false);
+  syncBudgetControls();
   updateAdvancedCount();
   renderConstraintChips(constraints);
   const recommendation = recommendBuild(constraints, activeProfile);
@@ -1537,12 +1539,25 @@ form.addEventListener("change", () => {
 
 fields.budgetRange.addEventListener("input", () => {
   fields.budget.value = fields.budgetRange.value;
+  syncBudgetControls();
 });
 
 fields.budget.addEventListener("input", () => {
   const budget = Number(fields.budget.value);
   if (Number.isFinite(budget) && budget >= 800 && budget <= 5000) fields.budgetRange.value = budget;
+  syncBudgetControls();
 });
+
+function syncBudgetControls() {
+  const budget = Math.min(5000, Math.max(800, Number(fields.budget.value) || 800));
+  const percentage = ((budget - 800) / (5000 - 800)) * 100;
+  fields.budgetRange.style.setProperty("--budget-fill", `${percentage}%`);
+  for (const button of budgetPresetButtons) {
+    const active = Number(button.dataset.budgetPreset) === budget;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  }
+}
 
 for (const button of budgetAdjustButtons) {
   button.addEventListener("click", () => {
@@ -1552,6 +1567,15 @@ for (const button of budgetAdjustButtons) {
     fields.budgetRange.value = next;
     fields.budget.dispatchEvent(new Event("input", { bubbles: true }));
     fields.budget.focus();
+  });
+}
+
+for (const button of budgetPresetButtons) {
+  button.addEventListener("click", () => {
+    fields.budget.value = button.dataset.budgetPreset;
+    fields.budgetRange.value = button.dataset.budgetPreset;
+    fields.budget.dispatchEvent(new Event("input", { bubbles: true }));
+    showToast(`${button.textContent} budget selected.`);
   });
 }
 

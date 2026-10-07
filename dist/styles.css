@@ -473,6 +473,13 @@ h1 span { color: #8293a0; }
 .preset-row button:hover,
 .preset-row button:focus-visible { border-color: rgba(94,231,238,.45); color: var(--cyan); }
 
+.budget-levels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+.budget-levels button { min-height: 30px; padding: 5px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,.02); color: var(--muted); font-size: .63rem; cursor: pointer; }
+.budget-levels button:hover,
+.budget-levels button:focus-visible { border-color: rgba(94,231,238,.45); color: var(--cyan); }
+.budget-levels button.is-active { border-color: rgba(184,255,98,.35); background: rgba(184,255,98,.07); color: var(--acid); }
+.budget-range { background: linear-gradient(90deg, rgba(184,255,98,.8) 0 var(--budget-fill, 24%), rgba(255,255,255,.09) var(--budget-fill, 24%) 100%); }
+
 input,
 select,
 textarea {

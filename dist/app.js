@@ -87,6 +87,7 @@ const allocationList = document.querySelector("#allocation-list");
 const alternativesList = document.querySelector("#alternatives-list");
 const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
 const partFilter = document.querySelector("#part-filter");
+const partSort = document.querySelector("#part-sort");
 const partFilterStatus = document.querySelector("#part-filter-status");
 const partFilterEmpty = document.querySelector("#part-filter-empty");
 const clearPartFilterButton = document.querySelector("#clear-part-filter");
@@ -798,6 +799,17 @@ function filterParts() {
   partFilterEmpty.hidden = !query || visible > 0;
 }
 
+function sortParts() {
+  const cards = [...partsList.querySelectorAll(".part-card")];
+  cards.sort((a, b) => {
+    if (partSort.value === "price-high") return Number(b.dataset.price) - Number(a.dataset.price);
+    if (partSort.value === "price-low") return Number(a.dataset.price) - Number(b.dataset.price);
+    return Number(a.dataset.buildOrder) - Number(b.dataset.buildOrder);
+  });
+  for (const card of cards) partsList.append(card);
+  filterParts();
+}
+
 function focusPartFilter() {
   setWorkspaceView("results");
   partFilter.focus();
@@ -805,6 +817,12 @@ function focusPartFilter() {
 }
 
 partFilter.addEventListener("input", filterParts);
+partSort.addEventListener("change", () => {
+  sortParts();
+  const label = partSort.selectedOptions[0].textContent;
+  partFilterStatus.textContent = `${partsList.querySelectorAll(".part-card:not([hidden])").length} components · ${label}.`;
+  showToast(`Components sorted by ${label.toLowerCase()}.`);
+});
 clearPartFilterButton.addEventListener("click", () => {
   partFilter.value = "";
   filterParts();
@@ -1121,8 +1139,8 @@ function render(constraints, { announce = false } = {}) {
     document.querySelector("#results-heading").focus();
   }
 
-  partsList.innerHTML = parts.map(([type, part]) => `
-    <article class="part-card">
+  partsList.innerHTML = parts.map(([type, part], index) => `
+    <article class="part-card" data-price="${part.price}" data-build-order="${index}">
       <button class="part-row" type="button" aria-expanded="false" aria-controls="part-inspection-${type}">
         <span class="part-type">${type === "motherboard" ? "board" : type}</span>
         <span class="part-detail"><span class="part-name">${part.name}</span></span>
@@ -1138,7 +1156,7 @@ function render(constraints, { announce = false } = {}) {
       </div>
     </article>
   `).join("");
-  filterParts();
+  sortParts();
   syncPartsToggleLabel();
 
   allocationList.innerHTML = Object.entries(recommendation.budgetAllocation).map(([type, allocation]) => `

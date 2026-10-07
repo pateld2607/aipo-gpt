@@ -933,7 +933,9 @@ textarea:focus {
   cursor: pointer;
 }
 .parts-tools { display: flex; align-items: center; gap: 8px; }
-.parts-tools input { width: 160px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: rgba(4,12,19,.55); color: var(--ink); font: 500 .68rem/1.2 Inter, sans-serif; letter-spacing: 0; text-transform: none; }
+.parts-tools input,
+.parts-tools select { width: 160px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: rgba(4,12,19,.55); color: var(--ink); font: 500 .68rem/1.2 Inter, sans-serif; letter-spacing: 0; text-transform: none; }
+.parts-tools select { width: 125px; }
 .parts-tools input:focus { border-color: rgba(94,231,238,.55); outline: none; }
 .part-filter-status { min-height: 1em; margin: -2px 0 8px; color: var(--muted); font-size: .68rem; }
 .part-filter-empty { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 10px; padding: 12px; border: 1px dashed rgba(94,231,238,.25); border-radius: 10px; color: var(--muted); font-size: .72rem; }
@@ -1164,6 +1166,7 @@ footer {
   .parts-heading { align-items: start; }
   .parts-tools { align-items: end; flex-direction: column; }
   .parts-tools input { width: 145px; }
+  .parts-tools select { width: 145px; }
   .part-price { display: none; }
   .part-inspection { grid-template-columns: 1fr; padding-left: 14px; }
   .part-inspection-actions { justify-items: start; }

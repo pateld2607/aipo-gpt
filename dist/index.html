@@ -383,6 +383,12 @@
           <div class="parts-heading" id="component-stack" tabindex="-1">
             <span>Component stack</span>
             <div class="parts-tools">
+              <label class="visually-hidden" for="part-sort">Sort components</label>
+              <select id="part-sort" aria-label="Sort components">
+                <option value="build">Build order</option>
+                <option value="price-high">Price: high first</option>
+                <option value="price-low">Price: low first</option>
+              </select>
               <label class="visually-hidden" for="part-filter">Filter components</label>
               <input id="part-filter" type="search" placeholder="Filter components…" autocomplete="off" aria-keyshortcuts="/" />
               <button type="button" id="toggle-all-parts">Inspect all</button>

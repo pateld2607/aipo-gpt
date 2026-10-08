@@ -113,6 +113,7 @@ const metricCards = [...document.querySelectorAll(".metric")];
 const pinBaselineButton = document.querySelector("#pin-baseline");
 const clearBaselineButton = document.querySelector("#clear-baseline");
 const baselineStatus = document.querySelector("#baseline-status");
+const componentChanges = document.querySelector("#component-changes");
 const metricGuideDialog = document.querySelector("#metric-guide-dialog");
 const metricGuideTrigger = document.querySelector("#metric-guide-trigger");
 const metricGuideClose = document.querySelector("#metric-guide-close");
@@ -422,6 +423,8 @@ function renderRecommendationDeltas(previous, current) {
   if (!previous || previous.buildId === current.buildId) {
     panel.hidden = true;
     panel.innerHTML = "";
+    componentChanges.hidden = true;
+    componentChanges.innerHTML = "";
     return;
   }
   const previousGoals = previous.requirementChecks.filter((check) => check.pass).length;
@@ -436,7 +439,26 @@ function renderRecommendationDeltas(previous, current) {
   panel.innerHTML = deltas.map((delta) =>
     `<span class="${delta.better(delta.value) ? "is-better" : "is-tradeoff"}">${delta.label} ${delta.format(delta.value)}</span>`,
   ).join("");
+  const changedParts = Object.keys(current.parts).filter((type) => current.parts[type].id !== previous.parts[type].id);
+  componentChanges.hidden = changedParts.length === 0;
+  componentChanges.innerHTML = changedParts.length === 0 ? "" : `
+    <span>${changedParts.length} component${changedParts.length === 1 ? "" : "s"} changed</span>
+    ${changedParts.map((type) => `<button type="button" data-changed-part="${type}">${type === "motherboard" ? "Board" : type} · inspect</button>`).join("")}
+  `;
 }
+
+componentChanges.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-changed-part]");
+  if (!button) return;
+  const partButton = partsList.querySelector(`[aria-controls="part-inspection-${button.dataset.changedPart}"]`);
+  const inspection = document.querySelector(`#part-inspection-${button.dataset.changedPart}`);
+  partFilter.value = "";
+  filterParts();
+  partButton.setAttribute("aria-expanded", "true");
+  inspection.hidden = false;
+  partButton.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });
+  partButton.focus({ preventScroll: true });
+});
 
 pinBaselineButton.addEventListener("click", () => {
   if (!latestRecommendation) return;
@@ -454,6 +476,7 @@ clearBaselineButton.addEventListener("click", () => {
   clearBaselineButton.hidden = true;
   baselineStatus.textContent = "Comparing each new result with the previous build.";
   document.querySelector("#result-deltas").hidden = true;
+  componentChanges.hidden = true;
   showToast("Comparison baseline cleared.");
 });
 

@@ -850,6 +850,12 @@ textarea:focus {
 .baseline-controls button:hover,
 .baseline-controls button:focus-visible { border-color: rgba(94,231,238,.5); color: var(--cyan); }
 .baseline-controls span { color: var(--muted); font-size: .66rem; }
+.component-changes { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: -12px 0 20px; }
+.component-changes[hidden] { display: none; }
+.component-changes > span { margin-right: 2px; color: var(--muted); font-size: .66rem; }
+.component-changes button { padding: 6px 8px; border: 1px solid rgba(94,231,238,.2); border-radius: 999px; background: rgba(94,231,238,.035); color: var(--cyan); font-size: .65rem; text-transform: capitalize; cursor: pointer; }
+.component-changes button:hover,
+.component-changes button:focus-visible { border-color: rgba(184,255,98,.45); color: var(--acid); }
 .recent-builds { margin: -9px 0 18px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.018); }
 .recent-builds summary { padding: 10px 12px; color: #cbd7dd; font-size: .74rem; font-weight: 740; cursor: pointer; }
 .recent-builds summary span { float: right; color: var(--cyan); }

@@ -1002,6 +1002,11 @@ textarea:focus {
 }
 
 .allocation summary { cursor: pointer; font-size: .82rem; font-weight: 750; }
+.allocation-view { display: flex; justify-content: flex-end; gap: 5px; margin-top: 10px; }
+.allocation-view button { padding: 5px 8px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: var(--muted); font-size: .65rem; cursor: pointer; }
+.allocation-view button:hover,
+.allocation-view button:focus-visible { color: var(--cyan); }
+.allocation-view button.is-active { border-color: var(--line); background: rgba(255,255,255,.035); color: #dce5e8; }
 #allocation-list { display: grid; gap: 10px; margin-top: 16px; }
 .allocation-row { display: grid; grid-template-columns: 76px 1fr 34px; align-items: center; gap: 10px; }
 .allocation-row { width: 100%; padding: 6px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: inherit; text-align: left; cursor: pointer; }

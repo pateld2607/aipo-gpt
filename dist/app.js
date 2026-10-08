@@ -86,6 +86,7 @@ const optimizeLabel = document.querySelector("#optimize-label");
 const resultsFreshness = document.querySelector("#results-freshness");
 const partsList = document.querySelector("#parts-list");
 const allocationList = document.querySelector("#allocation-list");
+const allocationViewButtons = [...document.querySelectorAll("[data-allocation-view]")];
 const alternativesList = document.querySelector("#alternatives-list");
 const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
 const partFilter = document.querySelector("#part-filter");
@@ -142,6 +143,7 @@ let baselineRecommendation;
 let latestFormState;
 let activeValidationFilter = "all";
 let activeValidationScope = "all";
+let activeAllocationView = "percent";
 let recentBuilds = [];
 try {
   const storedRecentBuilds = JSON.parse(sessionStorage.getItem(RECENT_BUILDS_KEY) ?? "[]");
@@ -160,6 +162,24 @@ function setResultDensity(density, { persist = true } = {}) {
   if (persist) {
     try { localStorage.setItem("aipo-gpt-density", safeDensity); } catch { /* preference remains session-only */ }
   }
+}
+
+function setAllocationView(view) {
+  activeAllocationView = view === "dollars" ? "dollars" : "percent";
+  for (const button of allocationViewButtons) {
+    const active = button.dataset.allocationView === activeAllocationView;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  }
+  for (const row of allocationList.querySelectorAll("[data-allocation-price]")) {
+    row.querySelector("strong").textContent = activeAllocationView === "dollars"
+      ? formatMoney(Number(row.dataset.allocationPrice))
+      : `${row.dataset.allocationPercent}%`;
+  }
+}
+
+for (const button of allocationViewButtons) {
+  button.addEventListener("click", () => setAllocationView(button.dataset.allocationView));
 }
 
 let savedDensity = "comfortable";
@@ -1203,12 +1223,13 @@ function render(constraints, { announce = false } = {}) {
   syncPartsToggleLabel();
 
   allocationList.innerHTML = Object.entries(recommendation.budgetAllocation).map(([type, allocation]) => `
-    <button class="allocation-row" type="button" data-inspect-part="${type}" aria-label="Inspect ${type} allocation">
+    <button class="allocation-row" type="button" data-inspect-part="${type}" data-allocation-price="${recommendation.parts[type].price}" data-allocation-percent="${Math.round(allocation.percentage * 100)}" aria-label="Inspect ${type} allocation">
       <span>${type === "motherboard" ? "board" : type}</span>
       <span class="allocation-track" aria-hidden="true"><span style="width: ${(allocation.percentage * 100).toFixed(1)}%"></span></span>
       <strong>${Math.round(allocation.percentage * 100)}%</strong>
     </button>
   `).join("");
+  setAllocationView(activeAllocationView);
 
   const alternativesPanel = document.querySelector("#alternatives-panel");
   alternativesPanel.hidden = recommendation.alternatives.length === 0;

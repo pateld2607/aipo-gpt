@@ -732,6 +732,7 @@ textarea:focus {
 .density-control button:hover,
 .density-control button:focus-visible { color: var(--cyan); }
 .density-control button.is-active { border-color: var(--line); background: rgba(255,255,255,.035); color: #dce5e8; }
+#toggle-result-panels { margin-left: auto; }
 
 .results-panel[data-density="compact"] .metric { padding-block: 10px; }
 .results-panel[data-density="compact"] .metrics { margin-bottom: 18px; }
@@ -1172,6 +1173,8 @@ footer {
   .compatibility-score { left: 0; right: auto; }
   .results-freshness { top: 54px; left: auto; right: 0; }
   .profile-switcher { grid-template-columns: 1fr; }
+  .density-control { flex-wrap: wrap; }
+  #toggle-result-panels { margin-left: 0; }
   .profile-comparison .comparison-scroll { overflow: visible; }
   .profile-comparison table { min-width: 0; }
   .profile-comparison thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }

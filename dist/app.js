@@ -110,6 +110,8 @@ const commandButtons = [...document.querySelectorAll("[data-command]")];
 const commandEmpty = document.querySelector("#command-empty");
 const resultJumpButtons = [...document.querySelectorAll("[data-result-target]")];
 const metricCards = [...document.querySelectorAll(".metric")];
+const toggleResultPanelsButton = document.querySelector("#toggle-result-panels");
+const resultDetailPanels = [...resultsPanel.querySelectorAll("details")];
 const pinBaselineButton = document.querySelector("#pin-baseline");
 const clearBaselineButton = document.querySelector("#clear-baseline");
 const baselineStatus = document.querySelector("#baseline-status");
@@ -194,6 +196,23 @@ for (const button of densityButtons) {
     showToast(`${button.textContent} result view selected.`);
   });
 }
+
+function syncResultPanelsButton() {
+  const availablePanels = resultDetailPanels.filter((panel) => !panel.hidden);
+  const allOpen = availablePanels.length > 0 && availablePanels.every((panel) => panel.open);
+  toggleResultPanelsButton.textContent = allOpen ? "Close all panels" : "Open all panels";
+  toggleResultPanelsButton.setAttribute("aria-expanded", String(allOpen));
+}
+
+toggleResultPanelsButton.addEventListener("click", () => {
+  const availablePanels = resultDetailPanels.filter((panel) => !panel.hidden);
+  const shouldOpen = availablePanels.some((panel) => !panel.open);
+  for (const panel of availablePanels) panel.open = shouldOpen;
+  syncResultPanelsButton();
+  showToast(shouldOpen ? "All result panels opened." : "Result panels collapsed.");
+});
+for (const panel of resultDetailPanels) panel.addEventListener("toggle", syncResultPanelsButton);
+syncResultPanelsButton();
 
 function openCommandDialog() {
   commandSearch.value = "";
@@ -1271,6 +1290,7 @@ function render(constraints, { announce = false } = {}) {
       <footer><code>${alternative.buildId}</code><button type="button" data-copy-alternative="${index}">Copy option</button></footer>
     </article>
   `).join("");
+  syncResultPanelsButton();
 
   document.querySelector("#explanation-list").innerHTML = recommendation.checks.map((check, index) => `
     <li class="${check.pass ? "is-pass" : "is-warning"}" data-validation-scope="${index < recommendation.compatibilityChecks.length ? "compatibility" : "goals"}">${check.pass ? "✓" : "!"} ${check.label}</li>

@@ -123,6 +123,8 @@ const shortcutClose = document.querySelector("#shortcut-close");
 const validationFilterButtons = [...document.querySelectorAll("[data-validation-filter]")];
 const validationScopeButtons = [...document.querySelectorAll("[data-validation-scope]")];
 const validationFilterStatus = document.querySelector("#validation-filter-status");
+const validationEmpty = document.querySelector("#validation-empty");
+const clearValidationFiltersButton = document.querySelector("#clear-validation-filters");
 const compatibilityScoreButton = document.querySelector("#compatibility-score");
 const recentBuildList = document.querySelector("#recent-build-list");
 const recentBuildCount = document.querySelector("#recent-build-count");
@@ -347,6 +349,7 @@ function applyValidationFilter(filter = activeValidationFilter, scope = activeVa
     button.setAttribute("aria-pressed", String(active));
   }
   validationFilterStatus.textContent = `${visible} of ${rows.length} checks shown`;
+  validationEmpty.hidden = visible > 0 || rows.length === 0;
 }
 
 for (const button of validationFilterButtons) {
@@ -355,6 +358,11 @@ for (const button of validationFilterButtons) {
 for (const button of validationScopeButtons) {
   button.addEventListener("click", () => applyValidationFilter(activeValidationFilter, button.dataset.validationScope));
 }
+clearValidationFiltersButton.addEventListener("click", () => {
+  applyValidationFilter("all", "all");
+  validationFilterButtons[0].focus();
+  showToast("Every validation check is visible.");
+});
 
 for (const button of resultJumpButtons) {
   button.addEventListener("click", () => {

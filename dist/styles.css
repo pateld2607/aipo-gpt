@@ -1060,6 +1060,11 @@ textarea:focus {
 .validation-filters span { color: var(--muted); font-size: .66rem; }
 .validation-filter-label { margin-left: 6px; padding-left: 11px; border-left: 1px solid var(--line); text-transform: uppercase; letter-spacing: .08em; }
 #validation-filter-status { margin-left: auto; }
+.validation-empty { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; padding: 11px 12px; border: 1px dashed rgba(255,211,106,.28); border-radius: 10px; color: var(--muted); font-size: .72rem; }
+.validation-empty[hidden] { display: none; }
+.validation-empty button { border: 0; background: transparent; color: var(--cyan); font-size: .69rem; font-weight: 700; cursor: pointer; }
+.validation-empty button:hover,
+.validation-empty button:focus-visible { color: var(--acid); }
 .explanation ul { margin: 15px 0 0; padding-left: 18px; color: var(--muted); font-size: .82rem; line-height: 1.6; }
 .explanation li + li { margin-top: 7px; }
 .explanation .is-warning { color: var(--danger); }

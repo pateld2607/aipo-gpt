@@ -14,8 +14,15 @@
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23071019'/%3E%3Cpath d='M17 44 28 17h8l11 27h-8l-2-6H27l-2 6Zm12-12h6l-3-9Z' fill='%23b8ff62'/%3E%3C/svg%3E"
     />
     <title>AIPO-GPT — PC Build Optimizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <script type="importmap">
+      {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}
+    </script>
     <link rel="stylesheet" href="./styles.css" />
     <script type="module" src="./app.js"></script>
+    <script type="module" src="./gpu-scene.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#optimizer-form">Skip to optimizer</a>
@@ -41,15 +48,46 @@
     </header>
 
     <main id="top">
-      <section class="intro" aria-labelledby="page-title">
-        <div>
-          <p class="eyebrow">PC BUILD OPTIMIZER / v0.2</p>
-          <h1 id="page-title">A balanced build,<br /><span>with every tradeoff visible.</span></h1>
+      <section class="intro immersive-hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">AI PC BUILD OPTIMIZER / LIVE ENGINE</p>
+          <h1 id="page-title">Build the machine<br /><span>your workload demands.</span></h1>
+          <p class="intro-copy">
+            Describe the outcome. AIPO-GPT turns it into an explainable, compatibility-checked
+            system, then shows why each component earned its place—with every constraint and tradeoff visible.
+          </p>
+          <div class="hero-actions">
+            <a class="hero-primary" href="#optimizer-form">Configure a build</a>
+            <button class="hero-secondary" id="gpu-explode" type="button" aria-pressed="false">Explode GPU</button>
+          </div>
+          <div class="hero-signal" aria-label="Live optimizer preview">
+            <div><span>Compatibility</span><strong id="hero-compatibility">100%</strong></div>
+            <div><span>Target</span><strong id="hero-target">1440p</strong></div>
+            <div><span>Budget</span><strong id="hero-budget">$1,800</strong></div>
+          </div>
         </div>
-        <p class="intro-copy">
-          Describe what the machine needs to do. AIPO-GPT converts your goal into constraints,
-          chooses compatible parts, and shows why each component earned its place.
-        </p>
+        <div class="gpu-stage" id="gpu-stage">
+          <canvas id="aipo-gpu-scene" aria-label="Interactive 3D graphics card representing the current AIPO-GPT build"></canvas>
+          <div class="gpu-loading" id="gpu-loading" role="status"><span></span><small>Initializing hardware twin</small></div>
+          <div class="gpu-stage-top"><span>RECOMMENDED GRAPHICS</span><strong id="gpu-stage-name">Optimized GPU tier</strong></div>
+          <div class="gpu-stage-bottom">
+            <span>Drag to inspect · scroll to zoom</span>
+            <div class="gpu-themes" aria-label="Scene accent color">
+              <button class="is-active" type="button" data-gpu-color="#5ee7ee" data-ui-color="#5ee7ee" aria-label="Cyan lighting"></button>
+              <button type="button" data-gpu-color="#9b6cff" data-ui-color="#b98cff" aria-label="Purple lighting"></button>
+              <button type="button" data-gpu-color="#ff4f73" data-ui-color="#ff718e" aria-label="Red lighting"></button>
+              <button type="button" data-gpu-color="#b8ff62" data-ui-color="#b8ff62" aria-label="Green lighting"></button>
+            </div>
+          </div>
+          <button class="gpu-hotspot hotspot-cooling" type="button" data-hotspot="cooling" aria-label="Inspect cooling system"><span></span></button>
+          <button class="gpu-hotspot hotspot-power" type="button" data-hotspot="power" aria-label="Inspect power delivery"><span></span></button>
+          <aside class="gpu-info" id="gpu-info" aria-live="polite" hidden>
+            <button type="button" id="gpu-info-close" aria-label="Close component detail">×</button>
+            <small id="gpu-info-kicker">THERMAL ARRAY</small>
+            <strong id="gpu-info-title">Tri-axial cooling</strong>
+            <p id="gpu-info-copy">Three tuned fans move air across the full fin stack while the model responds to your pointer.</p>
+          </aside>
+        </div>
       </section>
 
       <div class="workspace-view-switcher" role="group" aria-label="Optimizer view">

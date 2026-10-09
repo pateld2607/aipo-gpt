@@ -1151,6 +1151,9 @@ function render(constraints, { announce = false } = {}) {
   latestRecommendation = recommendation;
   latestConstraints = constraints;
   latestFormState = { goal: fields.goal.value, profile: activeProfile, ...constraints };
+  const visualBuild = { recommendation, constraints, profile: activeProfile };
+  window.__AIPO_LATEST_BUILD__ = visualBuild;
+  window.dispatchEvent(new CustomEvent("aipo:build-updated", { detail: visualBuild }));
   renderChangedFields();
   updateShareUrl(constraints);
   const parts = Object.entries(recommendation.parts);

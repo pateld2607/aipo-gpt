@@ -1,97 +1,71 @@
 # AIPO-GPT
 
-A practical PC build optimizer that turns a plain-language goal into structured constraints, selects a balanced component set, and explains compatibility decisions.
+AIPO-GPT is a PC build optimizer I developed to make choosing computer parts easier. Instead of spending hours researching components and figuring out whether everything works together, users can describe what they need their PC for, set a budget, and get a complete build recommendation.
 
-## Current slice
+The goal is to help users find the right balance between performance, cost, compatibility, and future upgrades without needing extensive knowledge of computer hardware.
 
-- Goal parsing for gaming, streaming, workstation, software development, local AI, efficiency, resolution, and budgets including `1.8k`, `2 grand`, `USD 2.4k`, or `1,950 dollars`
-- Deterministic recommendations across CPU, GPU, motherboard, RAM, storage, PSU, cooler, and case
-- Side-by-side balanced, maximum-performance, and best-value profile comparison with price, parts, peak power, upgrade score, and goal coverage
-- Mobile profile-comparison cards that replace horizontal table scrolling with labeled metrics
-- CPU socket and motherboard power-delivery support, cooler socket and RAM clearance, memory type, capacity, and slot count, storage and GPU interfaces, cooling performance and physical fit, motherboard and PSU form factors, PSU length, GPU length, thickness and power connector, PSU headroom, and workload-specific VRAM checks
-- Transparent cost and power estimates
-- Visual budget-utilization meter with an at-a-glance spending label
-- Transparent value-density index using weighted component tiers per $1,000
-- Exact PSU wattage and percentage reserve for future upgrades
-- Automatic or explicit 450W, 550W, and 650W peak-power ceilings with goal validation
-- Upgrade-readiness scoring for power, memory, motherboard, and case headroom
-- Expandable upgrade-readiness breakdown showing each contributing signal
-- Upgrade-headroom priority that favors stronger expansion paths and parses future-proofing language
-- Visible cooler-noise classification for quiet-build decisions
-- Automatic or explicit 24dBA, 28dBA, and 32dBA cooler-noise ceilings with goal validation
-- Explicit automatic, 12GB, or 16GB graphics-memory targets, including natural-language parsing
-- Workload-specific CPU core targets with core and thread explanations
-- Explicit automatic, 6-core, 8-core, or 12-core CPU requirements, including natural-language parsing
-- Explicit automatic, 32GB, or 64GB system-memory targets, including natural-language parsing
-- Explicit automatic, 1TB, or 2TB storage targets, including natural-language parsing
-- Automatic, compact, or standard case-size preference with natural-language parsing and goal validation
-- Accessible validation for missing goals and out-of-range budgets
-- Live goal-length guidance that explains when a request is ready to generate
-- Synchronized number and range controls for quick, precise budget changes
-- One-click $100 budget adjustments with safe minimum and maximum limits
-- Progressive advanced constraints with a live count of manually pinned limits
-- Sticky, independently scrollable desktop controls that stay available beside long recommendations
-- Pointer-responsive lighting and ambient depth with reduced-motion and touch-safe fallbacks
-- Mobile workspace switcher that moves directly between configuration and recommendations
-- Mobile bottom action bar for generating recommendations or returning to inputs
-- Animated recommendation refreshes with real completion feedback and accessible busy state
-- Visible generation progress with motion-safe scanning feedback during recalculation
-- Keyboard-friendly component inspection cards with rationale and budget-share details
-- Live component filtering with accessible match counts for dense recommendations
-- Slash-key and command-center shortcuts for immediate component filtering, with Escape to clear
-- Clickable active-constraint chips that jump back to the exact input
-- Live stale-result detection that clearly prompts users to refresh changed inputs
-- Precise changed-input chips that restore individual fields without discarding other edits
-- Dismissible action toasts for copy, download, import, print, and local-save feedback
-- Persistent motion control that respects operating-system reduced-motion preferences
-- Persistent comfortable and compact result-density modes
-- Searchable quick-action command center with Command-K and Control-K shortcuts
-- Discoverable keyboard shortcut map with a global question-mark shortcut
-- Sticky result-section navigation for overview, components, and validation
-- Scroll-aware result navigation that highlights the section currently in view
-- Smooth numeric transitions for price, headroom, and peak-power changes
-- Recommendation delta chips for cost, power, upgrade readiness, and goals met
-- Arrow-key, Home, and End navigation across recommendation profiles
-- Arrow-key navigation and Enter execution inside the quick-action command center
-- Subtle pointer-responsive depth on result metrics with motion-safe fallbacks
-- Command-Enter and Control-Enter shortcuts for immediate build generation
-- Distraction-free focus mode with toolbar, keyboard, and Escape controls
-- Persistent high-contrast mode for stronger text, panel, and border definition
-- Pinnable build baselines for comparing later recommendations against a chosen system
-- Session build history that restores any of the five most recent configurations
-- One-click copy actions for individual component choices and their rationale
-- Reversible form edits that restore the exact inputs behind the visible recommendation
-- Touch swipe navigation between configuration and recommendation views on mobile
-- Accessible metric guide explaining headroom, power, acoustics, upgradeability, and value
-- One-click gaming, streaming, and workstation goal presets
-- Shareable URLs that restore the selected constraints and recommendation profile
-- Keyboard skip navigation, result focus management, and screen-reader build summaries
-- Copyable pass/fail validation reports for compatibility and workload goals
-- Interactive validation filters for all checks, issues only, or passed checks
-- Runtime catalog validation for duplicate IDs, missing specifications, and invalid prices
-- Per-component budget allocation with a visual percentage breakdown
-- Clickable budget-allocation rows that reveal and focus the corresponding component rationale
-- Actionable guidance when a budget cannot meet every workload target
-- Stable build IDs for comparing, exporting, and reproducing recommendations
-- Search transparency showing evaluated, compatible, and affordable candidate counts
-- Three distinct runner-up configurations with price, headroom, peak power, and goal coverage
-- Copyable runner-up configuration cards for sharing a specific alternative
-- Workload-aware CPU-to-GPU component balance scoring
-- Print-ready build sheets that remove controls and expand recommendation details
-- Portable Markdown build sheets with components, prices, and validation results
-- Spreadsheet-ready CSV bills of materials with prices and component rationales
-- Safe JSON plan import that validates constraints and recalculates the recommendation
-- One-click reset to a complete, shareable default configuration
-- Device-local save and restore for revisiting a configuration without an account
-- Clear-saved-build control for managing browser-stored configuration data
-- Lowest-cost recovery paths for builds that miss workload targets
+## Features
 
-This first release intentionally keeps the recommendation engine local and inspectable. OpenAI-assisted reasoning and a larger data pipeline are planned as later milestones.
+### Personalized PC Recommendations
+Users can describe what they want to do with their PC, whether that's gaming, streaming, programming, video editing, or running AI models locally. AIPO-GPT takes those goals and recommends a complete setup, including the CPU, GPU, motherboard, RAM, storage, power supply, cooler, and case.
 
-## Run locally
+It also understands natural-language requests like "I want a gaming PC for around 2 grand" or "I need a workstation with 64GB of RAM."
 
-Serve the `dist` directory with any static web server, then open the printed local URL.
+### Build Comparisons
+Rather than giving users just one option, AIPO-GPT generates three different build profiles:
+- **Balanced:** A combination of performance, affordability, and upgrade potential.
+- **Maximum Performance:** Prioritizes getting the most computing power within the budget.
+- **Best Value:** Focuses on getting the most performance for the money.
 
-## Project direction
+Users can compare these builds based on pricing, power consumption, upgrade potential, and how well they meet their goals. The application also provides alternative configurations.
 
-The long-term architecture follows the AIPO-GPT project described in Dev Patel's resume: deterministic hardware rules provide safety guarantees, while structured AI reasoning will help translate nuanced goals into machine-readable constraints.
+### Automatic Compatibility Checking
+One of the biggest challenges when building a PC is making sure all the components work together.
+
+AIPO-GPT automatically checks things like CPU and motherboard compatibility, RAM requirements, GPU clearance, cooling capacity, power supply wattage, and physical case dimensions.
+
+It explains these decisions so users understand not just which components to choose, but why they work together.
+
+### Customization and Advanced Constraints
+Users can customize their builds beyond just setting a budget. They can specify CPU core counts, graphics memory, system RAM, storage capacity, power limits, noise levels, and case sizes.
+
+The optimizer also considers future upgrades. For example, it can recommend a power supply with enough headroom for a stronger GPU or a motherboard that supports additional memory.
+
+### Cost and Performance Breakdown
+Each recommended build includes a detailed breakdown of component prices, estimated power usage, and how much of the total budget is being spent.
+
+I also implemented a value score and upgrade-readiness score to help users understand the tradeoffs between different configurations.
+
+If a user's budget is too low to meet their requirements, the application explains what is limiting the build and suggests more affordable alternatives.
+
+### Interactive Interface
+I built the interface to make comparing and adjusting builds straightforward.
+
+Users can filter components, switch between recommendations, adjust their budgets, inspect individual parts, and see how changes affect their results.
+
+The application also includes mobile support, keyboard shortcuts, adjustable display settings, and accessibility features.
+
+### Saving and Sharing Builds
+Users can save configurations locally, revisit recent builds, compare new recommendations against previous ones, and share their settings through a URL.
+
+Builds can also be exported as Markdown, CSV, or JSON files, making it easier to share recommendations or purchase components later.
+
+## How It Works
+
+The current version uses a deterministic recommendation engine, meaning the application evaluates components using predefined hardware specifications, compatibility rules, and scoring systems rather than relying on AI to guess which parts work together.
+
+This makes the recommendations easier to verify and helps ensure that compatibility decisions are consistent.
+
+The optimizer evaluates different component combinations, filters out incompatible options, and ranks the remaining builds based on the user's goals, budget, performance requirements, and upgrade preferences.
+
+## Running Locally
+
+To run AIPO-GPT, serve the `dist` directory using any static web server and open the local URL in your browser.
+
+## Future Plans
+
+This is the first working version of AIPO-GPT. My long-term goal is to integrate OpenAI-powered reasoning so users can describe more complicated requirements and have those requests translated into specific hardware constraints.
+
+I also plan to expand the component database and improve how the application evaluates pricing and performance.
+
+Ultimately, I want AIPO-GPT to combine the flexibility of AI with reliable hardware compatibility checks, making custom PC building more accessible to anyone, regardless of their technical experience.

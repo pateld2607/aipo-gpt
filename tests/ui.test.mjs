@@ -343,6 +343,12 @@ assert.match(html, /id="contrast-toggle"[^>]+aria-pressed="false">High contrast/
 assert.match(app, /function setContrastMode\(enabled/);
 assert.match(app, /localStorage\.getItem\("aipo-gpt-contrast"\)/);
 assert.match(css, /html\[data-contrast="high"\]/);
+assert.equal((html.match(/data-accent=/g) ?? []).length, 4);
+assert.match(html, /role="group" aria-label="Interface accent color"/);
+assert.match(app, /function setAccent\(accent/);
+assert.match(app, /localStorage\.setItem\("aipo-gpt-accent"/);
+assert.match(app, /button\.setAttribute\("aria-pressed", String\(active\)\)/);
+assert.match(css, /html\[data-accent="violet"\]/);
 assert.match(html, /id="pin-baseline">Pin current build/);
 assert.match(html, /id="clear-baseline" hidden>Clear baseline/);
 assert.match(app, /baselineRecommendation = latestRecommendation/);

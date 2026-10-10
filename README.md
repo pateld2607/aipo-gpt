@@ -57,6 +57,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Command-Enter and Control-Enter shortcuts for immediate build generation
 - Distraction-free focus mode with toolbar, keyboard, and Escape controls
 - Persistent high-contrast mode for stronger text, panel, and border definition
+- Persistent lime, cyan, violet, and ember accent themes with accessible live switching
 - Pinnable build baselines for comparing later recommendations against a chosen system
 - Session build history that restores any of the five most recent configurations
 - One-click copy actions for individual component choices and their rationale

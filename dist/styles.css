@@ -21,6 +21,10 @@
   --pointer-shift-inverse-y: 0px;
 }
 
+html[data-accent="cyan"] { --acid: #75f4ff; --cyan: #69a9ff; }
+html[data-accent="violet"] { --acid: #d1a5ff; --cyan: #8d9cff; }
+html[data-accent="ember"] { --acid: #ffb36b; --cyan: #ff6f82; }
+
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
@@ -206,6 +210,15 @@ footer {
 }
 
 .topbar-actions { display: flex; align-items: center; gap: 16px; }
+.accent-switcher { display: flex; align-items: center; gap: 5px; padding: 5px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.018); }
+.accent-switcher button { display: grid; width: 22px; height: 22px; padding: 0; place-items: center; border: 1px solid transparent; border-radius: 50%; background: transparent; cursor: pointer; }
+.accent-switcher button span { width: 10px; height: 10px; border-radius: 50%; background: #b8ff62; box-shadow: 0 0 10px rgba(184,255,98,.38); }
+.accent-switcher button[data-accent="cyan"] span { background: #75f4ff; box-shadow: 0 0 10px rgba(117,244,255,.4); }
+.accent-switcher button[data-accent="violet"] span { background: #d1a5ff; box-shadow: 0 0 10px rgba(209,165,255,.4); }
+.accent-switcher button[data-accent="ember"] span { background: #ff8b73; box-shadow: 0 0 10px rgba(255,139,115,.4); }
+.accent-switcher button:hover,
+.accent-switcher button:focus-visible { border-color: var(--cyan); outline: none; }
+.accent-switcher button.is-active { border-color: var(--acid); background: color-mix(in srgb, var(--acid) 12%, transparent); }
 .command-trigger,
 .shortcut-trigger,
 .focus-toggle,
@@ -1158,6 +1171,8 @@ footer {
   .topbar { min-height: 70px; }
   .engine-status { font-size: 0; }
   .topbar-actions { gap: 9px; }
+  .accent-switcher { gap: 2px; padding: 3px; }
+  .accent-switcher button { width: 20px; height: 20px; }
   .command-trigger { font-size: 0; gap: 0; }
   .shortcut-trigger { width: 34px; height: 34px; justify-content: center; padding: 0; font-size: 0; }
   .command-trigger kbd { font-size: .62rem; }

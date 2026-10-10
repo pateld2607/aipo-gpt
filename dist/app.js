@@ -101,6 +101,7 @@ const closeToastButton = document.querySelector("#close-toast");
 const motionToggle = document.querySelector("#motion-toggle");
 const focusToggle = document.querySelector("#focus-toggle");
 const contrastToggle = document.querySelector("#contrast-toggle");
+const accentButtons = [...document.querySelectorAll("[data-accent]")];
 const densityButtons = [...document.querySelectorAll("[data-density]")];
 const commandDialog = document.querySelector("#command-dialog");
 const commandTrigger = document.querySelector("#command-trigger");
@@ -155,6 +156,29 @@ try {
   if (Array.isArray(storedRecentBuilds)) recentBuilds = storedRecentBuilds.slice(0, 5);
 } catch { /* recent builds remain session-only in memory */ }
 const metricFrames = new WeakMap();
+
+function setAccent(accent, { persist = true } = {}) {
+  const safeAccent = ["lime", "cyan", "violet", "ember"].includes(accent) ? accent : "lime";
+  root.dataset.accent = safeAccent;
+  for (const button of accentButtons) {
+    const active = button.dataset.accent === safeAccent;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  }
+  if (persist) {
+    try { localStorage.setItem("aipo-gpt-accent", safeAccent); } catch { /* preference remains session-only */ }
+  }
+}
+
+let savedAccent = "lime";
+try { savedAccent = localStorage.getItem("aipo-gpt-accent") ?? "lime"; } catch { /* use default */ }
+setAccent(savedAccent, { persist: false });
+for (const button of accentButtons) {
+  button.addEventListener("click", () => {
+    setAccent(button.dataset.accent);
+    showToast(`${button.getAttribute("aria-label")} selected.`);
+  });
+}
 
 function setResultDensity(density, { persist = true } = {}) {
   const safeDensity = density === "compact" ? "compact" : "comfortable";

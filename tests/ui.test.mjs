@@ -413,5 +413,13 @@ assert.match(app, /command === "shortcut-guide"/);
 assert.match(app, /command === "filter-components"/);
 assert.match(app, /event\.key === "\?"/);
 assert.match(app, /shortcutDialog\.showModal\(\)/);
+assert.match(html, /id="allocation-donut" role="img" aria-label="Component budget composition"/);
+assert.match(html, /id="allocation-donut-value">100%/);
+assert.match(app, /function renderAllocationDonut\(recommendation\)/);
+assert.match(app, /conic-gradient\(\$\{segments\.join/);
+assert.match(app, /Largest shares: \$\{leading\}/);
+assert.match(app, /allocationDonutValue\.textContent = activeAllocationView/);
+assert.match(css, /\.allocation-layout \{ display: grid/);
+assert.match(css, /\.allocation-donut::after/);
 
 console.log("UI contract tests passed");

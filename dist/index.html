@@ -425,7 +425,12 @@
               <button class="is-active" type="button" data-allocation-view="percent" aria-pressed="true">Percent</button>
               <button type="button" data-allocation-view="dollars" aria-pressed="false">Dollars</button>
             </div>
-            <div id="allocation-list"></div>
+            <div class="allocation-layout">
+              <figure class="allocation-donut" id="allocation-donut" role="img" aria-label="Component budget composition">
+                <figcaption><strong id="allocation-donut-value">100%</strong><span id="allocation-donut-label">of build</span></figcaption>
+              </figure>
+              <div id="allocation-list"></div>
+            </div>
           </details>
 
           <details class="alternatives" id="alternatives-panel">

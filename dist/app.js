@@ -86,6 +86,9 @@ const optimizeLabel = document.querySelector("#optimize-label");
 const resultsFreshness = document.querySelector("#results-freshness");
 const partsList = document.querySelector("#parts-list");
 const allocationList = document.querySelector("#allocation-list");
+const allocationDonut = document.querySelector("#allocation-donut");
+const allocationDonutValue = document.querySelector("#allocation-donut-value");
+const allocationDonutLabel = document.querySelector("#allocation-donut-label");
 const allocationViewButtons = [...document.querySelectorAll("[data-allocation-view]")];
 const alternativesList = document.querySelector("#alternatives-list");
 const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
@@ -210,6 +213,39 @@ function setAllocationView(view) {
       ? formatMoney(Number(row.dataset.allocationPrice))
       : `${row.dataset.allocationPercent}%`;
   }
+  if (latestRecommendation) {
+    allocationDonutValue.textContent = activeAllocationView === "dollars"
+      ? formatMoney(latestRecommendation.total)
+      : "100%";
+    allocationDonutLabel.textContent = activeAllocationView === "dollars" ? "build total" : "of build";
+  }
+}
+
+function renderAllocationDonut(recommendation) {
+  const colors = [
+    "var(--cyan)",
+    "color-mix(in srgb, var(--cyan) 72%, var(--acid))",
+    "color-mix(in srgb, var(--cyan) 42%, var(--acid))",
+    "var(--acid)",
+    "color-mix(in srgb, var(--acid) 78%, #ffd36a)",
+    "color-mix(in srgb, var(--acid) 52%, #ffd36a)",
+    "color-mix(in srgb, var(--cyan) 68%, #ffffff)",
+    "color-mix(in srgb, var(--acid) 62%, #ffffff)",
+  ];
+  let cursor = 0;
+  const entries = Object.entries(recommendation.budgetAllocation);
+  const segments = entries.map(([, allocation], index) => {
+    const start = cursor;
+    cursor += allocation.percentage * 100;
+    return `${colors[index % colors.length]} ${start.toFixed(2)}% ${cursor.toFixed(2)}%`;
+  });
+  allocationDonut.style.setProperty("--allocation-gradient", `conic-gradient(${segments.join(", ")})`);
+  const leading = [...entries]
+    .sort(([, left], [, right]) => right.percentage - left.percentage)
+    .slice(0, 3)
+    .map(([type, allocation]) => `${type} ${Math.round(allocation.percentage * 100)}%`)
+    .join(", ");
+  allocationDonut.setAttribute("aria-label", `Component budget composition. Largest shares: ${leading}.`);
 }
 
 for (const button of allocationViewButtons) {
@@ -1325,6 +1361,7 @@ function render(constraints, { announce = false } = {}) {
       <strong>${Math.round(allocation.percentage * 100)}%</strong>
     </button>
   `).join("");
+  renderAllocationDonut(recommendation);
   setAllocationView(activeAllocationView);
 
   const alternativesPanel = document.querySelector("#alternatives-panel");

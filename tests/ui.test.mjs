@@ -421,5 +421,14 @@ assert.match(app, /Largest shares: \$\{leading\}/);
 assert.match(app, /allocationDonutValue\.textContent = activeAllocationView/);
 assert.match(css, /\.allocation-layout \{ display: grid/);
 assert.match(css, /\.allocation-donut::after/);
+assert.match(html, /class="silicon-spotlight" aria-labelledby="silicon-spotlight-heading"/);
+assert.equal((html.match(/data-spotlight-part=/g) ?? []).length, 2);
+assert.match(html, /id="spotlight-cpu-name"/);
+assert.match(html, /id="spotlight-gpu-name"/);
+assert.match(app, /function inspectPart\(type\)/);
+assert.match(app, /siliconSpotlight\.addEventListener\("click"/);
+assert.match(app, /spotlightCpuMeta\.textContent =/);
+assert.match(app, /spotlightGpuMeta\.textContent =/);
+assert.match(css, /\.silicon-spotlight \{ display: grid/);
 
 console.log("UI contract tests passed");

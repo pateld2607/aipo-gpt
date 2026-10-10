@@ -141,6 +141,11 @@ const readinessItems = document.querySelector("#readiness-items");
 const readinessGoal = document.querySelector("#readiness-goal");
 const readinessBudget = document.querySelector("#readiness-budget");
 const readinessAdvanced = document.querySelector("#readiness-advanced");
+const siliconSpotlight = document.querySelector(".silicon-spotlight");
+const spotlightCpuName = document.querySelector("#spotlight-cpu-name");
+const spotlightCpuMeta = document.querySelector("#spotlight-cpu-meta");
+const spotlightGpuName = document.querySelector("#spotlight-gpu-name");
+const spotlightGpuMeta = document.querySelector("#spotlight-gpu-meta");
 const missionRail = document.querySelector(".mission-rail");
 const missionBudget = document.querySelector("#mission-budget");
 const missionWorkload = document.querySelector("#mission-workload");
@@ -1087,19 +1092,28 @@ toggleAllPartsButton.addEventListener("click", () => {
   syncPartsToggleLabel();
 });
 
-allocationList.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-inspect-part]");
-  if (!button) return;
+function inspectPart(type) {
   partFilter.value = "";
   filterParts();
-  const type = button.dataset.inspectPart;
   const partButton = partsList.querySelector(`[aria-controls="part-inspection-${type}"]`);
   const inspection = document.querySelector(`#part-inspection-${type}`);
+  if (!partButton || !inspection) return;
   partButton.setAttribute("aria-expanded", "true");
   inspection.hidden = false;
   partButton.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });
   partButton.focus({ preventScroll: true });
   syncPartsToggleLabel();
+}
+
+allocationList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-inspect-part]");
+  if (!button) return;
+  inspectPart(button.dataset.inspectPart);
+});
+
+siliconSpotlight.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-spotlight-part]");
+  if (button) inspectPart(button.dataset.spotlightPart);
 });
 
 alternativesList.addEventListener("click", async (event) => {
@@ -1353,6 +1367,10 @@ function render(constraints, { announce = false } = {}) {
   `).join("");
   sortParts();
   syncPartsToggleLabel();
+  spotlightCpuName.textContent = recommendation.parts.cpu.name;
+  spotlightCpuMeta.textContent = `${formatMoney(recommendation.parts.cpu.price)} · ${Math.round(recommendation.budgetAllocation.cpu.percentage * 100)}% of build · inspect`;
+  spotlightGpuName.textContent = recommendation.parts.gpu.name;
+  spotlightGpuMeta.textContent = `${formatMoney(recommendation.parts.gpu.price)} · ${Math.round(recommendation.budgetAllocation.gpu.percentage * 100)}% of build · inspect`;
 
   allocationList.innerHTML = Object.entries(recommendation.budgetAllocation).map(([type, allocation]) => `
     <button class="allocation-row" type="button" data-inspect-part="${type}" data-allocation-price="${recommendation.parts[type].price}" data-allocation-percent="${Math.round(allocation.percentage * 100)}" aria-label="Inspect ${type} allocation">

@@ -873,6 +873,17 @@ textarea:focus {
 .metric span { display: block; margin-bottom: 7px; color: var(--muted); font-size: .68rem; }
 .metric strong { font-size: 1.05rem; }
 
+.silicon-spotlight { display: grid; grid-template-columns: .8fr 1fr 1fr; gap: 8px; margin: -14px 0 26px; padding: 8px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(135deg, color-mix(in srgb, var(--cyan) 5%, transparent), rgba(255,255,255,.012)); }
+.silicon-spotlight > div { display: grid; align-content: center; gap: 4px; padding: 8px 10px; }
+.silicon-spotlight h3 { margin: 0; color: #dce6e9; font-size: .72rem; line-height: 1.35; }
+.silicon-spotlight .eyebrow { margin: 0; font-size: .55rem; }
+.silicon-spotlight button { display: grid; min-width: 0; gap: 5px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: rgba(4,12,19,.38); color: inherit; text-align: left; cursor: pointer; transition: border-color .18s, transform .18s, background .18s; }
+.silicon-spotlight button > span { color: var(--acid); font: 800 .58rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .1em; }
+.silicon-spotlight button strong { overflow: hidden; font-size: .73rem; text-overflow: ellipsis; white-space: nowrap; }
+.silicon-spotlight button small { color: var(--muted); font-size: .62rem; }
+.silicon-spotlight button:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--cyan) 46%, transparent); background: color-mix(in srgb, var(--cyan) 5%, transparent); }
+.silicon-spotlight button:focus-visible { border-color: var(--cyan); outline: 2px solid color-mix(in srgb, var(--cyan) 30%, transparent); outline-offset: 2px; }
+
 .result-deltas {
   display: flex;
   flex-wrap: wrap;
@@ -1218,6 +1229,7 @@ footer {
   h1 { font-size: clamp(2.5rem, 13vw, 4rem); }
   .field-grid, .metrics { grid-template-columns: 1fr; }
   .metric + .metric { border-left: 0; border-top: 1px solid var(--line); }
+  .silicon-spotlight { grid-template-columns: 1fr; }
   .results-heading-row { padding-right: 0; padding-top: 58px; }
   .compatibility-score { left: 0; right: auto; }
   .results-freshness { top: 54px; left: auto; right: 0; }

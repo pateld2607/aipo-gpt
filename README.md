@@ -38,6 +38,7 @@ A practical PC build optimizer that turns a plain-language goal into structured 
 - Animated recommendation refreshes with real completion feedback and accessible busy state
 - Visible generation progress with motion-safe scanning feedback during recalculation
 - Keyboard-friendly component inspection cards with rationale and budget-share details
+- Clickable CPU and GPU spotlight cards that expose price, allocation, and component rationale
 - Live component filtering with accessible match counts for dense recommendations
 - Slash-key and command-center shortcuts for immediate component filtering, with Escape to clear
 - Clickable active-constraint chips that jump back to the exact input

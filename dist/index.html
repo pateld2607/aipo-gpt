@@ -35,6 +35,12 @@
         <span>AIPO-GPT</span>
       </a>
       <div class="topbar-actions">
+        <div class="accent-switcher" role="group" aria-label="Interface accent color">
+          <button class="is-active" type="button" data-accent="lime" aria-pressed="true" aria-label="Lime accent"><span></span></button>
+          <button type="button" data-accent="cyan" aria-pressed="false" aria-label="Cyan accent"><span></span></button>
+          <button type="button" data-accent="violet" aria-pressed="false" aria-label="Violet accent"><span></span></button>
+          <button type="button" data-accent="ember" aria-pressed="false" aria-label="Ember accent"><span></span></button>
+        </div>
         <button class="command-trigger" id="command-trigger" type="button" aria-haspopup="dialog" aria-controls="command-dialog">Quick actions <kbd>⌘K</kbd></button>
         <button class="shortcut-trigger" id="shortcut-trigger" type="button" aria-haspopup="dialog" aria-controls="shortcut-dialog">Shortcuts <kbd>?</kbd></button>
         <button class="focus-toggle" id="focus-toggle" type="button" aria-pressed="false">Focus mode</button>
@@ -88,6 +94,14 @@
             <p id="gpu-info-copy">Three tuned fans move air across the full fin stack while the model responds to your pointer.</p>
           </aside>
         </div>
+      </section>
+
+      <section class="mission-rail" aria-label="Live mission profile">
+        <div class="mission-rail-label"><span>LIVE MISSION</span><small>Tap any signal to edit it</small></div>
+        <button type="button" data-mission-target="budget"><span>Budget</span><strong id="mission-budget">$1,800</strong></button>
+        <button type="button" data-mission-target="useCase"><span>Workload</span><strong id="mission-workload">Gaming</strong></button>
+        <button type="button" data-mission-target="resolution"><span>Target</span><strong id="mission-resolution">1440p</strong></button>
+        <button type="button" data-mission-target="priority"><span>Priority</span><strong id="mission-priority">Low noise</strong></button>
       </section>
 
       <div class="workspace-view-switcher" role="group" aria-label="Optimizer view">
@@ -383,6 +397,18 @@
               <strong id="power-reserve">—</strong>
             </div>
           </div>
+          <section class="silicon-spotlight" aria-labelledby="silicon-spotlight-heading">
+            <div>
+              <span class="eyebrow">CORE SILICON</span>
+              <h3 id="silicon-spotlight-heading">The parts shaping this build</h3>
+            </div>
+            <button type="button" data-spotlight-part="cpu">
+              <span>CPU</span><strong id="spotlight-cpu-name">—</strong><small id="spotlight-cpu-meta">Inspect rationale</small>
+            </button>
+            <button type="button" data-spotlight-part="gpu">
+              <span>GPU</span><strong id="spotlight-gpu-name">—</strong><small id="spotlight-gpu-meta">Inspect rationale</small>
+            </button>
+          </section>
           <div class="result-deltas" id="result-deltas" aria-label="Changes from previous recommendation" aria-live="polite" hidden></div>
           <div class="baseline-controls" aria-label="Build comparison baseline">
             <button type="button" id="pin-baseline">Pin current build</button>
@@ -449,7 +475,12 @@
               <button class="is-active" type="button" data-allocation-view="percent" aria-pressed="true">Percent</button>
               <button type="button" data-allocation-view="dollars" aria-pressed="false">Dollars</button>
             </div>
-            <div id="allocation-list"></div>
+            <div class="allocation-layout">
+              <figure class="allocation-donut" id="allocation-donut" role="img" aria-label="Component budget composition">
+                <figcaption><strong id="allocation-donut-value">100%</strong><span id="allocation-donut-label">of build</span></figcaption>
+              </figure>
+              <div id="allocation-list"></div>
+            </div>
           </details>
 
           <details class="alternatives" id="alternatives-panel">

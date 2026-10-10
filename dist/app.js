@@ -86,6 +86,9 @@ const optimizeLabel = document.querySelector("#optimize-label");
 const resultsFreshness = document.querySelector("#results-freshness");
 const partsList = document.querySelector("#parts-list");
 const allocationList = document.querySelector("#allocation-list");
+const allocationDonut = document.querySelector("#allocation-donut");
+const allocationDonutValue = document.querySelector("#allocation-donut-value");
+const allocationDonutLabel = document.querySelector("#allocation-donut-label");
 const allocationViewButtons = [...document.querySelectorAll("[data-allocation-view]")];
 const alternativesList = document.querySelector("#alternatives-list");
 const toggleAllPartsButton = document.querySelector("#toggle-all-parts");
@@ -101,6 +104,7 @@ const closeToastButton = document.querySelector("#close-toast");
 const motionToggle = document.querySelector("#motion-toggle");
 const focusToggle = document.querySelector("#focus-toggle");
 const contrastToggle = document.querySelector("#contrast-toggle");
+const accentButtons = [...document.querySelectorAll("[data-accent]")];
 const densityButtons = [...document.querySelectorAll("[data-density]")];
 const commandDialog = document.querySelector("#command-dialog");
 const commandTrigger = document.querySelector("#command-trigger");
@@ -137,6 +141,16 @@ const readinessItems = document.querySelector("#readiness-items");
 const readinessGoal = document.querySelector("#readiness-goal");
 const readinessBudget = document.querySelector("#readiness-budget");
 const readinessAdvanced = document.querySelector("#readiness-advanced");
+const siliconSpotlight = document.querySelector(".silicon-spotlight");
+const spotlightCpuName = document.querySelector("#spotlight-cpu-name");
+const spotlightCpuMeta = document.querySelector("#spotlight-cpu-meta");
+const spotlightGpuName = document.querySelector("#spotlight-gpu-name");
+const spotlightGpuMeta = document.querySelector("#spotlight-gpu-meta");
+const missionRail = document.querySelector(".mission-rail");
+const missionBudget = document.querySelector("#mission-budget");
+const missionWorkload = document.querySelector("#mission-workload");
+const missionResolution = document.querySelector("#mission-resolution");
+const missionPriority = document.querySelector("#mission-priority");
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -155,6 +169,29 @@ try {
   if (Array.isArray(storedRecentBuilds)) recentBuilds = storedRecentBuilds.slice(0, 5);
 } catch { /* recent builds remain session-only in memory */ }
 const metricFrames = new WeakMap();
+
+function setAccent(accent, { persist = true } = {}) {
+  const safeAccent = ["lime", "cyan", "violet", "ember"].includes(accent) ? accent : "lime";
+  root.dataset.accent = safeAccent;
+  for (const button of accentButtons) {
+    const active = button.dataset.accent === safeAccent;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  }
+  if (persist) {
+    try { localStorage.setItem("aipo-gpt-accent", safeAccent); } catch { /* preference remains session-only */ }
+  }
+}
+
+let savedAccent = "lime";
+try { savedAccent = localStorage.getItem("aipo-gpt-accent") ?? "lime"; } catch { /* use default */ }
+setAccent(savedAccent, { persist: false });
+for (const button of accentButtons) {
+  button.addEventListener("click", () => {
+    setAccent(button.dataset.accent);
+    showToast(`${button.getAttribute("aria-label")} selected.`);
+  });
+}
 
 function setResultDensity(density, { persist = true } = {}) {
   const safeDensity = density === "compact" ? "compact" : "comfortable";
@@ -181,6 +218,39 @@ function setAllocationView(view) {
       ? formatMoney(Number(row.dataset.allocationPrice))
       : `${row.dataset.allocationPercent}%`;
   }
+  if (latestRecommendation) {
+    allocationDonutValue.textContent = activeAllocationView === "dollars"
+      ? formatMoney(latestRecommendation.total)
+      : "100%";
+    allocationDonutLabel.textContent = activeAllocationView === "dollars" ? "build total" : "of build";
+  }
+}
+
+function renderAllocationDonut(recommendation) {
+  const colors = [
+    "var(--cyan)",
+    "color-mix(in srgb, var(--cyan) 72%, var(--acid))",
+    "color-mix(in srgb, var(--cyan) 42%, var(--acid))",
+    "var(--acid)",
+    "color-mix(in srgb, var(--acid) 78%, #ffd36a)",
+    "color-mix(in srgb, var(--acid) 52%, #ffd36a)",
+    "color-mix(in srgb, var(--cyan) 68%, #ffffff)",
+    "color-mix(in srgb, var(--acid) 62%, #ffffff)",
+  ];
+  let cursor = 0;
+  const entries = Object.entries(recommendation.budgetAllocation);
+  const segments = entries.map(([, allocation], index) => {
+    const start = cursor;
+    cursor += allocation.percentage * 100;
+    return `${colors[index % colors.length]} ${start.toFixed(2)}% ${cursor.toFixed(2)}%`;
+  });
+  allocationDonut.style.setProperty("--allocation-gradient", `conic-gradient(${segments.join(", ")})`);
+  const leading = [...entries]
+    .sort(([, left], [, right]) => right.percentage - left.percentage)
+    .slice(0, 3)
+    .map(([type, allocation]) => `${type} ${Math.round(allocation.percentage * 100)}%`)
+    .join(", ");
+  allocationDonut.setAttribute("aria-label", `Component budget composition. Largest shares: ${leading}.`);
 }
 
 for (const button of allocationViewButtons) {
@@ -665,7 +735,24 @@ function updateConfigReadiness() {
   readinessAdvanced.textContent = manualTargets === 0 ? "Automatic" : `${manualTargets} manual`;
   readinessGoal.closest("button").classList.toggle("is-warning", !goalReady);
   readinessBudget.closest("button").classList.toggle("is-warning", !budgetReady);
+  updateMissionRail();
 }
+
+function updateMissionRail() {
+  const selectedText = (field) => field.selectedOptions[0]?.textContent ?? field.value;
+  const budget = Number(fields.budget.value);
+  missionBudget.textContent = Number.isFinite(budget) ? formatMoney(budget) : "Check budget";
+  missionWorkload.textContent = selectedText(fields.useCase);
+  missionResolution.textContent = selectedText(fields.resolution);
+  missionPriority.textContent = selectedText(fields.priority);
+}
+
+missionRail.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-mission-target]");
+  if (!button) return;
+  setWorkspaceView("configure");
+  fields[button.dataset.missionTarget].focus();
+});
 
 readinessItems.addEventListener("click", (event) => {
   const button = event.target.closest("[data-readiness-target]");
@@ -1005,19 +1092,28 @@ toggleAllPartsButton.addEventListener("click", () => {
   syncPartsToggleLabel();
 });
 
-allocationList.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-inspect-part]");
-  if (!button) return;
+function inspectPart(type) {
   partFilter.value = "";
   filterParts();
-  const type = button.dataset.inspectPart;
   const partButton = partsList.querySelector(`[aria-controls="part-inspection-${type}"]`);
   const inspection = document.querySelector(`#part-inspection-${type}`);
+  if (!partButton || !inspection) return;
   partButton.setAttribute("aria-expanded", "true");
   inspection.hidden = false;
   partButton.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });
   partButton.focus({ preventScroll: true });
   syncPartsToggleLabel();
+}
+
+allocationList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-inspect-part]");
+  if (!button) return;
+  inspectPart(button.dataset.inspectPart);
+});
+
+siliconSpotlight.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-spotlight-part]");
+  if (button) inspectPart(button.dataset.spotlightPart);
 });
 
 alternativesList.addEventListener("click", async (event) => {
@@ -1145,6 +1241,7 @@ function render(constraints, { announce = false } = {}) {
   setResultStale(false);
   syncBudgetControls();
   updateAdvancedCount();
+  updateMissionRail();
   renderConstraintChips(constraints);
   const recommendation = recommendBuild(constraints, activeProfile);
   const previousRecommendation = latestRecommendation;
@@ -1274,6 +1371,10 @@ function render(constraints, { announce = false } = {}) {
   `).join("");
   sortParts();
   syncPartsToggleLabel();
+  spotlightCpuName.textContent = recommendation.parts.cpu.name;
+  spotlightCpuMeta.textContent = `${formatMoney(recommendation.parts.cpu.price)} · ${Math.round(recommendation.budgetAllocation.cpu.percentage * 100)}% of build · inspect`;
+  spotlightGpuName.textContent = recommendation.parts.gpu.name;
+  spotlightGpuMeta.textContent = `${formatMoney(recommendation.parts.gpu.price)} · ${Math.round(recommendation.budgetAllocation.gpu.percentage * 100)}% of build · inspect`;
 
   allocationList.innerHTML = Object.entries(recommendation.budgetAllocation).map(([type, allocation]) => `
     <button class="allocation-row" type="button" data-inspect-part="${type}" data-allocation-price="${recommendation.parts[type].price}" data-allocation-percent="${Math.round(allocation.percentage * 100)}" aria-label="Inspect ${type} allocation">
@@ -1282,6 +1383,7 @@ function render(constraints, { announce = false } = {}) {
       <strong>${Math.round(allocation.percentage * 100)}%</strong>
     </button>
   `).join("");
+  renderAllocationDonut(recommendation);
   setAllocationView(activeAllocationView);
 
   const alternativesPanel = document.querySelector("#alternatives-panel");

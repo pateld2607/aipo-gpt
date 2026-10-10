@@ -1241,6 +1241,7 @@ function render(constraints, { announce = false } = {}) {
   setResultStale(false);
   syncBudgetControls();
   updateAdvancedCount();
+  updateMissionRail();
   renderConstraintChips(constraints);
   const recommendation = recommendBuild(constraints, activeProfile);
   const previousRecommendation = latestRecommendation;

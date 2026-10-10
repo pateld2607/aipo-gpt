@@ -355,6 +355,7 @@ assert.match(html, /id="mission-budget">\$1,800/);
 assert.match(app, /function updateMissionRail\(\)/);
 assert.match(app, /missionBudget\.textContent = Number\.isFinite\(budget\)/);
 assert.match(app, /fields\[button\.dataset\.missionTarget\]\.focus\(\)/);
+assert.match(app, /function render\(constraints[^]*?updateMissionRail\(\);[^]*?renderConstraintChips\(constraints\)/);
 assert.match(css, /\.mission-rail \{/);
 assert.match(html, /id="pin-baseline">Pin current build/);
 assert.match(html, /id="clear-baseline" hidden>Clear baseline/);

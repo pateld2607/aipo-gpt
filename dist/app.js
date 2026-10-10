@@ -138,6 +138,11 @@ const readinessItems = document.querySelector("#readiness-items");
 const readinessGoal = document.querySelector("#readiness-goal");
 const readinessBudget = document.querySelector("#readiness-budget");
 const readinessAdvanced = document.querySelector("#readiness-advanced");
+const missionRail = document.querySelector(".mission-rail");
+const missionBudget = document.querySelector("#mission-budget");
+const missionWorkload = document.querySelector("#mission-workload");
+const missionResolution = document.querySelector("#mission-resolution");
+const missionPriority = document.querySelector("#mission-priority");
 let updateTimer = 0;
 let completionTimer = 0;
 let resultIsStale = false;
@@ -689,7 +694,24 @@ function updateConfigReadiness() {
   readinessAdvanced.textContent = manualTargets === 0 ? "Automatic" : `${manualTargets} manual`;
   readinessGoal.closest("button").classList.toggle("is-warning", !goalReady);
   readinessBudget.closest("button").classList.toggle("is-warning", !budgetReady);
+  updateMissionRail();
 }
+
+function updateMissionRail() {
+  const selectedText = (field) => field.selectedOptions[0]?.textContent ?? field.value;
+  const budget = Number(fields.budget.value);
+  missionBudget.textContent = Number.isFinite(budget) ? formatMoney(budget) : "Check budget";
+  missionWorkload.textContent = selectedText(fields.useCase);
+  missionResolution.textContent = selectedText(fields.resolution);
+  missionPriority.textContent = selectedText(fields.priority);
+}
+
+missionRail.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-mission-target]");
+  if (!button) return;
+  setWorkspaceView("configure");
+  fields[button.dataset.missionTarget].focus();
+});
 
 readinessItems.addEventListener("click", (event) => {
   const button = event.target.closest("[data-readiness-target]");

@@ -1435,6 +1435,7 @@ body {
   background: linear-gradient(120deg, rgba(255,255,255,.04), transparent 24%, transparent 72%, rgba(var(--gpu-accent-rgb),.05));
 }
 #aipo-gpu-scene { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; outline: none; touch-action: none; }
+#aipo-gpu-scene:focus-visible { outline: 2px solid var(--gpu-accent); outline-offset: -4px; border-radius: inherit; }
 .gpu-loading { position: absolute; z-index: 8; inset: 0; display: grid; place-content: center; justify-items: center; gap: 13px; background: rgba(4,7,11,.88); transition: opacity .6s, visibility .6s; }
 .gpu-loading.is-done { opacity: 0; visibility: hidden; }
 .gpu-loading span { width: 42px; height: 42px; border: 1px solid rgba(var(--gpu-accent-rgb),.5); border-top-color: var(--gpu-accent); border-radius: 50%; animation: gpu-spin 1s linear infinite; }

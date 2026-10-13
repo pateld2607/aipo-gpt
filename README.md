@@ -47,6 +47,8 @@ The application also includes mobile support, keyboard shortcuts, adjustable dis
 
 The interactive GPU scene automatically pauses when it is offscreen or the browser tab is hidden, reducing unnecessary graphics work without changing the current view.
 
+Keyboard users can focus the 3D graphics card, rotate it with the arrow keys, and press Home to restore the default camera view.
+
 ### Saving and Sharing Builds
 Users can save configurations locally, revisit recent builds, compare new recommendations against previous ones, and share their settings through a URL.
 

@@ -437,5 +437,12 @@ assert.match(gpuScene, /new IntersectionObserver/);
 assert.match(gpuScene, /document\.addEventListener\("visibilitychange"/);
 assert.match(gpuScene, /cancelAnimationFrame\(animationFrame\)/);
 assert.match(gpuScene, /stageVisible && !document\.hidden/);
+assert.match(html, /id="aipo-gpu-scene" tabindex="0"[^>]+aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Home"/);
+assert.match(html, /id="gpu-scene-status" role="status" aria-live="polite"/);
+assert.match(gpuScene, /canvas\.addEventListener\("keydown"/);
+assert.match(gpuScene, /event\.key === "ArrowLeft"/);
+assert.match(gpuScene, /event\.key === "Home"/);
+assert.match(gpuScene, /gpu\.rotation\.copy\(defaultGpuRotation\)/);
+assert.match(css, /#aipo-gpu-scene:focus-visible/);
 
 console.log("UI contract tests passed");

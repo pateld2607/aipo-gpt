@@ -104,7 +104,8 @@ if (canvas && stage) {
 
     // ---------- Procedural GPU ----------
     const gpu = new THREE.Group();
-    gpu.rotation.set(-0.09, 0.18, 0.02);
+    const defaultGpuRotation = new THREE.Euler(-0.09, 0.18, 0.02);
+    gpu.rotation.copy(defaultGpuRotation);
     gpu.position.y = -0.05;
     scene.add(gpu);
 
@@ -337,6 +338,25 @@ if (canvas && stage) {
     };
     window.addEventListener("aipo:build-updated", (event) => syncBuild(event.detail));
     syncBuild(window.__AIPO_LATEST_BUILD__);
+
+    // ---------- Keyboard camera controls ----------
+    const sceneStatus = document.querySelector("#gpu-scene-status");
+    canvas.addEventListener("keydown", (event) => {
+      const rotationStep = 0.16;
+      if (event.key === "ArrowLeft") gpu.rotation.y -= rotationStep;
+      else if (event.key === "ArrowRight") gpu.rotation.y += rotationStep;
+      else if (event.key === "ArrowUp") gpu.rotation.x -= rotationStep;
+      else if (event.key === "ArrowDown") gpu.rotation.x += rotationStep;
+      else if (event.key === "Home") {
+        gpu.rotation.copy(defaultGpuRotation);
+        camera.position.set(mobile ? 7.4 : 7.8, 2.15, mobile ? 12.6 : 11.2);
+        controls.target.set(0, 0, 0.2);
+      } else return;
+      event.preventDefault();
+      controls.update();
+      renderer.render(scene, camera);
+      sceneStatus.textContent = event.key === "Home" ? "Graphics card view reset." : `Graphics card rotated ${event.key.replace("Arrow", "").toLowerCase()}.`;
+    });
 
     // ---------- Pointer response, resize and animation ----------
     let hover = 0;

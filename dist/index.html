@@ -73,11 +73,11 @@
           </div>
         </div>
         <div class="gpu-stage" id="gpu-stage">
-          <canvas id="aipo-gpu-scene" aria-label="Interactive 3D graphics card representing the current AIPO-GPT build"></canvas>
+          <canvas id="aipo-gpu-scene" tabindex="0" aria-label="Interactive 3D graphics card representing the current AIPO-GPT build" aria-describedby="gpu-controls-help" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Home"></canvas>
           <div class="gpu-loading" id="gpu-loading" role="status"><span></span><small>Initializing hardware twin</small></div>
           <div class="gpu-stage-top"><span>RECOMMENDED GRAPHICS</span><strong id="gpu-stage-name">Optimized GPU tier</strong></div>
           <div class="gpu-stage-bottom">
-            <span>Drag to inspect · scroll to zoom</span>
+            <span id="gpu-controls-help">Drag to inspect · scroll to zoom · arrows rotate</span>
             <div class="gpu-themes" aria-label="Scene accent color">
               <button class="is-active" type="button" data-gpu-color="#5ee7ee" data-ui-color="#5ee7ee" aria-label="Cyan lighting"></button>
               <button type="button" data-gpu-color="#9b6cff" data-ui-color="#b98cff" aria-label="Purple lighting"></button>
@@ -93,6 +93,7 @@
             <strong id="gpu-info-title">Tri-axial cooling</strong>
             <p id="gpu-info-copy">Three tuned fans move air across the full fin stack while the model responds to your pointer.</p>
           </aside>
+          <span class="visually-hidden" id="gpu-scene-status" role="status" aria-live="polite"></span>
         </div>
       </section>
 

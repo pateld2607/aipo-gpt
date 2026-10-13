@@ -339,6 +339,28 @@ if (canvas && stage) {
     window.addEventListener("aipo:build-updated", (event) => syncBuild(event.detail));
     syncBuild(window.__AIPO_LATEST_BUILD__);
 
+    // ---------- Fullscreen inspection ----------
+    const fullscreenButton = document.querySelector("#gpu-fullscreen");
+    if (!document.fullscreenEnabled) {
+      fullscreenButton.disabled = true;
+      fullscreenButton.title = "Fullscreen is unavailable in this browser";
+    }
+    fullscreenButton.addEventListener("click", async () => {
+      try {
+        if (document.fullscreenElement === stage) await document.exitFullscreen();
+        else await stage.requestFullscreen();
+      } catch {
+        document.querySelector("#gpu-scene-status").textContent = "Fullscreen view could not be opened.";
+      }
+    });
+    document.addEventListener("fullscreenchange", () => {
+      const expanded = document.fullscreenElement === stage;
+      fullscreenButton.setAttribute("aria-pressed", String(expanded));
+      fullscreenButton.textContent = expanded ? "Exit view" : "Expand view";
+      fullscreenButton.setAttribute("aria-label", expanded ? "Exit graphics card fullscreen" : "Open graphics card in fullscreen");
+      resize();
+    });
+
     // ---------- Keyboard camera controls ----------
     const sceneStatus = document.querySelector("#gpu-scene-status");
     canvas.addEventListener("keydown", (event) => {

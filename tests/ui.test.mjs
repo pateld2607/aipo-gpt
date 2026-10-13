@@ -444,5 +444,12 @@ assert.match(gpuScene, /event\.key === "ArrowLeft"/);
 assert.match(gpuScene, /event\.key === "Home"/);
 assert.match(gpuScene, /gpu\.rotation\.copy\(defaultGpuRotation\)/);
 assert.match(css, /#aipo-gpu-scene:focus-visible/);
+assert.match(html, /id="gpu-fullscreen"[^>]+aria-pressed="false"[^>]+Open graphics card in fullscreen/);
+assert.match(gpuScene, /document\.fullscreenEnabled/);
+assert.match(gpuScene, /stage\.requestFullscreen\(\)/);
+assert.match(gpuScene, /document\.exitFullscreen\(\)/);
+assert.match(gpuScene, /document\.addEventListener\("fullscreenchange"/);
+assert.match(gpuScene, /fullscreenButton\.setAttribute\("aria-pressed"/);
+assert.match(css, /\.gpu-stage:fullscreen/);
 
 console.log("UI contract tests passed");

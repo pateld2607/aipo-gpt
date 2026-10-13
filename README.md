@@ -49,6 +49,8 @@ The interactive GPU scene automatically pauses when it is offscreen or the brows
 
 Keyboard users can focus the 3D graphics card, rotate it with the arrow keys, and press Home to restore the default camera view.
 
+The graphics-card stage can enter a native fullscreen inspection mode and returns cleanly with the browser's standard Escape control.
+
 ### Saving and Sharing Builds
 Users can save configurations locally, revisit recent builds, compare new recommendations against previous ones, and share their settings through a URL.
 

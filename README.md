@@ -45,6 +45,8 @@ Users can filter components, switch between recommendations, adjust their budget
 
 The application also includes mobile support, keyboard shortcuts, adjustable display settings, persistent lime, cyan, violet, and ember accent themes, and accessibility features.
 
+The interactive GPU scene automatically pauses when it is offscreen or the browser tab is hidden, reducing unnecessary graphics work without changing the current view.
+
 ### Saving and Sharing Builds
 Users can save configurations locally, revisit recent builds, compare new recommendations against previous ones, and share their settings through a URL.
 

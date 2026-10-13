@@ -354,8 +354,10 @@ if (canvas && stage) {
 
     const clock = new THREE.Clock();
     let fanSpeed = 1.35;
+    let animationFrame = 0;
+    let stageVisible = true;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrame = requestAnimationFrame(animate);
       const dt = Math.min(clock.getDelta(), 0.05);
       const time = clock.elapsedTime;
       fanSpeed = THREE.MathUtils.lerp(fanSpeed, hover ? 7.2 : 1.35, 0.065);
@@ -376,7 +378,24 @@ if (canvas && stage) {
       controls.update();
       renderer.render(scene, camera);
     };
-    animate();
+    const syncAnimationLifecycle = () => {
+      const shouldAnimate = stageVisible && !document.hidden;
+      if (shouldAnimate && !animationFrame) {
+        clock.start();
+        animationFrame = requestAnimationFrame(animate);
+      } else if (!shouldAnimate && animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+        clock.stop();
+      }
+    };
+    const stageObserver = new IntersectionObserver(([entry]) => {
+      stageVisible = entry.isIntersecting;
+      syncAnimationLifecycle();
+    }, { rootMargin: "180px" });
+    stageObserver.observe(stage);
+    document.addEventListener("visibilitychange", syncAnimationLifecycle);
+    syncAnimationLifecycle();
     setTimeout(() => loading?.classList.add("is-done"), 620);
   } catch (error) {
     console.error("AIPO-GPT 3D scene could not initialize", error);

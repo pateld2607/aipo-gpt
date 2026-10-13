@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 const html = await readFile(new URL("../dist/index.html", import.meta.url), "utf8");
 const app = await readFile(new URL("../dist/app.js", import.meta.url), "utf8");
 const css = await readFile(new URL("../dist/styles.css", import.meta.url), "utf8");
+const gpuScene = await readFile(new URL("../dist/gpu-scene.js", import.meta.url), "utf8");
 
 for (const profile of ["balanced", "performance", "value"]) {
   assert.match(html, new RegExp(`data-profile="${profile}"`));
@@ -431,5 +432,10 @@ assert.match(app, /siliconSpotlight\.addEventListener\("click"/);
 assert.match(app, /spotlightCpuMeta\.textContent =/);
 assert.match(app, /spotlightGpuMeta\.textContent =/);
 assert.match(css, /\.silicon-spotlight \{ display: grid/);
+assert.match(gpuScene, /const syncAnimationLifecycle = \(\) =>/);
+assert.match(gpuScene, /new IntersectionObserver/);
+assert.match(gpuScene, /document\.addEventListener\("visibilitychange"/);
+assert.match(gpuScene, /cancelAnimationFrame\(animationFrame\)/);
+assert.match(gpuScene, /stageVisible && !document\.hidden/);
 
 console.log("UI contract tests passed");

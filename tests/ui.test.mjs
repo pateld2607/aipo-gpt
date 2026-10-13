@@ -459,5 +459,14 @@ assert.match(gpuScene, /gpuPart\.vram/);
 assert.match(gpuScene, /gpuPart\.watts/);
 assert.match(css, /\.hotspot-performance/);
 assert.match(css, /\.gpu-hotspot:focus-visible/);
+assert.match(html, /id="gpu-part-labels" aria-label="Exploded graphics card layers" hidden/);
+assert.match(html, /id="gpu-explode"[^>]+aria-expanded="false"[^>]+aria-controls="gpu-part-labels"/);
+assert.equal((html.match(/data-exploded-part=/g) ?? []).length, 5);
+assert.match(gpuScene, /const explodedViews = \{/);
+assert.match(gpuScene, /partLabels\?\.addEventListener\("click"/);
+assert.match(gpuScene, /controls\.target\.copy\(explodeOffsets/);
+assert.match(gpuScene, /partLabels\.hidden = !value/);
+assert.match(css, /\.gpu-part-labels\[hidden\]/);
+assert.match(css, /data-exploded-part="fans"/);
 
 console.log("UI contract tests passed");

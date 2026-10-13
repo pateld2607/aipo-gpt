@@ -273,12 +273,30 @@ if (canvas && stage) {
     let exploded = false;
     let explodeAmount = 0;
     const explodeButton = document.querySelector("#gpu-explode");
+    const partLabels = document.querySelector("#gpu-part-labels");
     const setExploded = (value) => {
       exploded = value;
       explodeButton?.setAttribute("aria-pressed", String(value));
+      explodeButton?.setAttribute("aria-expanded", String(value));
       if (explodeButton) explodeButton.textContent = value ? "Reassemble GPU" : "Explode GPU";
+      if (partLabels) partLabels.hidden = !value;
     };
     explodeButton?.addEventListener("click", () => setExploded(!exploded));
+    const explodedViews = {
+      backplate: [-5.8, 3.4, 9.6],
+      pcb: [-3.8, 2.5, 8.2],
+      heatsink: [0, 3.8, 8.1],
+      shroud: [4.2, 2.1, 8.4],
+      fans: [5.8, -2.1, 8.5],
+    };
+    partLabels?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-exploded-part]");
+      if (!button) return;
+      setExploded(true);
+      camera.position.set(...explodedViews[button.dataset.explodedPart]);
+      controls.target.copy(explodeOffsets[button.dataset.explodedPart]);
+      document.querySelector("#gpu-scene-status").textContent = `${button.textContent} layer selected.`;
+    });
 
     const infoPanel = document.querySelector("#gpu-info");
     const info = {

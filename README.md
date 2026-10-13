@@ -53,6 +53,8 @@ The graphics-card stage can enter a native fullscreen inspection mode and return
 
 Cooling, power-delivery, and performance hotspots move the camera to relevant hardware details; the performance view reflects the GPU selected by the optimizer.
 
+Exploded view reveals five labeled hardware layers—backplate, PCB, heatsink, shroud, and fan array—and each label focuses its part.
+
 ### Saving and Sharing Builds
 Users can save configurations locally, revisit recent builds, compare new recommendations against previous ones, and share their settings through a URL.
 

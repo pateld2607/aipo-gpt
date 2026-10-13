@@ -64,7 +64,7 @@
           </p>
           <div class="hero-actions">
             <a class="hero-primary" href="#optimizer-form">Configure a build</a>
-            <button class="hero-secondary" id="gpu-explode" type="button" aria-pressed="false">Explode GPU</button>
+            <button class="hero-secondary" id="gpu-explode" type="button" aria-pressed="false" aria-expanded="false" aria-controls="gpu-part-labels">Explode GPU</button>
           </div>
           <div class="hero-signal" aria-label="Live optimizer preview">
             <div><span>Compatibility</span><strong id="hero-compatibility">100%</strong></div>
@@ -89,6 +89,13 @@
           <button class="gpu-hotspot hotspot-cooling" type="button" data-hotspot="cooling" aria-label="Inspect cooling system"><span></span></button>
           <button class="gpu-hotspot hotspot-power" type="button" data-hotspot="power" aria-label="Inspect power delivery"><span></span></button>
           <button class="gpu-hotspot hotspot-performance" type="button" data-hotspot="performance" aria-label="Inspect graphics performance"><span></span></button>
+          <div class="gpu-part-labels" id="gpu-part-labels" aria-label="Exploded graphics card layers" hidden>
+            <button type="button" data-exploded-part="backplate">Backplate</button>
+            <button type="button" data-exploded-part="pcb">PCB</button>
+            <button type="button" data-exploded-part="heatsink">Heatsink</button>
+            <button type="button" data-exploded-part="shroud">Shroud</button>
+            <button type="button" data-exploded-part="fans">Fan array</button>
+          </div>
           <aside class="gpu-info" id="gpu-info" aria-live="polite" hidden>
             <button type="button" id="gpu-info-close" aria-label="Close component detail">×</button>
             <small id="gpu-info-kicker">THERMAL ARRAY</small>

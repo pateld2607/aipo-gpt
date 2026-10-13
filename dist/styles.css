@@ -1476,6 +1476,22 @@ body {
 .hotspot-power { top: 27%; right: 16%; }
 .hotspot-performance { top: 56%; left: 17%; }
 .gpu-hotspot:focus-visible { outline: 2px solid var(--gpu-accent); outline-offset: 4px; border-radius: 50%; }
+.gpu-part-labels { position: absolute; z-index: 7; inset: 86px 18px 72px; pointer-events: none; }
+.gpu-part-labels[hidden] { display: none; }
+.gpu-part-labels button { position: absolute; padding: 6px 9px; border: 1px solid rgba(var(--gpu-accent-rgb),.36); border-radius: 999px; background: rgba(4,10,16,.8); color: #cbd8de; font: 700 .55rem Orbitron,sans-serif; letter-spacing: .07em; cursor: pointer; pointer-events: auto; backdrop-filter: blur(10px); }
+.gpu-part-labels button::after { content: ""; position: absolute; top: 50%; width: 34px; height: 1px; background: linear-gradient(90deg, rgba(var(--gpu-accent-rgb),.7), transparent); }
+.gpu-part-labels button:hover,
+.gpu-part-labels button:focus-visible { border-color: var(--gpu-accent); color: var(--gpu-accent); outline: none; }
+.gpu-part-labels [data-exploded-part="backplate"] { top: 7%; left: 4%; }
+.gpu-part-labels [data-exploded-part="pcb"] { top: 28%; left: 11%; }
+.gpu-part-labels [data-exploded-part="heatsink"] { top: 10%; left: 43%; }
+.gpu-part-labels [data-exploded-part="shroud"] { top: 26%; right: 10%; }
+.gpu-part-labels [data-exploded-part="fans"] { right: 3%; bottom: 12%; }
+.gpu-part-labels [data-exploded-part="backplate"]::after,
+.gpu-part-labels [data-exploded-part="pcb"]::after,
+.gpu-part-labels [data-exploded-part="heatsink"]::after { left: 100%; }
+.gpu-part-labels [data-exploded-part="shroud"]::after,
+.gpu-part-labels [data-exploded-part="fans"]::after { right: 100%; transform: rotate(180deg); }
 .gpu-info { position: absolute; z-index: 7; right: 22px; bottom: 62px; width: min(285px, calc(100% - 44px)); padding: 19px; border: 1px solid rgba(var(--gpu-accent-rgb),.34); border-radius: 15px; background: rgba(5,11,18,.88); box-shadow: 0 24px 60px rgba(0,0,0,.45); backdrop-filter: blur(16px); animation: toast-in .28s ease-out both; }
 .gpu-info[hidden] { display: none; }
 .gpu-info button { position: absolute; top: 9px; right: 10px; border: 0; background: transparent; color: #8795a2; cursor: pointer; font-size: 1rem; }
@@ -1516,6 +1532,8 @@ body {
   .gpu-fullscreen { top: 45px; right: 14px; }
   .gpu-stage-bottom > span { display: none; }
   .gpu-stage-top strong { max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gpu-part-labels { inset: 82px 10px 68px; }
+  .gpu-part-labels button { font-size: .49rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

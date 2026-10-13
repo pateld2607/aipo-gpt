@@ -1454,6 +1454,12 @@ body {
 .gpu-fullscreen:disabled { opacity: .45; cursor: not-allowed; }
 .gpu-stage:fullscreen { width: 100vw; height: 100vh; min-height: 100vh; border: 0; border-radius: 0; background: #04070b; }
 .gpu-stage:fullscreen .gpu-fullscreen { top: 54px; right: 28px; }
+.gpu-stage-tools { display: flex; align-items: center; gap: 10px; pointer-events: auto; }
+.gpu-quality { display: flex; gap: 2px; padding: 3px; border: 1px solid rgba(255,255,255,.12); border-radius: 999px; background: rgba(4,9,15,.58); }
+.gpu-quality button { padding: 4px 6px; border: 0; border-radius: 999px; background: transparent; color: #7f8d98; font: 700 .48rem Orbitron,sans-serif; cursor: pointer; }
+.gpu-quality button:hover,
+.gpu-quality button:focus-visible { color: var(--gpu-accent); outline: none; }
+.gpu-quality button.is-active { background: rgba(var(--gpu-accent-rgb),.14); color: var(--gpu-accent); }
 .gpu-themes { display: flex; gap: 8px; pointer-events: auto; }
 .gpu-themes button { width: 20px; height: 20px; padding: 0; border: 2px solid rgba(255,255,255,.18); border-radius: 50%; background: var(--dot); cursor: pointer; transition: transform .2s, box-shadow .2s; }
 .gpu-themes button:nth-child(1) { --dot:#5ee7ee; }
@@ -1531,6 +1537,7 @@ body {
   .gpu-stage-top,.gpu-stage-bottom { right: 15px; left: 15px; }
   .gpu-fullscreen { top: 45px; right: 14px; }
   .gpu-stage-bottom > span { display: none; }
+  .gpu-stage-tools { width: 100%; justify-content: space-between; }
   .gpu-stage-top strong { max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .gpu-part-labels { inset: 82px 10px 68px; }
   .gpu-part-labels button { font-size: .49rem; }

@@ -79,11 +79,18 @@
           <button class="gpu-fullscreen" id="gpu-fullscreen" type="button" aria-pressed="false" aria-label="Open graphics card in fullscreen">Expand view</button>
           <div class="gpu-stage-bottom">
             <span id="gpu-controls-help">Drag to inspect · scroll to zoom · arrows rotate</span>
-            <div class="gpu-themes" aria-label="Scene accent color">
-              <button class="is-active" type="button" data-gpu-color="#5ee7ee" data-ui-color="#5ee7ee" aria-label="Cyan lighting"></button>
-              <button type="button" data-gpu-color="#9b6cff" data-ui-color="#b98cff" aria-label="Purple lighting"></button>
-              <button type="button" data-gpu-color="#ff4f73" data-ui-color="#ff718e" aria-label="Red lighting"></button>
-              <button type="button" data-gpu-color="#b8ff62" data-ui-color="#b8ff62" aria-label="Green lighting"></button>
+            <div class="gpu-stage-tools">
+              <div class="gpu-quality" role="group" aria-label="3D scene quality">
+                <button type="button" data-gpu-quality="eco" aria-pressed="false">Eco</button>
+                <button class="is-active" type="button" data-gpu-quality="auto" aria-pressed="true">Auto</button>
+                <button type="button" data-gpu-quality="high" aria-pressed="false">High</button>
+              </div>
+              <div class="gpu-themes" aria-label="Scene accent color">
+                <button class="is-active" type="button" data-gpu-color="#5ee7ee" data-ui-color="#5ee7ee" aria-label="Cyan lighting"></button>
+                <button type="button" data-gpu-color="#9b6cff" data-ui-color="#b98cff" aria-label="Purple lighting"></button>
+                <button type="button" data-gpu-color="#ff4f73" data-ui-color="#ff718e" aria-label="Red lighting"></button>
+                <button type="button" data-gpu-color="#b8ff62" data-ui-color="#b8ff62" aria-label="Green lighting"></button>
+              </div>
             </div>
           </div>
           <button class="gpu-hotspot hotspot-cooling" type="button" data-hotspot="cooling" aria-label="Inspect cooling system"><span></span></button>

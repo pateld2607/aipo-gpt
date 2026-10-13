@@ -55,6 +55,8 @@ Cooling, power-delivery, and performance hotspots move the camera to relevant ha
 
 Exploded view reveals five labeled hardware layers—backplate, PCB, heatsink, shroud, and fan array—and each label focuses its part.
 
+Persistent Eco, Auto, and High scene-quality controls let visitors trade particles, shadows, and pixel density for performance on their device.
+
 ### Saving and Sharing Builds
 Users can save configurations locally, revisit recent builds, compare new recommendations against previous ones, and share their settings through a URL.
 

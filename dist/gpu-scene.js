@@ -351,6 +351,48 @@ if (canvas && stage) {
       });
     }
 
+    // ---------- User-selectable rendering quality ----------
+    const qualityButtons = [...document.querySelectorAll("[data-gpu-quality]")];
+    let qualityMode = "auto";
+    const pixelRatioForQuality = () => {
+      if (qualityMode === "eco") return 1;
+      if (qualityMode === "high") return Math.min(devicePixelRatio, 2);
+      return Math.min(devicePixelRatio, mobile ? 1.35 : 2);
+    };
+    const applySceneQuality = (mode, { persist = true } = {}) => {
+      qualityMode = ["eco", "auto", "high"].includes(mode) ? mode : "auto";
+      const enableShadows = qualityMode === "high" || (qualityMode === "auto" && !mobile);
+      renderer.setPixelRatio(pixelRatioForQuality());
+      renderer.shadowMap.enabled = enableShadows;
+      key.castShadow = enableShadows;
+      floor.receiveShadow = enableShadows;
+      particles.visible = qualityMode !== "eco";
+      scene.traverse((object) => {
+        if (!object.isMesh || object === glow || object.material === cutout) return;
+        object.castShadow = enableShadows;
+        object.receiveShadow = enableShadows;
+      });
+      renderer.shadowMap.needsUpdate = true;
+      stage.dataset.quality = qualityMode;
+      for (const button of qualityButtons) {
+        const active = button.dataset.gpuQuality === qualityMode;
+        button.classList.toggle("is-active", active);
+        button.setAttribute("aria-pressed", String(active));
+      }
+      if (persist) {
+        try { localStorage.setItem("aipo-gpt-scene-quality", qualityMode); } catch { /* quality remains session-only */ }
+      }
+    };
+    let savedQuality = "auto";
+    try { savedQuality = localStorage.getItem("aipo-gpt-scene-quality") ?? "auto"; } catch { /* use automatic quality */ }
+    applySceneQuality(savedQuality, { persist: false });
+    for (const button of qualityButtons) {
+      button.addEventListener("click", () => {
+        applySceneQuality(button.dataset.gpuQuality);
+        document.querySelector("#gpu-scene-status").textContent = `${button.textContent} graphics quality selected.`;
+      });
+    }
+
     const syncBuild = (detail) => {
       const { recommendation, constraints } = detail ?? {};
       const gpuPart = recommendation?.parts?.gpu;
@@ -420,7 +462,7 @@ if (canvas && stage) {
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height, false);
-      renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.35 : 2));
+      renderer.setPixelRatio(pixelRatioForQuality());
     };
     new ResizeObserver(resize).observe(stage);
 

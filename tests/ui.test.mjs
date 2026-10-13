@@ -468,5 +468,13 @@ assert.match(gpuScene, /controls\.target\.copy\(explodeOffsets/);
 assert.match(gpuScene, /partLabels\.hidden = !value/);
 assert.match(css, /\.gpu-part-labels\[hidden\]/);
 assert.match(css, /data-exploded-part="fans"/);
+assert.match(html, /class="gpu-quality" role="group" aria-label="3D scene quality"/);
+assert.equal((html.match(/data-gpu-quality=/g) ?? []).length, 3);
+assert.match(gpuScene, /const applySceneQuality = \(mode/);
+assert.match(gpuScene, /localStorage\.setItem\("aipo-gpt-scene-quality"/);
+assert.match(gpuScene, /particles\.visible = qualityMode !== "eco"/);
+assert.match(gpuScene, /renderer\.shadowMap\.enabled = enableShadows/);
+assert.match(gpuScene, /renderer\.setPixelRatio\(pixelRatioForQuality\(\)\)/);
+assert.match(css, /\.gpu-quality button\.is-active/);
 
 console.log("UI contract tests passed");

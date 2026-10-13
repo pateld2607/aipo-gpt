@@ -51,6 +51,8 @@ Keyboard users can focus the 3D graphics card, rotate it with the arrow keys, an
 
 The graphics-card stage can enter a native fullscreen inspection mode and returns cleanly with the browser's standard Escape control.
 
+Cooling, power-delivery, and performance hotspots move the camera to relevant hardware details; the performance view reflects the GPU selected by the optimizer.
+
 ### Saving and Sharing Builds
 Users can save configurations locally, revisit recent builds, compare new recommendations against previous ones, and share their settings through a URL.
 

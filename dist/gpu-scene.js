@@ -294,6 +294,12 @@ if (canvas && stage) {
         copy: "A reinforced PCB, plated PCIe edge, and compact power connector make the current path visible.",
         camera: [6.1, 3.1, 7.4],
       },
+      performance: {
+        kicker: "CURRENT RECOMMENDATION",
+        title: "Graphics performance",
+        copy: "Generate a build to inspect the selected GPU's memory, board power, and target workload.",
+        camera: [-5.4, 1.4, 8.1],
+      },
     };
     for (const button of document.querySelectorAll("[data-hotspot]")) {
       button.addEventListener("click", () => {
@@ -330,7 +336,13 @@ if (canvas && stage) {
     const syncBuild = (detail) => {
       const { recommendation, constraints } = detail ?? {};
       const gpuPart = recommendation?.parts?.gpu;
-      if (gpuPart) document.querySelector("#gpu-stage-name").textContent = gpuPart.name;
+      if (gpuPart) {
+        document.querySelector("#gpu-stage-name").textContent = gpuPart.name;
+        info.performance.title = gpuPart.name;
+        const target = constraints?.resolution?.toUpperCase() ?? "current target";
+        const workload = constraints?.useCase ?? "workload";
+        info.performance.copy = `${gpuPart.vram}GB VRAM · ${gpuPart.watts}W board power · tier ${gpuPart.tier}. Tuned for ${target} ${workload}.`;
+      }
       if (constraints?.resolution) document.querySelector("#hero-target").textContent = constraints.resolution.toUpperCase();
       if (constraints?.budget) document.querySelector("#hero-budget").textContent = "$" + Number(constraints.budget).toLocaleString();
       const failed = recommendation?.checks?.filter((check) => check.pass === false).length ?? 0;

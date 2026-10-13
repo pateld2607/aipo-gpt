@@ -451,5 +451,13 @@ assert.match(gpuScene, /document\.exitFullscreen\(\)/);
 assert.match(gpuScene, /document\.addEventListener\("fullscreenchange"/);
 assert.match(gpuScene, /fullscreenButton\.setAttribute\("aria-pressed"/);
 assert.match(css, /\.gpu-stage:fullscreen/);
+assert.equal((html.match(/data-hotspot=/g) ?? []).length, 3);
+assert.match(html, /data-hotspot="performance" aria-label="Inspect graphics performance"/);
+assert.match(gpuScene, /performance: \{/);
+assert.match(gpuScene, /info\.performance\.title = gpuPart\.name/);
+assert.match(gpuScene, /gpuPart\.vram/);
+assert.match(gpuScene, /gpuPart\.watts/);
+assert.match(css, /\.hotspot-performance/);
+assert.match(css, /\.gpu-hotspot:focus-visible/);
 
 console.log("UI contract tests passed");

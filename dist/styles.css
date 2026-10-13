@@ -1474,6 +1474,8 @@ body {
 @keyframes gpu-ping { to { opacity: 0; transform: translate(-50%,-50%) scale(1.9); } }
 .hotspot-cooling { top: 48%; left: 54%; }
 .hotspot-power { top: 27%; right: 16%; }
+.hotspot-performance { top: 56%; left: 17%; }
+.gpu-hotspot:focus-visible { outline: 2px solid var(--gpu-accent); outline-offset: 4px; border-radius: 50%; }
 .gpu-info { position: absolute; z-index: 7; right: 22px; bottom: 62px; width: min(285px, calc(100% - 44px)); padding: 19px; border: 1px solid rgba(var(--gpu-accent-rgb),.34); border-radius: 15px; background: rgba(5,11,18,.88); box-shadow: 0 24px 60px rgba(0,0,0,.45); backdrop-filter: blur(16px); animation: toast-in .28s ease-out both; }
 .gpu-info[hidden] { display: none; }
 .gpu-info button { position: absolute; top: 9px; right: 10px; border: 0; background: transparent; color: #8795a2; cursor: pointer; font-size: 1rem; }

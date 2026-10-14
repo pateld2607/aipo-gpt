@@ -335,21 +335,30 @@ if (canvas && stage) {
     });
 
     let accent = new THREE.Color("#5ee7ee");
-    for (const button of document.querySelectorAll("[data-gpu-color]")) {
-      button.addEventListener("click", () => {
-        document.querySelectorAll("[data-gpu-color]").forEach((item) => item.classList.remove("is-active"));
-        button.classList.add("is-active");
-        accent.set(button.dataset.gpuColor);
-        const [r, g, b] = [accent.r, accent.g, accent.b].map((value) => Math.round(value * 255));
-        document.documentElement.style.setProperty("--gpu-accent", button.dataset.uiColor);
-        document.documentElement.style.setProperty("--gpu-accent-rgb", r + ", " + g + ", " + b);
-        rgbMaterial.color.copy(accent);
-        rgbMaterial.emissive.copy(accent);
-        glow.material.color.copy(accent);
-        accentLight.color.copy(accent);
-        rgbLights.forEach((light) => light.color.copy(accent));
-      });
-    }
+    const colorButtons = [...document.querySelectorAll("[data-gpu-color]")];
+    const applySceneAccent = (button, { persist = true } = {}) => {
+      for (const item of colorButtons) {
+        const active = item === button;
+        item.classList.toggle("is-active", active);
+        item.setAttribute("aria-pressed", String(active));
+      }
+      accent.set(button.dataset.gpuColor);
+      const [r, g, b] = [accent.r, accent.g, accent.b].map((value) => Math.round(value * 255));
+      document.documentElement.style.setProperty("--gpu-accent", button.dataset.uiColor);
+      document.documentElement.style.setProperty("--gpu-accent-rgb", r + ", " + g + ", " + b);
+      rgbMaterial.color.copy(accent);
+      rgbMaterial.emissive.copy(accent);
+      glow.material.color.copy(accent);
+      accentLight.color.copy(accent);
+      rgbLights.forEach((light) => light.color.copy(accent));
+      if (persist) {
+        try { localStorage.setItem("aipo-gpt-scene-accent", button.dataset.gpuColor); } catch { /* accent remains session-only */ }
+      }
+    };
+    let savedSceneAccent = "#5ee7ee";
+    try { savedSceneAccent = localStorage.getItem("aipo-gpt-scene-accent") ?? savedSceneAccent; } catch { /* use cyan */ }
+    applySceneAccent(colorButtons.find((button) => button.dataset.gpuColor === savedSceneAccent) ?? colorButtons[0], { persist: false });
+    for (const button of colorButtons) button.addEventListener("click", () => applySceneAccent(button));
 
     // ---------- User-selectable rendering quality ----------
     const qualityButtons = [...document.querySelectorAll("[data-gpu-quality]")];

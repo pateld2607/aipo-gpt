@@ -57,6 +57,8 @@ Exploded view reveals five labeled hardware layers—backplate, PCB, heatsink, s
 
 Persistent Eco, Auto, and High scene-quality controls let visitors trade particles, shadows, and pixel density for performance on their device.
 
+The 3D lighting palette persists locally and exposes its selected color to assistive technology.
+
 ### Saving and Sharing Builds
 Users can save configurations locally, revisit recent builds, compare new recommendations against previous ones, and share their settings through a URL.
 

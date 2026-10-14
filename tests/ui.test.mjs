@@ -476,5 +476,11 @@ assert.match(gpuScene, /particles\.visible = qualityMode !== "eco"/);
 assert.match(gpuScene, /renderer\.shadowMap\.enabled = enableShadows/);
 assert.match(gpuScene, /renderer\.setPixelRatio\(pixelRatioForQuality\(\)\)/);
 assert.match(css, /\.gpu-quality button\.is-active/);
+assert.match(html, /class="gpu-themes" role="group" aria-label="Scene accent color"/);
+assert.equal((html.match(/data-gpu-color=/g) ?? []).length, 4);
+assert.match(gpuScene, /const applySceneAccent = \(button/);
+assert.match(gpuScene, /localStorage\.setItem\("aipo-gpt-scene-accent"/);
+assert.match(gpuScene, /localStorage\.getItem\("aipo-gpt-scene-accent"/);
+assert.match(gpuScene, /item\.setAttribute\("aria-pressed", String\(active\)\)/);
 
 console.log("UI contract tests passed");

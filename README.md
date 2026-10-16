@@ -59,6 +59,8 @@ Persistent Eco, Auto, and High scene-quality controls let visitors trade particl
 
 The 3D lighting palette persists locally and exposes its selected color to assistive technology.
 
+The global motion preference also governs the 3D card's fans, floating movement, automatic rotation, particles, RGB cycle, and exploded-view transitions.
+
 ### Saving and Sharing Builds
 Users can save configurations locally, revisit recent builds, compare new recommendations against previous ones, and share their settings through a URL.
 

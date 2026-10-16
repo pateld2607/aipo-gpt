@@ -7,6 +7,11 @@ const stage = document.querySelector("#gpu-stage");
 const loading = document.querySelector("#gpu-loading");
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const mobile = matchMedia("(max-width: 700px)").matches;
+let sceneMotionEnabled = !reduceMotion && document.documentElement.dataset.motion !== "off";
+
+window.addEventListener("aipo:motion-changed", (event) => {
+  sceneMotionEnabled = !reduceMotion && event.detail?.enabled !== false;
+});
 
 if (canvas && stage) {
   try {
@@ -484,20 +489,26 @@ if (canvas && stage) {
       const dt = Math.min(clock.getDelta(), 0.05);
       const time = clock.elapsedTime;
       fanSpeed = THREE.MathUtils.lerp(fanSpeed, hover ? 7.2 : 1.35, 0.065);
-      if (!reduceMotion) rotors.forEach((rotor) => { rotor.rotation.z += dt * fanSpeed * rotor.userData.direction; });
-      if (!reduceMotion) {
+      if (sceneMotionEnabled) rotors.forEach((rotor) => { rotor.rotation.z += dt * fanSpeed * rotor.userData.direction; });
+      if (sceneMotionEnabled) {
         gpu.position.y = -0.05 + Math.sin(time * 0.75) * 0.09;
         particles.rotation.y += dt * 0.012;
       }
-      const rainbow = new THREE.Color().setHSL((time * 0.055) % 1, 0.95, 0.56);
-      rgbMaterial.color.copy(rainbow);
-      rgbMaterial.emissive.copy(rainbow);
-      rgbLights.forEach((light, index) => light.color.setHSL((time * 0.055 + index * 0.06) % 1, 0.95, 0.55));
-      explodeAmount = THREE.MathUtils.lerp(explodeAmount, exploded ? 1 : 0, reduceMotion ? 1 : 0.075);
-      for (const [name, piece] of Object.entries(pieces)) {
-        piece.position.lerp(exploded ? explodeOffsets[name] : zero, 0.18);
+      if (sceneMotionEnabled) {
+        const rainbow = new THREE.Color().setHSL((time * 0.055) % 1, 0.95, 0.56);
+        rgbMaterial.color.copy(rainbow);
+        rgbMaterial.emissive.copy(rainbow);
+        rgbLights.forEach((light, index) => light.color.setHSL((time * 0.055 + index * 0.06) % 1, 0.95, 0.55));
+      } else {
+        rgbMaterial.color.copy(accent);
+        rgbMaterial.emissive.copy(accent);
+        rgbLights.forEach((light) => light.color.copy(accent));
       }
-      gpu.rotation.y += reduceMotion ? 0 : dt * 0.018;
+      explodeAmount = THREE.MathUtils.lerp(explodeAmount, exploded ? 1 : 0, sceneMotionEnabled ? 0.075 : 1);
+      for (const [name, piece] of Object.entries(pieces)) {
+        piece.position.lerp(exploded ? explodeOffsets[name] : zero, sceneMotionEnabled ? 0.18 : 1);
+      }
+      gpu.rotation.y += sceneMotionEnabled ? dt * 0.018 : 0;
       controls.update();
       renderer.render(scene, camera);
     };

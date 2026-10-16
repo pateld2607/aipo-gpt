@@ -845,6 +845,7 @@ motionToggle.addEventListener("click", () => {
   motionToggle.textContent = motionEnabled ? "Motion on" : "Motion off";
   if (!motionEnabled) resetPointerEffects();
   try { localStorage.setItem("aipo-gpt-motion", motionEnabled ? "on" : "off"); } catch { /* preference remains session-only */ }
+  window.dispatchEvent(new CustomEvent("aipo:motion-changed", { detail: { enabled: motionEnabled } }));
   showToast(motionEnabled ? "Interface motion enabled." : "Interface motion paused.");
 });
 

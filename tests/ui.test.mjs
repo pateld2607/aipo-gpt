@@ -503,5 +503,11 @@ assert.match(gpuScene, /canvas\.addEventListener\("webglcontextlost"/);
 assert.match(gpuScene, /canvas\.addEventListener\("webglcontextrestored"/);
 assert.match(gpuScene, /stageVisible && !document\.hidden && contextAvailable/);
 assert.match(css, /\.gpu-fallback-panel\[hidden\]/);
+assert.match(html, /id="page-progress" role="progressbar"[^>]+aria-valuenow="0"/);
+assert.match(app, /function updatePageProgress\(\)/);
+assert.match(app, /document\.documentElement\.scrollHeight - window\.innerHeight/);
+assert.match(app, /pageProgress\.setAttribute\("aria-valuenow"/);
+assert.match(app, /window\.addEventListener\("scroll", schedulePageProgress/);
+assert.match(css, /\.page-progress span/);
 
 console.log("UI contract tests passed");

@@ -45,6 +45,8 @@ Users can filter components, switch between recommendations, adjust their budget
 
 The application also includes mobile support, keyboard shortcuts, adjustable display settings, persistent lime, cyan, violet, and ember accent themes, and accessibility features.
 
+A slim accessible progress rail in the sticky header shows how far the visitor has explored the long-form optimizer page.
+
 The interactive GPU scene automatically pauses when it is offscreen or the browser tab is hidden, reducing unnecessary graphics work without changing the current view.
 
 Keyboard users can focus the 3D graphics card, rotate it with the arrow keys, and press Home to restore the default camera view.

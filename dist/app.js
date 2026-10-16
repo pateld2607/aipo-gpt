@@ -102,6 +102,7 @@ const actionToast = document.querySelector("#action-toast");
 const actionToastMessage = document.querySelector("#action-toast-message");
 const closeToastButton = document.querySelector("#close-toast");
 const motionToggle = document.querySelector("#motion-toggle");
+const pageProgress = document.querySelector("#page-progress");
 const focusToggle = document.querySelector("#focus-toggle");
 const contrastToggle = document.querySelector("#contrast-toggle");
 const accentButtons = [...document.querySelectorAll("[data-accent]")];
@@ -848,6 +849,24 @@ motionToggle.addEventListener("click", () => {
   window.dispatchEvent(new CustomEvent("aipo:motion-changed", { detail: { enabled: motionEnabled } }));
   showToast(motionEnabled ? "Interface motion enabled." : "Interface motion paused.");
 });
+
+let pageProgressFrame = 0;
+function updatePageProgress() {
+  const scrollable = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  const progress = scrollable === 0 ? 100 : Math.min(100, Math.max(0, (window.scrollY / scrollable) * 100));
+  const rounded = Math.round(progress);
+  pageProgress.style.setProperty("--page-progress", `${progress}%`);
+  pageProgress.setAttribute("aria-valuenow", String(rounded));
+  pageProgress.setAttribute("aria-valuetext", `${rounded}% viewed`);
+  pageProgressFrame = 0;
+}
+function schedulePageProgress() {
+  if (pageProgressFrame) return;
+  pageProgressFrame = window.requestAnimationFrame(updatePageProgress);
+}
+window.addEventListener("scroll", schedulePageProgress, { passive: true });
+window.addEventListener("resize", schedulePageProgress, { passive: true });
+updatePageProgress();
 
 function setWorkspaceView(view, { focus = false } = {}) {
   workspace.dataset.mobileView = view;

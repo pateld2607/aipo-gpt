@@ -1315,6 +1315,8 @@ body {
   background: linear-gradient(180deg, rgba(4,7,11,.94), rgba(4,7,11,.72));
   backdrop-filter: blur(20px);
 }
+.page-progress { --page-progress: 0%; position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; overflow: hidden; background: rgba(255,255,255,.04); }
+.page-progress span { display: block; width: var(--page-progress); height: 100%; background: linear-gradient(90deg, var(--gpu-accent), var(--acid)); box-shadow: 0 0 14px rgba(var(--gpu-accent-rgb),.72); transition: width .12s linear; }
 
 .brand { font-family: Orbitron, sans-serif; letter-spacing: .1em; }
 .brand-mark {
@@ -1561,4 +1563,5 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .gpu-hotspot::before,.gpu-hotspot::after,.gpu-loading span { animation: none; }
+  .page-progress span { transition: none; }
 }

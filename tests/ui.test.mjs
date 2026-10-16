@@ -495,5 +495,13 @@ assert.match(gpuScene, /resetViewButton\.addEventListener\("click", resetSceneVi
 assert.match(gpuScene, /sceneMotionEnabled && autoRotateEnabled/);
 assert.match(gpuScene, /if \(coarsePointer\) controlsHelp\.textContent/);
 assert.match(css, /\.gpu-scene-actions button/);
+assert.match(html, /id="gpu-fallback-panel" role="alert" hidden/);
+assert.match(html, /id="gpu-retry" type="button">Retry 3D preview/);
+assert.match(gpuScene, /const showSceneFallback = \(title, copy\) =>/);
+assert.match(gpuScene, /window\.location\.reload\(\)/);
+assert.match(gpuScene, /canvas\.addEventListener\("webglcontextlost"/);
+assert.match(gpuScene, /canvas\.addEventListener\("webglcontextrestored"/);
+assert.match(gpuScene, /stageVisible && !document\.hidden && contextAvailable/);
+assert.match(css, /\.gpu-fallback-panel\[hidden\]/);
 
 console.log("UI contract tests passed");

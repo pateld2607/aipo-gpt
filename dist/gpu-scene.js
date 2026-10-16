@@ -15,6 +15,15 @@ window.addEventListener("aipo:motion-changed", (event) => {
 });
 
 if (canvas && stage) {
+  const fallbackPanel = document.querySelector("#gpu-fallback-panel");
+  const showSceneFallback = (title, copy) => {
+    document.querySelector("#gpu-fallback-title").textContent = title;
+    document.querySelector("#gpu-fallback-copy").textContent = copy;
+    fallbackPanel.hidden = false;
+    loading?.classList.add("is-done");
+    stage.classList.add("gpu-fallback");
+  };
+  document.querySelector("#gpu-retry")?.addEventListener("click", () => window.location.reload());
   try {
     // ---------- Scene ----------
     const renderer = new THREE.WebGLRenderer({
@@ -512,6 +521,7 @@ if (canvas && stage) {
     let fanSpeed = 1.35;
     let animationFrame = 0;
     let stageVisible = true;
+    let contextAvailable = true;
     const animate = () => {
       animationFrame = requestAnimationFrame(animate);
       const dt = Math.min(clock.getDelta(), 0.05);
@@ -541,7 +551,7 @@ if (canvas && stage) {
       renderer.render(scene, camera);
     };
     const syncAnimationLifecycle = () => {
-      const shouldAnimate = stageVisible && !document.hidden;
+      const shouldAnimate = stageVisible && !document.hidden && contextAvailable;
       if (shouldAnimate && !animationFrame) {
         clock.start();
         animationFrame = requestAnimationFrame(animate);
@@ -557,11 +567,24 @@ if (canvas && stage) {
     }, { rootMargin: "180px" });
     stageObserver.observe(stage);
     document.addEventListener("visibilitychange", syncAnimationLifecycle);
+    canvas.addEventListener("webglcontextlost", (event) => {
+      event.preventDefault();
+      contextAvailable = false;
+      syncAnimationLifecycle();
+      showSceneFallback("Graphics preview paused", "The browser released the graphics context. Your optimizer data is safe; retry now or wait for automatic recovery.");
+      document.querySelector("#gpu-scene-status").textContent = "Graphics preview paused because the browser released its graphics context.";
+    });
+    canvas.addEventListener("webglcontextrestored", () => {
+      contextAvailable = true;
+      fallbackPanel.hidden = true;
+      stage.classList.remove("gpu-fallback");
+      syncAnimationLifecycle();
+      document.querySelector("#gpu-scene-status").textContent = "Graphics preview restored.";
+    });
     syncAnimationLifecycle();
     setTimeout(() => loading?.classList.add("is-done"), 620);
   } catch (error) {
     console.error("AIPO-GPT 3D scene could not initialize", error);
-    loading?.classList.add("is-done");
-    stage.classList.add("gpu-fallback");
+    showSceneFallback("Graphics preview unavailable", "WebGL could not initialize. Your build optimizer is still fully available; retry the preview after checking browser graphics settings.");
   }
 }

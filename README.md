@@ -63,6 +63,8 @@ The 3D lighting palette persists locally and exposes its selected color to assis
 
 The global motion preference also governs the 3D card's fans, floating movement, automatic rotation, particles, RGB cycle, and exploded-view transitions.
 
+If WebGL initialization fails or the browser releases its graphics context, the stage now presents a clear recovery panel without blocking the optimizer and can resume automatically when the context returns.
+
 ### Saving and Sharing Builds
 Users can save configurations locally, revisit recent builds, compare new recommendations against previous ones, and share their settings through a URL.
 

@@ -75,6 +75,12 @@
         <div class="gpu-stage" id="gpu-stage">
           <canvas id="aipo-gpu-scene" tabindex="0" aria-label="Interactive 3D graphics card representing the current AIPO-GPT build" aria-describedby="gpu-controls-help" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Home"></canvas>
           <div class="gpu-loading" id="gpu-loading" role="status"><span></span><small>Initializing hardware twin</small></div>
+          <section class="gpu-fallback-panel" id="gpu-fallback-panel" role="alert" hidden>
+            <span>3D PREVIEW</span>
+            <strong id="gpu-fallback-title">Graphics preview unavailable</strong>
+            <p id="gpu-fallback-copy">Your build optimizer is still fully available. Retry the hardware preview when your browser is ready.</p>
+            <button id="gpu-retry" type="button">Retry 3D preview</button>
+          </section>
           <div class="gpu-stage-top"><span>RECOMMENDED GRAPHICS</span><strong id="gpu-stage-name">Optimized GPU tier</strong></div>
           <div class="gpu-scene-actions" aria-label="Graphics card view controls">
             <button id="gpu-reset-view" type="button">Reset view</button>

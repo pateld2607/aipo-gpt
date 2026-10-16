@@ -487,5 +487,13 @@ assert.match(gpuScene, /const applySceneAccent = \(button/);
 assert.match(gpuScene, /localStorage\.setItem\("aipo-gpt-scene-accent"/);
 assert.match(gpuScene, /localStorage\.getItem\("aipo-gpt-scene-accent"/);
 assert.match(gpuScene, /item\.setAttribute\("aria-pressed", String\(active\)\)/);
+assert.match(html, /id="gpu-reset-view" type="button">Reset view/);
+assert.match(html, /id="gpu-auto-rotate"[^>]+aria-pressed="true">Auto orbit/);
+assert.match(gpuScene, /localStorage\.getItem\("aipo-gpt-scene-auto-rotate"\)/);
+assert.match(gpuScene, /const resetSceneView = \(\) =>/);
+assert.match(gpuScene, /resetViewButton\.addEventListener\("click", resetSceneView\)/);
+assert.match(gpuScene, /sceneMotionEnabled && autoRotateEnabled/);
+assert.match(gpuScene, /if \(coarsePointer\) controlsHelp\.textContent/);
+assert.match(css, /\.gpu-scene-actions button/);
 
 console.log("UI contract tests passed");

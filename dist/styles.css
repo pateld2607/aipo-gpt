@@ -1448,6 +1448,11 @@ body {
 .gpu-stage-top span,
 .gpu-stage-bottom > span { color: #758492; font: 700 .61rem Orbitron,sans-serif; letter-spacing: .13em; text-transform: uppercase; }
 .gpu-stage-top strong { color: #dfe9ee; font: 600 .72rem Orbitron,sans-serif; }
+.gpu-scene-actions { position: absolute; z-index: 7; top: 48px; left: 20px; display: flex; gap: 6px; }
+.gpu-scene-actions button { min-height: 30px; padding: 7px 10px; border: 1px solid rgba(var(--gpu-accent-rgb),.26); border-radius: 999px; background: rgba(4,9,15,.58); color: #9eacb6; font: 700 .55rem Orbitron,sans-serif; letter-spacing: .04em; cursor: pointer; backdrop-filter: blur(10px); }
+.gpu-scene-actions button:hover,
+.gpu-scene-actions button:focus-visible,
+.gpu-scene-actions button.is-active { border-color: var(--gpu-accent); color: var(--gpu-accent); outline: none; }
 .gpu-fullscreen { position: absolute; z-index: 7; top: 48px; right: 20px; padding: 7px 10px; border: 1px solid rgba(var(--gpu-accent-rgb),.34); border-radius: 999px; background: rgba(4,9,15,.58); color: #b7c4cd; font: 700 .58rem Orbitron,sans-serif; letter-spacing: .07em; cursor: pointer; backdrop-filter: blur(10px); }
 .gpu-fullscreen:hover,
 .gpu-fullscreen:focus-visible { border-color: var(--gpu-accent); color: var(--gpu-accent); outline: none; }
@@ -1536,6 +1541,8 @@ body {
   .gpu-stage { min-height: 470px; border-radius: 22px; }
   .gpu-stage-top,.gpu-stage-bottom { right: 15px; left: 15px; }
   .gpu-fullscreen { top: 45px; right: 14px; }
+  .gpu-scene-actions { top: 45px; left: 14px; }
+  .gpu-scene-actions button { min-height: 34px; padding-inline: 9px; font-size: .5rem; }
   .gpu-stage-bottom > span { display: none; }
   .gpu-stage-tools { width: 100%; justify-content: space-between; }
   .gpu-stage-top strong { max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

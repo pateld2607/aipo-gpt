@@ -49,6 +49,8 @@ The interactive GPU scene automatically pauses when it is offscreen or the brows
 
 Keyboard users can focus the 3D graphics card, rotate it with the arrow keys, and press Home to restore the default camera view.
 
+Visible reset and persistent auto-orbit controls make the same camera actions available to mouse and touch users, with gesture-specific help on touch devices.
+
 The graphics-card stage can enter a native fullscreen inspection mode and returns cleanly with the browser's standard Escape control.
 
 Cooling, power-delivery, and performance hotspots move the camera to relevant hardware details; the performance view reflects the GPU selected by the optimizer.

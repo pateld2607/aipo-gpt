@@ -7,6 +7,7 @@ const stage = document.querySelector("#gpu-stage");
 const loading = document.querySelector("#gpu-loading");
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const mobile = matchMedia("(max-width: 700px)").matches;
+const coarsePointer = matchMedia("(pointer: coarse)").matches;
 let sceneMotionEnabled = !reduceMotion && document.documentElement.dataset.motion !== "off";
 
 window.addEventListener("aipo:motion-changed", (event) => {
@@ -42,6 +43,9 @@ if (canvas && stage) {
     controls.minDistance = 7;
     controls.maxDistance = 15;
     controls.target.set(0, 0, 0.2);
+
+    const controlsHelp = document.querySelector("#gpu-controls-help");
+    if (coarsePointer) controlsHelp.textContent = "Drag to inspect · pinch to zoom · tap controls";
 
     const hemi = new THREE.HemisphereLight(0xa9dfff, 0x071019, 1.6);
     const key = new THREE.DirectionalLight(0xf1f8ff, 5);
@@ -449,21 +453,45 @@ if (canvas && stage) {
 
     // ---------- Keyboard camera controls ----------
     const sceneStatus = document.querySelector("#gpu-scene-status");
+    const resetViewButton = document.querySelector("#gpu-reset-view");
+    const autoRotateButton = document.querySelector("#gpu-auto-rotate");
+    let autoRotateEnabled = true;
+    try { autoRotateEnabled = localStorage.getItem("aipo-gpt-scene-auto-rotate") !== "off"; } catch { /* keep automatic orbit */ }
+    const syncAutoRotateButton = () => {
+      autoRotateButton.setAttribute("aria-pressed", String(autoRotateEnabled));
+      autoRotateButton.classList.toggle("is-active", autoRotateEnabled);
+      autoRotateButton.textContent = autoRotateEnabled ? "Auto orbit" : "Orbit paused";
+    };
+    const resetSceneView = () => {
+      gpu.rotation.copy(defaultGpuRotation);
+      camera.position.set(mobile ? 7.4 : 7.8, 2.15, mobile ? 12.6 : 11.2);
+      controls.target.set(0, 0, 0.2);
+      controls.update();
+      renderer.render(scene, camera);
+      sceneStatus.textContent = "Graphics card view reset.";
+    };
+    syncAutoRotateButton();
+    resetViewButton.addEventListener("click", resetSceneView);
+    autoRotateButton.addEventListener("click", () => {
+      autoRotateEnabled = !autoRotateEnabled;
+      syncAutoRotateButton();
+      try { localStorage.setItem("aipo-gpt-scene-auto-rotate", autoRotateEnabled ? "on" : "off"); } catch { /* preference remains session-only */ }
+      sceneStatus.textContent = autoRotateEnabled ? "Automatic graphics card orbit enabled." : "Automatic graphics card orbit paused.";
+    });
     canvas.addEventListener("keydown", (event) => {
       const rotationStep = 0.16;
       if (event.key === "ArrowLeft") gpu.rotation.y -= rotationStep;
       else if (event.key === "ArrowRight") gpu.rotation.y += rotationStep;
       else if (event.key === "ArrowUp") gpu.rotation.x -= rotationStep;
       else if (event.key === "ArrowDown") gpu.rotation.x += rotationStep;
-      else if (event.key === "Home") {
-        gpu.rotation.copy(defaultGpuRotation);
-        camera.position.set(mobile ? 7.4 : 7.8, 2.15, mobile ? 12.6 : 11.2);
-        controls.target.set(0, 0, 0.2);
-      } else return;
+      else if (event.key === "Home") resetSceneView();
+      else return;
       event.preventDefault();
-      controls.update();
-      renderer.render(scene, camera);
-      sceneStatus.textContent = event.key === "Home" ? "Graphics card view reset." : `Graphics card rotated ${event.key.replace("Arrow", "").toLowerCase()}.`;
+      if (event.key !== "Home") {
+        controls.update();
+        renderer.render(scene, camera);
+        sceneStatus.textContent = `Graphics card rotated ${event.key.replace("Arrow", "").toLowerCase()}.`;
+      }
     });
 
     // ---------- Pointer response, resize and animation ----------
@@ -508,7 +536,7 @@ if (canvas && stage) {
       for (const [name, piece] of Object.entries(pieces)) {
         piece.position.lerp(exploded ? explodeOffsets[name] : zero, sceneMotionEnabled ? 0.18 : 1);
       }
-      gpu.rotation.y += sceneMotionEnabled ? dt * 0.018 : 0;
+      gpu.rotation.y += sceneMotionEnabled && autoRotateEnabled ? dt * 0.018 : 0;
       controls.update();
       renderer.render(scene, camera);
     };
